@@ -31,7 +31,7 @@ while read -r prefix; do
     
     if [ "$numfiles" -eq 4 ]; then
         html2=$(echo ${files[2]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.html/')
-        json2=$(echo ${files[0]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.json/')
+        json2=$(echo ${files[2]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.json/')
         out3=$(echo ${files[2]} | cut -f6 -d'/' | sed 's/.fq/.qc.fq/')
         out4=$(echo ${files[3]} | cut -f6 -d'/' | sed 's/.fq/.qc.fq/')
         fastp -i ${files[2]} \
@@ -46,4 +46,4 @@ while read -r prefix; do
             -j ./data/01_proc_reads/$prefix/$json2 \
             -h ./data/01_proc_reads/$prefix/$html2
     fi 
-done < ./data/01_proc_reads/prefixes10
+done < ./data/01_proc_reads/prefixes
