@@ -6,17 +6,17 @@
 #----------------------------------------------------------------------
 
 ##Create a file with the list of all the prefixes that will be used
-for i in $(ls ips_poolseq/X204SC25022243*/01.RawData/*/*.fq.gz); do 
-    prefix=$(echo $i | cut -f4 -d'/')  
+for i in $(ls ./data/00_raw_reads/X204SC25022243*/01.RawData/*/*.fq.gz); do 
+    prefix=$(echo $i | cut -f5 -d'/')  
     echo $prefix
-done | sort | uniq > ips_reads/prefixes
+done | sort | uniq > ./data/01_proc_reads/prefixes
 
 #Create a directory for each dataset
 while read -r prefix; do 
-    mkdir -p ./ips_reads/$prefix
-done < ips_reads/prefixes
+    mkdir -p ./data/01_proc_reads/$prefix
+done < ./data/01_proc_reads/prefixes
 
 #Create a list of all original files in the dataset
-for i in $(ls ips_poolseq/X204SC25022243*/01.RawData/*/*.fq.gz); do 
+for i in $(ls ./data/00_raw_reads/X204SC25022243*/01.RawData/*/*.fq.gz); do 
     echo $i
-done > ips_reads/filelist
+done > ./data/01_proc_reads/filelist
