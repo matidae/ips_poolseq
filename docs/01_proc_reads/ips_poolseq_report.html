@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Ips poolseq report</title>
+    <title>Ips PoolSeq QC report</title>
+    <link rel="icon" type="image/png" href="../favicon_sbb.png">
     <style>
         tr:nth-child(odd) {
             background-color: #ffffff; /* Light gray */
@@ -26,10 +27,10 @@
   window.onload = function() {    
     const table = document.getElementById('Tab');  
       for (const row of table.tBodies[0].rows) {
-      const cov = row.cells[9];
+      const cov = row.cells[21];
       const val = parseFloat(cov.textContent);
 
-        const gc = row.cells[11];
+        const gc = row.cells[13];
         const val_gc = parseFloat(gc.textContent);
 
         if (!isNaN(val_gc)) {
@@ -70,11 +71,12 @@
 <body>    
 <br>
     <table id="Tab">
+    <h3>Mapping output, before and after deduplication (plots are after)</h3>
     <thead>
         <tr>
         <th colspan=6; class="top_header">Dataset</th>
-        <th colspan=8; class="top_header">Reads after filtering</th>
-        <th colspan=15; class="top_header">Reads before filtering</th>
+        <th colspan=13; class="top_header">Reads before filtering</th>
+        <th colspan=12; class="top_header">Reads after filtering</th>
         </tr>
         <tr>
         <th>Prefix</th>
@@ -85,14 +87,6 @@
         <th>Rep</th>
         <th>Qubit</th>
 
-        <th>Reads after (M)</th>
-        <th>Gbp total</th>
-        <th>Coverage</th>
-        <th>Read length</th>
-        <th>GC (%)</th>
-        <th>Q20 after</th>
-        <th>Quality plot after QC</th>
-        <th>Base ratio plot after QC</th>
 
         <th>Reads before (M)</th>
         <th>Reads discarded (%)</th>
@@ -107,6 +101,16 @@
         <th>Quality plot before QC</th>
         <th>Base ratio plot before QC</th>
 
+        <th>Reads after (M)</th>
+        <th>Gbp total</th>
+        <th>Coverage</th>
+        <th>Read length</th>
+        <th>GC (%)</th>
+        <th>Q20 after</th>
+        <th>Quality plot after QC</th>
+        <th>Base ratio plot after QC</th>
+
+
         <th>Files</th>       
         <th>Overrepresented reads (in 1e6 sample) </th>   
         </tr> 
@@ -119,15 +123,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>13</td>
-
-            <td>72.7</td>
-            <td>6.7</td>
-            <td>29.6</td>
-            <td>91</td>
-            <td>33.6</td>
-            <td>99.3</td>
-
+            <td>13</td>   
 
             <td>319.9</td>
             <td>77.3</td>
@@ -139,8 +135,28 @@
             <td>95.6</td>
             <td>0</td>
             <td>71.7</td>
+            <td><img src="./before/SFIN_Ea_2015_MKDN250005647-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2015_MKDN250005647-1A_22MWTMLT4_L1.base.png" /></td>
 
+                     <td>72.7</td>
+            <td>6.7</td>
+            <td>29.6</td>
+            <td>91</td>
+            <td>33.6</td>
+            <td>99.3</td>
+            <td><img src="./after/SFIN_Ea_2015_MKDN250005647-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2015_MKDN250005647-1A_22MWTMLT4_L1.base.png" /></td>
 
+            <td>SFIN_Ea_2015_MKDN250005647-1A_22MWTMLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+9%	96459	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGGGTGGGGGGTTTTTTTTTGAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+6%	66268	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGTGTGGGGTGTTTTTTTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+5%	59229	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGTGGGGGGGGTTTTTTTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+5%	51335	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGTGGGGGGTTTTTTTTTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+3%	34038	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGGGGGGGGGGTTTTTTTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+73%	737198	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -151,15 +167,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>13</td>
-
-            <td>56.8</td>
-            <td>5.1</td>
-            <td>22.8</td>
-            <td>90</td>
-            <td>31.5</td>
-            <td>99.5</td>
-
+            <td>13</td>   
 
             <td>310.8</td>
             <td>81.7</td>
@@ -171,8 +179,28 @@
             <td>93.8</td>
             <td>0</td>
             <td>72.0</td>
+            <td><img src="./before/SFIN_Eb_2015_MKDN250005648-1A_22MWTMLT4_L7.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2015_MKDN250005648-1A_22MWTMLT4_L7.base.png" /></td>
 
+                     <td>56.8</td>
+            <td>5.1</td>
+            <td>22.8</td>
+            <td>90</td>
+            <td>31.5</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Eb_2015_MKDN250005648-1A_22MWTMLT4_L7.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2015_MKDN250005648-1A_22MWTMLT4_L7.base.png" /></td>
 
+            <td>SFIN_Eb_2015_MKDN250005648-1A_22MWTMLT4_L7.fq.gz</td>
+            <td class="reads"><pre>
+9%	93413	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCATCGTATCTAGGATGGCGTCTTCTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+8%	87205	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCATCGTATCTAGGATGGCGTCTTCTGCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+4%	44334	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCATCGTATCTGGGGTGGGGTTTTTTTTTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+4%	40494	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCATCGTATCTAGGGTGGCGTCTTTTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+3%	35585	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCATCGTATCTAGTGTGGCGTCTTTTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+76%	761859	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -183,15 +211,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>18</td>
-
-            <td>271.6</td>
-            <td>27.9</td>
-            <td>124.1</td>
-            <td>102</td>
-            <td>36.2</td>
-            <td>99.6</td>
-
+            <td>18</td>   
 
             <td>383.5</td>
             <td>29.2</td>
@@ -203,8 +223,26 @@
             <td>96.3</td>
             <td>0</td>
             <td>29.4</td>
+            <td><img src="./before/WFIN_Ea_2015_MKDN250005649-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2015_MKDN250005649-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>271.6</td>
+            <td>27.9</td>
+            <td>124.1</td>
+            <td>102</td>
+            <td>36.2</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Ea_2015_MKDN250005649-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2015_MKDN250005649-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>WFIN_Ea_2015_MKDN250005649-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+6%	68386	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGTGTGGCGTCTTCTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+2%	26381	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGTGTGGCGTCTTTTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+1%	11705	GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTACCGACATCTGGTGTGGCGTCTTCTTCTTTGAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+26%	268843	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -215,15 +253,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>11</td>
-
-            <td>308.6</td>
-            <td>30.7</td>
-            <td>136.4</td>
-            <td>99</td>
-            <td>36.2</td>
-            <td>99.6</td>
-
+            <td>11</td>   
 
             <td>387.6</td>
             <td>20.4</td>
@@ -235,8 +265,24 @@
             <td>96.6</td>
             <td>0</td>
             <td>21.4</td>
+            <td><img src="./before/WFIN_Eb_2015_MKDN250005650-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2015_MKDN250005650-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>308.6</td>
+            <td>30.7</td>
+            <td>136.4</td>
+            <td>99</td>
+            <td>36.2</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Eb_2015_MKDN250005650-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2015_MKDN250005650-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>WFIN_Eb_2015_MKDN250005650-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+1%	10984	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCATCGTATCTGGTGTGGGGTCTTTTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+15%	157211	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -247,15 +293,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>246</td>
-
-            <td>450.4</td>
-            <td>66.2</td>
-            <td>294.1</td>
-            <td>146</td>
-            <td>34.6</td>
-            <td>97.2</td>
-
+            <td>246</td>   
 
             <td>460.9</td>
             <td>2.3</td>
@@ -267,8 +305,22 @@
             <td>96.5</td>
             <td>0</td>
             <td>7.8</td>
+            <td><img src="./before/SFIN_La_2015_MKDN250005653-1A_22MVYCLT4_L6.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2015_MKDN250005653-1A_22MVYCLT4_L6.base.png" /></td>
 
+                     <td>450.4</td>
+            <td>66.2</td>
+            <td>294.1</td>
+            <td>146</td>
+            <td>34.6</td>
+            <td>97.2</td>
+            <td><img src="./after/SFIN_La_2015_MKDN250005653-1A_22MVYCLT4_L6.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2015_MKDN250005653-1A_22MVYCLT4_L6.base.png" /></td>
 
+            <td>SFIN_La_2015_MKDN250005653-1A_22MVYCLT4_L6.fq.gz<br>SFIN_La_2015_MKDN250005653-1A_22NGTNLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -279,15 +331,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>246</td>
-
-            <td>454.9</td>
-            <td>66.6</td>
-            <td>296.1</td>
-            <td>146</td>
-            <td>34.6</td>
-            <td>99.5</td>
-
+            <td>246</td>   
 
             <td>463.6</td>
             <td>1.9</td>
@@ -299,8 +343,22 @@
             <td>99.0</td>
             <td>0</td>
             <td>18.9</td>
+            <td><img src="./before/SFIN_Lb_2015_MKDN250005654-1A_22NGTNLT4_L4.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2015_MKDN250005654-1A_22NGTNLT4_L4.base.png" /></td>
 
+                     <td>454.9</td>
+            <td>66.6</td>
+            <td>296.1</td>
+            <td>146</td>
+            <td>34.6</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Lb_2015_MKDN250005654-1A_22NGTNLT4_L4.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2015_MKDN250005654-1A_22NGTNLT4_L4.base.png" /></td>
 
+            <td>SFIN_Lb_2015_MKDN250005654-1A_22NGTNLT4_L4.fq.gz<br>SFIN_Lb_2015_MKDN250005654-1A_22MVYCLT4_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -311,15 +369,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>328</td>
-
-            <td>471.7</td>
-            <td>69.2</td>
-            <td>307.6</td>
-            <td>146</td>
-            <td>39.5</td>
-            <td>99.6</td>
-
+            <td>328</td>   
 
             <td>480.4</td>
             <td>1.8</td>
@@ -331,8 +381,22 @@
             <td>99.1</td>
             <td>0</td>
             <td>18.5</td>
+            <td><img src="./before/WFIN_La_2015_MKDN250005651-1A_22NGTNLT4_L4.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2015_MKDN250005651-1A_22NGTNLT4_L4.base.png" /></td>
 
+                     <td>471.7</td>
+            <td>69.2</td>
+            <td>307.6</td>
+            <td>146</td>
+            <td>39.5</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_La_2015_MKDN250005651-1A_22NGTNLT4_L4.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2015_MKDN250005651-1A_22NGTNLT4_L4.base.png" /></td>
 
+            <td>WFIN_La_2015_MKDN250005651-1A_22NGTNLT4_L4.fq.gz<br>WFIN_La_2015_MKDN250005651-1A_22MVYCLT4_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -343,15 +407,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>350</td>
-
-            <td>582.1</td>
-            <td>85.5</td>
-            <td>380.1</td>
-            <td>146</td>
-            <td>40.3</td>
-            <td>99.6</td>
-
+            <td>350</td>   
 
             <td>593.2</td>
             <td>1.9</td>
@@ -363,8 +419,22 @@
             <td>99.1</td>
             <td>0</td>
             <td>20.8</td>
+            <td><img src="./before/WFIN_Lb_2015_MKDN250005652-1A_22NGTNLT4_L4.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2015_MKDN250005652-1A_22NGTNLT4_L4.base.png" /></td>
 
+                     <td>582.1</td>
+            <td>85.5</td>
+            <td>380.1</td>
+            <td>146</td>
+            <td>40.3</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Lb_2015_MKDN250005652-1A_22NGTNLT4_L4.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2015_MKDN250005652-1A_22NGTNLT4_L4.base.png" /></td>
 
+            <td>WFIN_Lb_2015_MKDN250005652-1A_22NGTNLT4_L4.fq.gz<br>WFIN_Lb_2015_MKDN250005652-1A_22MVYCLT4_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -375,15 +445,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>80</td>
-
-            <td>300.1</td>
-            <td>35.9</td>
-            <td>159.4</td>
-            <td>119</td>
-            <td>34.4</td>
-            <td>99.6</td>
-
+            <td>80</td>   
 
             <td>358.5</td>
             <td>16.3</td>
@@ -395,8 +457,23 @@
             <td>97.4</td>
             <td>0</td>
             <td>23.5</td>
+            <td><img src="./before/SFIN_Ea_2016_MKDN250005655-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2016_MKDN250005655-1A_22MWJVLT4_L3.base.png" /></td>
 
+                     <td>300.1</td>
+            <td>35.9</td>
+            <td>159.4</td>
+            <td>119</td>
+            <td>34.4</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_Ea_2016_MKDN250005655-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2016_MKDN250005655-1A_22MWJVLT4_L3.base.png" /></td>
 
+            <td>SFIN_Ea_2016_MKDN250005655-1A_22MWJVLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+8%	89706	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -407,15 +484,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>79</td>
-
-            <td>336.6</td>
-            <td>40.2</td>
-            <td>178.7</td>
-            <td>119</td>
-            <td>34.5</td>
-            <td>99.6</td>
-
+            <td>79</td>   
 
             <td>406.0</td>
             <td>17.1</td>
@@ -427,8 +496,24 @@
             <td>97.3</td>
             <td>0</td>
             <td>25.3</td>
+            <td><img src="./before/SFIN_Eb_2016_MKDN250005656-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2016_MKDN250005656-1A_22MWJVLT4_L3.base.png" /></td>
 
+                     <td>336.6</td>
+            <td>40.2</td>
+            <td>178.7</td>
+            <td>119</td>
+            <td>34.5</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_Eb_2016_MKDN250005656-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2016_MKDN250005656-1A_22MWJVLT4_L3.base.png" /></td>
 
+            <td>SFIN_Eb_2016_MKDN250005656-1A_22MWJVLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+1%	16088	GATCGGAAGAGCACACGTCTGAACTCCAGTCACCACCAGTTATCTGGTGTGGGGTCTTTTTTTTTGGAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+10%	105537	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -439,15 +524,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>13</td>
-
-            <td>491.6</td>
-            <td>72.7</td>
-            <td>323.2</td>
-            <td>147</td>
-            <td>55.1</td>
-            <td>99.6</td>
-
+            <td>13</td>   
 
             <td>505.3</td>
             <td>2.7</td>
@@ -459,8 +536,23 @@
             <td>99.1</td>
             <td>0</td>
             <td>20.9</td>
+            <td><img src="./before/SFIN_La_2016_MKDN250005657-1A_22NGTNLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2016_MKDN250005657-1A_22NGTNLT4_L3.base.png" /></td>
 
+                     <td>491.6</td>
+            <td>72.7</td>
+            <td>323.2</td>
+            <td>147</td>
+            <td>55.1</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_La_2016_MKDN250005657-1A_22NGTNLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2016_MKDN250005657-1A_22NGTNLT4_L3.base.png" /></td>
 
+            <td>SFIN_La_2016_MKDN250005657-1A_22NGTNLT4_L3.fq.gz<br>SFIN_La_2016_MKDN250005657-1A_22MVYCLT4_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+1%	14268	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -471,15 +563,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>25</td>
-
-            <td>309.3</td>
-            <td>33.1</td>
-            <td>147.0</td>
-            <td>106</td>
-            <td>34.7</td>
-            <td>99.7</td>
-
+            <td>25</td>   
 
             <td>391.7</td>
             <td>21.0</td>
@@ -491,8 +575,24 @@
             <td>96.2</td>
             <td>0</td>
             <td>25.1</td>
+            <td><img src="./before/WFIN_Ea_2017_MKDN250005663-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2017_MKDN250005663-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>309.3</td>
+            <td>33.1</td>
+            <td>147.0</td>
+            <td>106</td>
+            <td>34.7</td>
+            <td>99.7</td>
+            <td><img src="./after/WFIN_Ea_2017_MKDN250005663-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2017_MKDN250005663-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>WFIN_Ea_2017_MKDN250005663-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+1%	11138	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGATGTCGAATCTGGGGGGGGGGGTTTTTTTTTGGGAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+19%	196910	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -503,15 +603,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>59</td>
-
-            <td>378.6</td>
-            <td>38.8</td>
-            <td>172.5</td>
-            <td>102</td>
-            <td>34.6</td>
-            <td>99.5</td>
-
+            <td>59</td>   
 
             <td>420.6</td>
             <td>10.0</td>
@@ -523,8 +615,23 @@
             <td>95.6</td>
             <td>0</td>
             <td>10.6</td>
+            <td><img src="./before/WFIN_Eb_2017_MKDN250005664-1A_22MW7LLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2017_MKDN250005664-1A_22MW7LLT4_L2.base.png" /></td>
 
+                     <td>378.6</td>
+            <td>38.8</td>
+            <td>172.5</td>
+            <td>102</td>
+            <td>34.6</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Eb_2017_MKDN250005664-1A_22MW7LLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2017_MKDN250005664-1A_22MW7LLT4_L2.base.png" /></td>
 
+            <td>WFIN_Eb_2017_MKDN250005664-1A_22MW7LLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+5%	53492	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -535,15 +642,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>a</td>
-            <td>36</td>
-
-            <td>269.4</td>
-            <td>26.4</td>
-            <td>117.3</td>
-            <td>97</td>
-            <td>34.9</td>
-            <td>99.6</td>
-
+            <td>36</td>   
 
             <td>426.7</td>
             <td>36.9</td>
@@ -555,8 +654,27 @@
             <td>94.7</td>
             <td>0</td>
             <td>34.1</td>
+            <td><img src="./before/NFIN_La_2017_MKDN250005671-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./before/NFIN_La_2017_MKDN250005671-1A_22MWTMLT4_L1.base.png" /></td>
 
+                     <td>269.4</td>
+            <td>26.4</td>
+            <td>117.3</td>
+            <td>97</td>
+            <td>34.9</td>
+            <td>99.6</td>
+            <td><img src="./after/NFIN_La_2017_MKDN250005671-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./after/NFIN_La_2017_MKDN250005671-1A_22MWTMLT4_L1.base.png" /></td>
 
+            <td>NFIN_La_2017_MKDN250005671-1A_22MWTMLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+4%	41180	GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGCCTAGATCTGGGGGGGGGGGTTTTTTTTTGGAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+3%	36459	GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGCCTAGATCTGGGGTGGGGGGTTTTTTTTTGGAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+3%	35803	GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGCCTAGATCTGGGGGGGGGGGTTTTTTTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+2%	22243	GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGCCTAGATCTGGGGTGGGGGGTTTTTTTTTGAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+31%	314598	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -567,15 +685,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>b</td>
-            <td>63</td>
-
-            <td>395.3</td>
-            <td>41.6</td>
-            <td>184.9</td>
-            <td>105</td>
-            <td>34.5</td>
-            <td>99.7</td>
-
+            <td>63</td>   
 
             <td>487.2</td>
             <td>18.9</td>
@@ -587,8 +697,24 @@
             <td>97.1</td>
             <td>0</td>
             <td>24.3</td>
+            <td><img src="./before/NFIN_Lb_2017_MKDN250005672-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/NFIN_Lb_2017_MKDN250005672-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>395.3</td>
+            <td>41.6</td>
+            <td>184.9</td>
+            <td>105</td>
+            <td>34.5</td>
+            <td>99.7</td>
+            <td><img src="./after/NFIN_Lb_2017_MKDN250005672-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/NFIN_Lb_2017_MKDN250005672-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>NFIN_Lb_2017_MKDN250005672-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+1%	12315	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCTATGTATCTGGTGGGGGGTGTTTTTTTTTGAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+16%	164289	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -599,15 +725,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>34</td>
-
-            <td>166.1</td>
-            <td>16.9</td>
-            <td>74.9</td>
-            <td>101</td>
-            <td>34.5</td>
-            <td>99.4</td>
-
+            <td>34</td>   
 
             <td>307.9</td>
             <td>46.1</td>
@@ -619,8 +737,28 @@
             <td>94.5</td>
             <td>0</td>
             <td>43.2</td>
+            <td><img src="./before/SFIN_Lb_2017_MKDN250005670-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2017_MKDN250005670-1A_22MWTMLT4_L1.base.png" /></td>
 
+                     <td>166.1</td>
+            <td>16.9</td>
+            <td>74.9</td>
+            <td>101</td>
+            <td>34.5</td>
+            <td>99.4</td>
+            <td><img src="./after/SFIN_Lb_2017_MKDN250005670-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2017_MKDN250005670-1A_22MWTMLT4_L1.base.png" /></td>
 
+            <td>SFIN_Lb_2017_MKDN250005670-1A_22MWTMLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+5%	50902	GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAACTCCAATCTGGGGGGGGGGGTTTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+3%	31660	GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAACTCCAATCTGGGGGGGGGGGTTTTTTTTTGGGGAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+2%	29551	GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAACTCCAATCTGGGGGGGGGGGTTTTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+2%	23242	GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAACTCCAATCTGGGGGGGGGTTTTTTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+1%	14569	GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAACTCCAATCTGGGGGGGGGGGTTTTTTTTTTGGGAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+41%	415316	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -631,15 +769,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>100</td>
-
-            <td>419.5</td>
-            <td>50.4</td>
-            <td>223.9</td>
-            <td>120</td>
-            <td>35.7</td>
-            <td>99.6</td>
-
+            <td>100</td>   
 
             <td>452.7</td>
             <td>7.3</td>
@@ -651,8 +781,23 @@
             <td>97.8</td>
             <td>0</td>
             <td>18.6</td>
+            <td><img src="./before/WFIN_La_2017_MKDN250005665-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2017_MKDN250005665-1A_22MWJVLT4_L3.base.png" /></td>
 
+                     <td>419.5</td>
+            <td>50.4</td>
+            <td>223.9</td>
+            <td>120</td>
+            <td>35.7</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_La_2017_MKDN250005665-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2017_MKDN250005665-1A_22MWJVLT4_L3.base.png" /></td>
 
+            <td>WFIN_La_2017_MKDN250005665-1A_22MWJVLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+3%	38809	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -663,15 +808,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>108</td>
-
-            <td>416.2</td>
-            <td>49.3</td>
-            <td>219.2</td>
-            <td>118</td>
-            <td>36.3</td>
-            <td>99.6</td>
-
+            <td>108</td>   
 
             <td>462.7</td>
             <td>10.1</td>
@@ -683,8 +820,23 @@
             <td>97.5</td>
             <td>0</td>
             <td>19.9</td>
+            <td><img src="./before/WFIN_Lb_2017_MKDN250005666-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2017_MKDN250005666-1A_22MWJVLT4_L3.base.png" /></td>
 
+                     <td>416.2</td>
+            <td>49.3</td>
+            <td>219.2</td>
+            <td>118</td>
+            <td>36.3</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Lb_2017_MKDN250005666-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2017_MKDN250005666-1A_22MWJVLT4_L3.base.png" /></td>
 
+            <td>WFIN_Lb_2017_MKDN250005666-1A_22MWJVLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+5%	57458	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -695,15 +847,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>108</td>
-
-            <td>406.4</td>
-            <td>47.8</td>
-            <td>212.5</td>
-            <td>117</td>
-            <td>34.0</td>
-            <td>99.6</td>
-
+            <td>108</td>   
 
             <td>452.2</td>
             <td>10.1</td>
@@ -715,8 +859,25 @@
             <td>97.7</td>
             <td>0</td>
             <td>21.7</td>
+            <td><img src="./before/SFIN_Ea_2018_MKDN250005679-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2018_MKDN250005679-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>406.4</td>
+            <td>47.8</td>
+            <td>212.5</td>
+            <td>117</td>
+            <td>34.0</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_Ea_2018_MKDN250005679-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2018_MKDN250005679-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>SFIN_Ea_2018_MKDN250005679-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+2%	29273	GATCGGAAGAGCACACGTCTGAACTCCAGTCACACCTAGACATCTGGTGTGGCGTCTTCTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+1%	11821	GATCGGAAGAGCACACGTCTGAACTCCAGTCACACCTAGACATCTGGTGTGGCGTCTTTTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+8%	88761	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -727,15 +888,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>67</td>
-
-            <td>340.6</td>
-            <td>39.8</td>
-            <td>177.0</td>
-            <td>116</td>
-            <td>33.9</td>
-            <td>99.7</td>
-
+            <td>67</td>   
 
             <td>402.7</td>
             <td>15.4</td>
@@ -747,8 +900,26 @@
             <td>97.6</td>
             <td>0</td>
             <td>24.9</td>
+            <td><img src="./before/SFIN_Eb_2018_MKDN250005680-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2018_MKDN250005680-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>340.6</td>
+            <td>39.8</td>
+            <td>177.0</td>
+            <td>116</td>
+            <td>33.9</td>
+            <td>99.7</td>
+            <td><img src="./after/SFIN_Eb_2018_MKDN250005680-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2018_MKDN250005680-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>SFIN_Eb_2018_MKDN250005680-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+2%	29194	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACGAAGATCTGGTGTGGCGTCTTCTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+2%	24255	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACGAAGATCTGGGGTGGCGTCTTTTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+1%	13555	GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAACGAAGATCTGGGGTGGCGTCTTCTTCTTTGAAAAAGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+14%	149077	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -759,15 +930,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>227</td>
-
-            <td>452.3</td>
-            <td>67.1</td>
-            <td>298.2</td>
-            <td>148</td>
-            <td>35.7</td>
-            <td>97.1</td>
-
+            <td>227</td>   
 
             <td>458.3</td>
             <td>1.3</td>
@@ -779,8 +942,22 @@
             <td>96.5</td>
             <td>269</td>
             <td>9.7</td>
+            <td><img src="./before/WFIN_Ea_2018_MKDN250005673-1A_22MVYCLT4_L6.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2018_MKDN250005673-1A_22MVYCLT4_L6.base.png" /></td>
 
+                     <td>452.3</td>
+            <td>67.1</td>
+            <td>298.2</td>
+            <td>148</td>
+            <td>35.7</td>
+            <td>97.1</td>
+            <td><img src="./after/WFIN_Ea_2018_MKDN250005673-1A_22MVYCLT4_L6.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2018_MKDN250005673-1A_22MVYCLT4_L6.base.png" /></td>
 
+            <td>WFIN_Ea_2018_MKDN250005673-1A_22MVYCLT4_L6.fq.gz<br>WFIN_Ea_2018_MKDN250005673-1A_22NGTNLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -791,15 +968,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>231</td>
-
-            <td>523.3</td>
-            <td>77.6</td>
-            <td>344.9</td>
-            <td>148</td>
-            <td>35.8</td>
-            <td>97.2</td>
-
+            <td>231</td>   
 
             <td>529.2</td>
             <td>1.1</td>
@@ -811,8 +980,22 @@
             <td>96.7</td>
             <td>269</td>
             <td>8.9</td>
+            <td><img src="./before/WFIN_Eb_2018_MKDN250005674-1A_22MVYCLT4_L6.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2018_MKDN250005674-1A_22MVYCLT4_L6.base.png" /></td>
 
+                     <td>523.3</td>
+            <td>77.6</td>
+            <td>344.9</td>
+            <td>148</td>
+            <td>35.8</td>
+            <td>97.2</td>
+            <td><img src="./after/WFIN_Eb_2018_MKDN250005674-1A_22MVYCLT4_L6.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2018_MKDN250005674-1A_22MVYCLT4_L6.base.png" /></td>
 
+            <td>WFIN_Eb_2018_MKDN250005674-1A_22MVYCLT4_L6.fq.gz<br>WFIN_Eb_2018_MKDN250005674-1A_22NGTNLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -823,15 +1006,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>56</td>
-
-            <td>370.2</td>
-            <td>41.4</td>
-            <td>184.0</td>
-            <td>111</td>
-            <td>33.9</td>
-            <td>99.7</td>
-
+            <td>56</td>   
 
             <td>396.8</td>
             <td>6.7</td>
@@ -843,8 +1018,23 @@
             <td>97.4</td>
             <td>0</td>
             <td>15.9</td>
+            <td><img src="./before/SFIN_La_2018_MKDN250005677-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2018_MKDN250005677-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>370.2</td>
+            <td>41.4</td>
+            <td>184.0</td>
+            <td>111</td>
+            <td>33.9</td>
+            <td>99.7</td>
+            <td><img src="./after/SFIN_La_2018_MKDN250005677-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2018_MKDN250005677-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>SFIN_La_2018_MKDN250005677-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+3%	39838	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -855,15 +1045,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>72</td>
-
-            <td>430.6</td>
-            <td>47.2</td>
-            <td>209.8</td>
-            <td>109</td>
-            <td>34.0</td>
-            <td>99.7</td>
-
+            <td>72</td>   
 
             <td>465.0</td>
             <td>7.4</td>
@@ -875,8 +1057,23 @@
             <td>97.7</td>
             <td>0</td>
             <td>16.1</td>
+            <td><img src="./before/SFIN_Lb_2018_MKDN250005678-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2018_MKDN250005678-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>430.6</td>
+            <td>47.2</td>
+            <td>209.8</td>
+            <td>109</td>
+            <td>34.0</td>
+            <td>99.7</td>
+            <td><img src="./after/SFIN_Lb_2018_MKDN250005678-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2018_MKDN250005678-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>SFIN_Lb_2018_MKDN250005678-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+3%	39330	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -887,15 +1084,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>145</td>
-
-            <td>416.2</td>
-            <td>46.0</td>
-            <td>204.7</td>
-            <td>110</td>
-            <td>39.3</td>
-            <td>99.6</td>
-
+            <td>145</td>   
 
             <td>447.5</td>
             <td>7.0</td>
@@ -907,8 +1096,23 @@
             <td>97.0</td>
             <td>0</td>
             <td>14.2</td>
+            <td><img src="./before/WFIN_La_2018_MKDN250005675-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2018_MKDN250005675-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>416.2</td>
+            <td>46.0</td>
+            <td>204.7</td>
+            <td>110</td>
+            <td>39.3</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_La_2018_MKDN250005675-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2018_MKDN250005675-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>WFIN_La_2018_MKDN250005675-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+3%	30358	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -919,15 +1123,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>131</td>
-
-            <td>393.3</td>
-            <td>43.7</td>
-            <td>194.2</td>
-            <td>111</td>
-            <td>39.0</td>
-            <td>99.7</td>
-
+            <td>131</td>   
 
             <td>419.2</td>
             <td>6.2</td>
@@ -939,8 +1135,23 @@
             <td>97.7</td>
             <td>0</td>
             <td>14.6</td>
+            <td><img src="./before/WFIN_Lb_2018_MKDN250005676-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2018_MKDN250005676-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>393.3</td>
+            <td>43.7</td>
+            <td>194.2</td>
+            <td>111</td>
+            <td>39.0</td>
+            <td>99.7</td>
+            <td><img src="./after/WFIN_Lb_2018_MKDN250005676-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2018_MKDN250005676-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>WFIN_Lb_2018_MKDN250005676-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+2%	22687	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -951,15 +1162,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>a</td>
-            <td>37</td>
-
-            <td>629.8</td>
-            <td>87.1</td>
-            <td>387.1</td>
-            <td>138</td>
-            <td>35.1</td>
-            <td>99.6</td>
-
+            <td>37</td>   
 
             <td>639.7</td>
             <td>1.5</td>
@@ -971,8 +1174,20 @@
             <td>98.7</td>
             <td>159</td>
             <td>12.4</td>
+            <td><img src="./before/NFIN_Ea_2019_MKDN250005681-1A_22TTYHLT4_L2.qual.png" /></td>
+            <td><img src="./before/NFIN_Ea_2019_MKDN250005681-1A_22TTYHLT4_L2.base.png" /></td>
 
+                     <td>629.8</td>
+            <td>87.1</td>
+            <td>387.1</td>
+            <td>138</td>
+            <td>35.1</td>
+            <td>99.6</td>
+            <td><img src="./after/NFIN_Ea_2019_MKDN250005681-1A_22TTYHLT4_L2.qual.png" /></td>
+            <td><img src="./after/NFIN_Ea_2019_MKDN250005681-1A_22TTYHLT4_L2.base.png" /></td>
 
+            <td>NFIN_Ea_2019_MKDN250005681-1A_22TTYHLT4_L2.fq.gz<br>NFIN_Ea_2019_MKDN250005681-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre></pre></td>
 
         </tr>
     
@@ -983,15 +1198,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>b</td>
-            <td>32</td>
-
-            <td>683.4</td>
-            <td>94.5</td>
-            <td>419.9</td>
-            <td>138</td>
-            <td>35.2</td>
-            <td>99.5</td>
-
+            <td>32</td>   
 
             <td>703.7</td>
             <td>2.9</td>
@@ -1003,8 +1210,20 @@
             <td>98.5</td>
             <td>0</td>
             <td>14.1</td>
+            <td><img src="./before/NFIN_Eb_2019_MKDN250005682-1A_22TTYHLT4_L8.qual.png" /></td>
+            <td><img src="./before/NFIN_Eb_2019_MKDN250005682-1A_22TTYHLT4_L8.base.png" /></td>
 
+                     <td>683.4</td>
+            <td>94.5</td>
+            <td>419.9</td>
+            <td>138</td>
+            <td>35.2</td>
+            <td>99.5</td>
+            <td><img src="./after/NFIN_Eb_2019_MKDN250005682-1A_22TTYHLT4_L8.qual.png" /></td>
+            <td><img src="./after/NFIN_Eb_2019_MKDN250005682-1A_22TTYHLT4_L8.base.png" /></td>
 
+            <td>NFIN_Eb_2019_MKDN250005682-1A_22TTYHLT4_L8.fq.gz<br>NFIN_Eb_2019_MKDN250005682-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre></pre></td>
 
         </tr>
     
@@ -1015,15 +1234,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>266</td>
-
-            <td>446.2</td>
-            <td>66.1</td>
-            <td>294.0</td>
-            <td>148</td>
-            <td>35.0</td>
-            <td>99.5</td>
-
+            <td>266</td>   
 
             <td>464.6</td>
             <td>4.0</td>
@@ -1035,8 +1246,23 @@
             <td>98.8</td>
             <td>0</td>
             <td>22.2</td>
+            <td><img src="./before/SFIN_Ea_2019_MKDN250005683-1A_22TTYTLT4_L5.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2019_MKDN250005683-1A_22TTYTLT4_L5.base.png" /></td>
 
+                     <td>446.2</td>
+            <td>66.1</td>
+            <td>294.0</td>
+            <td>148</td>
+            <td>35.0</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Ea_2019_MKDN250005683-1A_22TTYTLT4_L5.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2019_MKDN250005683-1A_22TTYTLT4_L5.base.png" /></td>
 
+            <td>SFIN_Ea_2019_MKDN250005683-1A_22TTYTLT4_L5.fq.gz<br>SFIN_Ea_2019_MKDN250005683-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+2%	22398	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1047,15 +1273,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>228</td>
-
-            <td>506.5</td>
-            <td>75.0</td>
-            <td>333.5</td>
-            <td>148</td>
-            <td>35.0</td>
-            <td>99.5</td>
-
+            <td>228</td>   
 
             <td>515.1</td>
             <td>1.7</td>
@@ -1067,8 +1285,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>22.1</td>
+            <td><img src="./before/SFIN_Eb_2019_MKDN250005684-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2019_MKDN250005684-1A_22TTYTLT4_L4.base.png" /></td>
 
+                     <td>506.5</td>
+            <td>75.0</td>
+            <td>333.5</td>
+            <td>148</td>
+            <td>35.0</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Eb_2019_MKDN250005684-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2019_MKDN250005684-1A_22TTYTLT4_L4.base.png" /></td>
 
+            <td>SFIN_Eb_2019_MKDN250005684-1A_22TTYTLT4_L4.fq.gz<br>SFIN_Eb_2019_MKDN250005684-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1079,15 +1311,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>341</td>
-
-            <td>380.7</td>
-            <td>56.5</td>
-            <td>251.1</td>
-            <td>148</td>
-            <td>35.5</td>
-            <td>99.5</td>
-
+            <td>341</td>   
 
             <td>390.6</td>
             <td>2.5</td>
@@ -1099,8 +1323,23 @@
             <td>99.0</td>
             <td>0</td>
             <td>21.8</td>
+            <td><img src="./before/WFIN_Ea_2019_MKDN250005687-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2019_MKDN250005687-1A_22TTYTLT4_L2.base.png" /></td>
 
+                     <td>380.7</td>
+            <td>56.5</td>
+            <td>251.1</td>
+            <td>148</td>
+            <td>35.5</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Ea_2019_MKDN250005687-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2019_MKDN250005687-1A_22TTYTLT4_L2.base.png" /></td>
 
+            <td>WFIN_Ea_2019_MKDN250005687-1A_22TTYTLT4_L2.fq.gz<br>WFIN_Ea_2019_MKDN250005687-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+1%	10153	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1111,15 +1350,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>300</td>
-
-            <td>437.2</td>
-            <td>64.9</td>
-            <td>288.3</td>
-            <td>148</td>
-            <td>35.5</td>
-            <td>99.5</td>
-
+            <td>300</td>   
 
             <td>445.8</td>
             <td>1.9</td>
@@ -1131,8 +1362,22 @@
             <td>99.1</td>
             <td>0</td>
             <td>21.2</td>
+            <td><img src="./before/WFIN_Eb_2019_MKDN250005688-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2019_MKDN250005688-1A_22TTYTLT4_L2.base.png" /></td>
 
+                     <td>437.2</td>
+            <td>64.9</td>
+            <td>288.3</td>
+            <td>148</td>
+            <td>35.5</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Eb_2019_MKDN250005688-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2019_MKDN250005688-1A_22TTYTLT4_L2.base.png" /></td>
 
+            <td>WFIN_Eb_2019_MKDN250005688-1A_22TTYTLT4_L2.fq.gz<br>WFIN_Eb_2019_MKDN250005688-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1143,15 +1388,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>218</td>
-
-            <td>364.8</td>
-            <td>54.0</td>
-            <td>240.0</td>
-            <td>148</td>
-            <td>35.6</td>
-            <td>99.5</td>
-
+            <td>218</td>   
 
             <td>370.0</td>
             <td>1.4</td>
@@ -1163,8 +1400,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>20.7</td>
+            <td><img src="./before/SFIN_La_2019_MKDN250005685-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2019_MKDN250005685-1A_22TTYTLT4_L2.base.png" /></td>
 
+                     <td>364.8</td>
+            <td>54.0</td>
+            <td>240.0</td>
+            <td>148</td>
+            <td>35.6</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_La_2019_MKDN250005685-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2019_MKDN250005685-1A_22TTYTLT4_L2.base.png" /></td>
 
+            <td>SFIN_La_2019_MKDN250005685-1A_22TTYTLT4_L2.fq.gz<br>SFIN_La_2019_MKDN250005685-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1175,15 +1426,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>214</td>
-
-            <td>416.3</td>
-            <td>61.7</td>
-            <td>274.3</td>
-            <td>148</td>
-            <td>35.6</td>
-            <td>97.2</td>
-
+            <td>214</td>   
 
             <td>424.7</td>
             <td>2.0</td>
@@ -1195,8 +1438,22 @@
             <td>96.6</td>
             <td>0</td>
             <td>7.6</td>
+            <td><img src="./before/SFIN_Lb_2019_MKDN250005686-1A_22MVYCLT4_L5.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2019_MKDN250005686-1A_22MVYCLT4_L5.base.png" /></td>
 
+                     <td>416.3</td>
+            <td>61.7</td>
+            <td>274.3</td>
+            <td>148</td>
+            <td>35.6</td>
+            <td>97.2</td>
+            <td><img src="./after/SFIN_Lb_2019_MKDN250005686-1A_22MVYCLT4_L5.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2019_MKDN250005686-1A_22MVYCLT4_L5.base.png" /></td>
 
+            <td>SFIN_Lb_2019_MKDN250005686-1A_22MVYCLT4_L5.fq.gz<br>SFIN_Lb_2019_MKDN250005686-1A_22TTYTLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1207,15 +1464,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>58</td>
-
-            <td>192.9</td>
-            <td>23.6</td>
-            <td>104.7</td>
-            <td>122</td>
-            <td>34.6</td>
-            <td>99.7</td>
-
+            <td>58</td>   
 
             <td>213.2</td>
             <td>9.5</td>
@@ -1227,8 +1476,23 @@
             <td>97.6</td>
             <td>0</td>
             <td>19.7</td>
+            <td><img src="./before/WFIN_La_2019_MKDN250005689-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2019_MKDN250005689-1A_22MWTMLT4_L1.base.png" /></td>
 
+                     <td>192.9</td>
+            <td>23.6</td>
+            <td>104.7</td>
+            <td>122</td>
+            <td>34.6</td>
+            <td>99.7</td>
+            <td><img src="./after/WFIN_La_2019_MKDN250005689-1A_22MWTMLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2019_MKDN250005689-1A_22MWTMLT4_L1.base.png" /></td>
 
+            <td>WFIN_La_2019_MKDN250005689-1A_22MWTMLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+7%	77313	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1239,15 +1503,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>141</td>
-
-            <td>487.0</td>
-            <td>58.1</td>
-            <td>258.4</td>
-            <td>119</td>
-            <td>34.4</td>
-            <td>99.6</td>
-
+            <td>141</td>   
 
             <td>521.3</td>
             <td>6.6</td>
@@ -1259,8 +1515,23 @@
             <td>97.7</td>
             <td>0</td>
             <td>20.2</td>
+            <td><img src="./before/WFIN_Lb_2019_MKDN250005690-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2019_MKDN250005690-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>487.0</td>
+            <td>58.1</td>
+            <td>258.4</td>
+            <td>119</td>
+            <td>34.4</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Lb_2019_MKDN250005690-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2019_MKDN250005690-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>WFIN_Lb_2019_MKDN250005690-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+4%	44697	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1271,15 +1542,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>256</td>
-
-            <td>435.8</td>
-            <td>64.4</td>
-            <td>286.1</td>
-            <td>147</td>
-            <td>35.5</td>
-            <td>99.5</td>
-
+            <td>256</td>   
 
             <td>443.0</td>
             <td>1.6</td>
@@ -1291,8 +1554,22 @@
             <td>99.0</td>
             <td>0</td>
             <td>21.6</td>
+            <td><img src="./before/SFIN_Ea_2020_MKDN250005691-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2020_MKDN250005691-1A_22TTYTLT4_L2.base.png" /></td>
 
+                     <td>435.8</td>
+            <td>64.4</td>
+            <td>286.1</td>
+            <td>147</td>
+            <td>35.5</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Ea_2020_MKDN250005691-1A_22TTYTLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2020_MKDN250005691-1A_22TTYTLT4_L2.base.png" /></td>
 
+            <td>SFIN_Ea_2020_MKDN250005691-1A_22TTYTLT4_L2.fq.gz<br>SFIN_Ea_2020_MKDN250005691-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1303,15 +1580,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>271</td>
-
-            <td>527.1</td>
-            <td>77.9</td>
-            <td>346.3</td>
-            <td>147</td>
-            <td>35.5</td>
-            <td>99.5</td>
-
+            <td>271</td>   
 
             <td>536.4</td>
             <td>1.7</td>
@@ -1323,8 +1592,22 @@
             <td>99.0</td>
             <td>0</td>
             <td>24.1</td>
+            <td><img src="./before/SFIN_Eb_2020_MKDN250005692-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2020_MKDN250005692-1A_22TTYTLT4_L3.base.png" /></td>
 
+                     <td>527.1</td>
+            <td>77.9</td>
+            <td>346.3</td>
+            <td>147</td>
+            <td>35.5</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Eb_2020_MKDN250005692-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2020_MKDN250005692-1A_22TTYTLT4_L3.base.png" /></td>
 
+            <td>SFIN_Eb_2020_MKDN250005692-1A_22TTYTLT4_L3.fq.gz<br>SFIN_Eb_2020_MKDN250005692-1A_22MVYCLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1335,15 +1618,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>123</td>
-
-            <td>440.3</td>
-            <td>49.6</td>
-            <td>220.4</td>
-            <td>112</td>
-            <td>33.7</td>
-            <td>99.7</td>
-
+            <td>123</td>   
 
             <td>466.6</td>
             <td>5.6</td>
@@ -1355,8 +1630,23 @@
             <td>97.3</td>
             <td>0</td>
             <td>15.6</td>
+            <td><img src="./before/WFIN_Ea_2020_MKDN250005695-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2020_MKDN250005695-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>440.3</td>
+            <td>49.6</td>
+            <td>220.4</td>
+            <td>112</td>
+            <td>33.7</td>
+            <td>99.7</td>
+            <td><img src="./after/WFIN_Ea_2020_MKDN250005695-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2020_MKDN250005695-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>WFIN_Ea_2020_MKDN250005695-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+3%	32997	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1367,15 +1657,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>129</td>
-
-            <td>401.0</td>
-            <td>46.1</td>
-            <td>204.8</td>
-            <td>114</td>
-            <td>33.7</td>
-            <td>99.6</td>
-
+            <td>129</td>   
 
             <td>425.7</td>
             <td>5.8</td>
@@ -1387,8 +1669,23 @@
             <td>97.6</td>
             <td>0</td>
             <td>17.1</td>
+            <td><img src="./before/WFIN_Eb_2020_MKDN250005696-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2020_MKDN250005696-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>401.0</td>
+            <td>46.1</td>
+            <td>204.8</td>
+            <td>114</td>
+            <td>33.7</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Eb_2020_MKDN250005696-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2020_MKDN250005696-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>WFIN_Eb_2020_MKDN250005696-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+4%	40807	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1399,15 +1696,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>217</td>
-
-            <td>412.4</td>
-            <td>50.8</td>
-            <td>225.7</td>
-            <td>123</td>
-            <td>33.9</td>
-            <td>99.6</td>
-
+            <td>217</td>   
 
             <td>426.8</td>
             <td>3.4</td>
@@ -1419,8 +1708,23 @@
             <td>98.1</td>
             <td>0</td>
             <td>19.5</td>
+            <td><img src="./before/SFIN_La_2020_MKDN250005693-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2020_MKDN250005693-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>412.4</td>
+            <td>50.8</td>
+            <td>225.7</td>
+            <td>123</td>
+            <td>33.9</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_La_2020_MKDN250005693-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2020_MKDN250005693-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>SFIN_La_2020_MKDN250005693-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+1%	17060	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1431,15 +1735,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>261</td>
-
-            <td>392.5</td>
-            <td>47.8</td>
-            <td>212.3</td>
-            <td>121</td>
-            <td>33.9</td>
-            <td>99.6</td>
-
+            <td>261</td>   
 
             <td>409.1</td>
             <td>4.1</td>
@@ -1451,8 +1747,23 @@
             <td>97.7</td>
             <td>0</td>
             <td>16.8</td>
+            <td><img src="./before/SFIN_Lb_2020_MKDN250005694-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2020_MKDN250005694-1A_22MWJVLT4_L3.base.png" /></td>
 
+                     <td>392.5</td>
+            <td>47.8</td>
+            <td>212.3</td>
+            <td>121</td>
+            <td>33.9</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_Lb_2020_MKDN250005694-1A_22MWJVLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2020_MKDN250005694-1A_22MWJVLT4_L3.base.png" /></td>
 
+            <td>SFIN_Lb_2020_MKDN250005694-1A_22MWJVLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+1%	12825	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1463,15 +1774,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>105</td>
-
-            <td>376.7</td>
-            <td>40.4</td>
-            <td>179.6</td>
-            <td>107</td>
-            <td>33.0</td>
-            <td>99.7</td>
-
+            <td>105</td>   
 
             <td>425.9</td>
             <td>11.5</td>
@@ -1483,8 +1786,23 @@
             <td>97.2</td>
             <td>0</td>
             <td>19.6</td>
+            <td><img src="./before/WFIN_La_2020_MKDN250005697-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2020_MKDN250005697-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>376.7</td>
+            <td>40.4</td>
+            <td>179.6</td>
+            <td>107</td>
+            <td>33.0</td>
+            <td>99.7</td>
+            <td><img src="./after/WFIN_La_2020_MKDN250005697-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2020_MKDN250005697-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>WFIN_La_2020_MKDN250005697-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+9%	90182	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1495,15 +1813,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>87</td>
-
-            <td>371.7</td>
-            <td>41.2</td>
-            <td>183.0</td>
-            <td>110</td>
-            <td>33.0</td>
-            <td>99.7</td>
-
+            <td>87</td>   
 
             <td>414.9</td>
             <td>10.4</td>
@@ -1515,8 +1825,23 @@
             <td>97.2</td>
             <td>0</td>
             <td>19.8</td>
+            <td><img src="./before/WFIN_Lb_2020_MKDN250005698-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2020_MKDN250005698-1A_22MWJVLT4_L1.base.png" /></td>
 
+                     <td>371.7</td>
+            <td>41.2</td>
+            <td>183.0</td>
+            <td>110</td>
+            <td>33.0</td>
+            <td>99.7</td>
+            <td><img src="./after/WFIN_Lb_2020_MKDN250005698-1A_22MWJVLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2020_MKDN250005698-1A_22MWJVLT4_L1.base.png" /></td>
 
+            <td>WFIN_Lb_2020_MKDN250005698-1A_22MWJVLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+8%	85507	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1527,15 +1852,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>154</td>
-
-            <td>350.8</td>
-            <td>40.1</td>
-            <td>178.3</td>
-            <td>114</td>
-            <td>33.6</td>
-            <td>99.7</td>
-
+            <td>154</td>   
 
             <td>378.3</td>
             <td>7.3</td>
@@ -1547,8 +1864,23 @@
             <td>97.3</td>
             <td>0</td>
             <td>16.6</td>
+            <td><img src="./before/SFIN_Ea_2021_MKDN250005703-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2021_MKDN250005703-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>350.8</td>
+            <td>40.1</td>
+            <td>178.3</td>
+            <td>114</td>
+            <td>33.6</td>
+            <td>99.7</td>
+            <td><img src="./after/SFIN_Ea_2021_MKDN250005703-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2021_MKDN250005703-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>SFIN_Ea_2021_MKDN250005703-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+4%	48310	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1559,15 +1891,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>143</td>
-
-            <td>393.8</td>
-            <td>46.3</td>
-            <td>205.7</td>
-            <td>117</td>
-            <td>33.7</td>
-            <td>99.6</td>
-
+            <td>143</td>   
 
             <td>419.6</td>
             <td>6.1</td>
@@ -1579,8 +1903,23 @@
             <td>97.7</td>
             <td>0</td>
             <td>17.6</td>
+            <td><img src="./before/SFIN_Eb_2021_MKDN250005704-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2021_MKDN250005704-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>393.8</td>
+            <td>46.3</td>
+            <td>205.7</td>
+            <td>117</td>
+            <td>33.7</td>
+            <td>99.6</td>
+            <td><img src="./after/SFIN_Eb_2021_MKDN250005704-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2021_MKDN250005704-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>SFIN_Eb_2021_MKDN250005704-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+4%	42274	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1591,15 +1930,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>196</td>
-
-            <td>493.9</td>
-            <td>72.7</td>
-            <td>323.1</td>
-            <td>146</td>
-            <td>34.7</td>
-            <td>97.5</td>
-
+            <td>196</td>   
 
             <td>506.1</td>
             <td>2.4</td>
@@ -1611,8 +1942,22 @@
             <td>96.8</td>
             <td>0</td>
             <td>8.3</td>
+            <td><img src="./before/WFIN_Ea_2021_MKDN250005701-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2021_MKDN250005701-1A_22MVYCLT4_L4.base.png" /></td>
 
+                     <td>493.9</td>
+            <td>72.7</td>
+            <td>323.1</td>
+            <td>146</td>
+            <td>34.7</td>
+            <td>97.5</td>
+            <td><img src="./after/WFIN_Ea_2021_MKDN250005701-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2021_MKDN250005701-1A_22MVYCLT4_L4.base.png" /></td>
 
+            <td>WFIN_Ea_2021_MKDN250005701-1A_22MVYCLT4_L4.fq.gz<br>WFIN_Ea_2021_MKDN250005701-1A_22TTYTLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1623,15 +1968,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>203</td>
-
-            <td>498.8</td>
-            <td>61.7</td>
-            <td>274.3</td>
-            <td>123</td>
-            <td>34.0</td>
-            <td>99.6</td>
-
+            <td>203</td>   
 
             <td>521.5</td>
             <td>4.4</td>
@@ -1643,8 +1980,23 @@
             <td>97.9</td>
             <td>0</td>
             <td>19.0</td>
+            <td><img src="./before/WFIN_Eb_2021_MKDN250005702-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2021_MKDN250005702-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>498.8</td>
+            <td>61.7</td>
+            <td>274.3</td>
+            <td>123</td>
+            <td>34.0</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_Eb_2021_MKDN250005702-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2021_MKDN250005702-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>WFIN_Eb_2021_MKDN250005702-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+2%	28388	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1655,15 +2007,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>236</td>
-
-            <td>434.5</td>
-            <td>63.5</td>
-            <td>282.4</td>
-            <td>146</td>
-            <td>36.4</td>
-            <td>99.5</td>
-
+            <td>236</td>   
 
             <td>442.1</td>
             <td>1.7</td>
@@ -1675,8 +2019,22 @@
             <td>99.0</td>
             <td>269</td>
             <td>20.0</td>
+            <td><img src="./before/SFIN_La_2021_MKDN250005705-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2021_MKDN250005705-1A_22TTYTLT4_L3.base.png" /></td>
 
+                     <td>434.5</td>
+            <td>63.5</td>
+            <td>282.4</td>
+            <td>146</td>
+            <td>36.4</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_La_2021_MKDN250005705-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2021_MKDN250005705-1A_22TTYTLT4_L3.base.png" /></td>
 
+            <td>SFIN_La_2021_MKDN250005705-1A_22TTYTLT4_L3.fq.gz<br>SFIN_La_2021_MKDN250005705-1A_22MVYCLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1687,15 +2045,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>176</td>
-
-            <td>409.2</td>
-            <td>60.0</td>
-            <td>266.9</td>
-            <td>146</td>
-            <td>36.7</td>
-            <td>99.5</td>
-
+            <td>176</td>   
 
             <td>417.5</td>
             <td>2.0</td>
@@ -1707,8 +2057,22 @@
             <td>99.0</td>
             <td>0</td>
             <td>20.4</td>
+            <td><img src="./before/SFIN_Lb_2021_MKDN250005706-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2021_MKDN250005706-1A_22TTYTLT4_L3.base.png" /></td>
 
+                     <td>409.2</td>
+            <td>60.0</td>
+            <td>266.9</td>
+            <td>146</td>
+            <td>36.7</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Lb_2021_MKDN250005706-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2021_MKDN250005706-1A_22TTYTLT4_L3.base.png" /></td>
 
+            <td>SFIN_Lb_2021_MKDN250005706-1A_22TTYTLT4_L3.fq.gz<br>SFIN_Lb_2021_MKDN250005706-1A_22WY32LT3_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1719,15 +2083,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>329</td>
-
-            <td>430.3</td>
-            <td>55.3</td>
-            <td>245.9</td>
-            <td>128</td>
-            <td>34.6</td>
-            <td>99.5</td>
-
+            <td>329</td>   
 
             <td>444.0</td>
             <td>3.1</td>
@@ -1739,8 +2095,23 @@
             <td>98.4</td>
             <td>0</td>
             <td>22.8</td>
+            <td><img src="./before/WFIN_La_2021_MKDN250005699-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2021_MKDN250005699-1A_22MWJVLT4_L2.base.png" /></td>
 
+                     <td>430.3</td>
+            <td>55.3</td>
+            <td>245.9</td>
+            <td>128</td>
+            <td>34.6</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_La_2021_MKDN250005699-1A_22MWJVLT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2021_MKDN250005699-1A_22MWJVLT4_L2.base.png" /></td>
 
+            <td>WFIN_La_2021_MKDN250005699-1A_22MWJVLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+1%	13710	GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+</pre></td>
 
         </tr>
     
@@ -1751,15 +2122,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>292</td>
-
-            <td>521.8</td>
-            <td>76.7</td>
-            <td>340.9</td>
-            <td>147</td>
-            <td>34.7</td>
-            <td>99.4</td>
-
+            <td>292</td>   
 
             <td>530.5</td>
             <td>1.6</td>
@@ -1771,8 +2134,22 @@
             <td>99.0</td>
             <td>0</td>
             <td>24.3</td>
+            <td><img src="./before/WFIN_Lb_2021_MKDN250005700-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2021_MKDN250005700-1A_22TTYTLT4_L3.base.png" /></td>
 
+                     <td>521.8</td>
+            <td>76.7</td>
+            <td>340.9</td>
+            <td>147</td>
+            <td>34.7</td>
+            <td>99.4</td>
+            <td><img src="./after/WFIN_Lb_2021_MKDN250005700-1A_22TTYTLT4_L3.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2021_MKDN250005700-1A_22TTYTLT4_L3.base.png" /></td>
 
+            <td>WFIN_Lb_2021_MKDN250005700-1A_22TTYTLT4_L3.fq.gz<br>WFIN_Lb_2021_MKDN250005700-1A_22MVYCLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1783,15 +2160,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>a</td>
-            <td>137</td>
-
-            <td>459.4</td>
-            <td>67.3</td>
-            <td>299.2</td>
-            <td>146</td>
-            <td>35.2</td>
-            <td>97.7</td>
-
+            <td>137</td>   
 
             <td>468.2</td>
             <td>1.9</td>
@@ -1803,8 +2172,22 @@
             <td>97.0</td>
             <td>269</td>
             <td>8.3</td>
+            <td><img src="./before/NFIN_Ea_2022_MKDN250005707-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./before/NFIN_Ea_2022_MKDN250005707-1A_22MVYCLT4_L4.base.png" /></td>
 
+                     <td>459.4</td>
+            <td>67.3</td>
+            <td>299.2</td>
+            <td>146</td>
+            <td>35.2</td>
+            <td>97.7</td>
+            <td><img src="./after/NFIN_Ea_2022_MKDN250005707-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./after/NFIN_Ea_2022_MKDN250005707-1A_22MVYCLT4_L4.base.png" /></td>
 
+            <td>NFIN_Ea_2022_MKDN250005707-1A_22MVYCLT4_L4.fq.gz<br>NFIN_Ea_2022_MKDN250005707-1A_22TTYTLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1815,15 +2198,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>b</td>
-            <td>143</td>
-
-            <td>548.6</td>
-            <td>80.6</td>
-            <td>358.2</td>
-            <td>146</td>
-            <td>35.1</td>
-            <td>97.5</td>
-
+            <td>143</td>   
 
             <td>557.5</td>
             <td>1.6</td>
@@ -1835,8 +2210,22 @@
             <td>96.8</td>
             <td>269</td>
             <td>9.0</td>
+            <td><img src="./before/NFIN_Eb_2022_MKDN250005708-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./before/NFIN_Eb_2022_MKDN250005708-1A_22MVYCLT4_L4.base.png" /></td>
 
+                     <td>548.6</td>
+            <td>80.6</td>
+            <td>358.2</td>
+            <td>146</td>
+            <td>35.1</td>
+            <td>97.5</td>
+            <td><img src="./after/NFIN_Eb_2022_MKDN250005708-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./after/NFIN_Eb_2022_MKDN250005708-1A_22MVYCLT4_L4.base.png" /></td>
 
+            <td>NFIN_Eb_2022_MKDN250005708-1A_22MVYCLT4_L4.fq.gz<br>NFIN_Eb_2022_MKDN250005708-1A_22TTYTLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1847,15 +2236,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>91</td>
-
-            <td>496.6</td>
-            <td>73.6</td>
-            <td>327.0</td>
-            <td>148</td>
-            <td>35.8</td>
-            <td>99.5</td>
-
+            <td>91</td>   
 
             <td>503.5</td>
             <td>1.4</td>
@@ -1867,8 +2248,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>22.4</td>
+            <td><img src="./before/SFIN_Ea_2022_MKDN250005715-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2022_MKDN250005715-1A_22TTYTLT4_L4.base.png" /></td>
 
+                     <td>496.6</td>
+            <td>73.6</td>
+            <td>327.0</td>
+            <td>148</td>
+            <td>35.8</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Ea_2022_MKDN250005715-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2022_MKDN250005715-1A_22TTYTLT4_L4.base.png" /></td>
 
+            <td>SFIN_Ea_2022_MKDN250005715-1A_22TTYTLT4_L4.fq.gz<br>SFIN_Ea_2022_MKDN250005715-1A_22MVYCLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1879,15 +2274,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>96</td>
-
-            <td>781.0</td>
-            <td>114.5</td>
-            <td>509.1</td>
-            <td>146</td>
-            <td>35.6</td>
-            <td>99.4</td>
-
+            <td>96</td>   
 
             <td>796.9</td>
             <td>2.0</td>
@@ -1899,8 +2286,20 @@
             <td>98.8</td>
             <td>0</td>
             <td>14.7</td>
+            <td><img src="./before/SFIN_Eb_2022_MKDN250005716-1A_22MVYCLT4_L3.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2022_MKDN250005716-1A_22MVYCLT4_L3.base.png" /></td>
 
+                     <td>781.0</td>
+            <td>114.5</td>
+            <td>509.1</td>
+            <td>146</td>
+            <td>35.6</td>
+            <td>99.4</td>
+            <td><img src="./after/SFIN_Eb_2022_MKDN250005716-1A_22MVYCLT4_L3.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2022_MKDN250005716-1A_22MVYCLT4_L3.base.png" /></td>
 
+            <td>SFIN_Eb_2022_MKDN250005716-1A_22MVYCLT4_L3.fq.gz<br>SFIN_Eb_2022_MKDN250005716-1A_22TTYHLT4_L6.fq.gz</td>
+            <td class="reads"><pre></pre></td>
 
         </tr>
     
@@ -1911,15 +2310,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>103</td>
-
-            <td>511.7</td>
-            <td>75.7</td>
-            <td>336.3</td>
-            <td>147</td>
-            <td>35.2</td>
-            <td>99.5</td>
-
+            <td>103</td>   
 
             <td>519.0</td>
             <td>1.4</td>
@@ -1931,8 +2322,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>23.8</td>
+            <td><img src="./before/WFIN_Ea_2022_MKDN250005713-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2022_MKDN250005713-1A_22TTYTLT4_L4.base.png" /></td>
 
+                     <td>511.7</td>
+            <td>75.7</td>
+            <td>336.3</td>
+            <td>147</td>
+            <td>35.2</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Ea_2022_MKDN250005713-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2022_MKDN250005713-1A_22TTYTLT4_L4.base.png" /></td>
 
+            <td>WFIN_Ea_2022_MKDN250005713-1A_22TTYTLT4_L4.fq.gz<br>WFIN_Ea_2022_MKDN250005713-1A_22MVYCLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1943,15 +2348,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>127</td>
-
-            <td>637.2</td>
-            <td>94.0</td>
-            <td>417.7</td>
-            <td>147</td>
-            <td>35.0</td>
-            <td>97.3</td>
-
+            <td>127</td>   
 
             <td>646.4</td>
             <td>1.4</td>
@@ -1963,8 +2360,22 @@
             <td>96.6</td>
             <td>269</td>
             <td>8.8</td>
+            <td><img src="./before/WFIN_Eb_2022_MKDN250005714-1A_22MVYCLT4_L3.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2022_MKDN250005714-1A_22MVYCLT4_L3.base.png" /></td>
 
+                     <td>637.2</td>
+            <td>94.0</td>
+            <td>417.7</td>
+            <td>147</td>
+            <td>35.0</td>
+            <td>97.3</td>
+            <td><img src="./after/WFIN_Eb_2022_MKDN250005714-1A_22MVYCLT4_L3.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2022_MKDN250005714-1A_22MVYCLT4_L3.base.png" /></td>
 
+            <td>WFIN_Eb_2022_MKDN250005714-1A_22MVYCLT4_L3.fq.gz<br>WFIN_Eb_2022_MKDN250005714-1A_22TTYTLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -1975,15 +2386,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>a</td>
-            <td>185</td>
-
-            <td>524.2</td>
-            <td>77.1</td>
-            <td>342.8</td>
-            <td>147</td>
-            <td>35.8</td>
-            <td>99.5</td>
-
+            <td>185</td>   
 
             <td>531.2</td>
             <td>1.3</td>
@@ -1995,8 +2398,22 @@
             <td>99.0</td>
             <td>269</td>
             <td>23.0</td>
+            <td><img src="./before/NFIN_La_2022_MKDN250005709-1A_22TTYTLT4_L5.qual.png" /></td>
+            <td><img src="./before/NFIN_La_2022_MKDN250005709-1A_22TTYTLT4_L5.base.png" /></td>
 
+                     <td>524.2</td>
+            <td>77.1</td>
+            <td>342.8</td>
+            <td>147</td>
+            <td>35.8</td>
+            <td>99.5</td>
+            <td><img src="./after/NFIN_La_2022_MKDN250005709-1A_22TTYTLT4_L5.qual.png" /></td>
+            <td><img src="./after/NFIN_La_2022_MKDN250005709-1A_22TTYTLT4_L5.base.png" /></td>
 
+            <td>NFIN_La_2022_MKDN250005709-1A_22TTYTLT4_L5.fq.gz<br>NFIN_La_2022_MKDN250005709-1A_22MVYCLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2007,15 +2424,7 @@
             <td>FIN</td>
             <td>N</td>
             <td>b</td>
-            <td>147</td>
-
-            <td>482.4</td>
-            <td>70.9</td>
-            <td>315.3</td>
-            <td>146</td>
-            <td>35.8</td>
-            <td>97.5</td>
-
+            <td>147</td>   
 
             <td>488.6</td>
             <td>1.3</td>
@@ -2027,8 +2436,22 @@
             <td>97.0</td>
             <td>269</td>
             <td>7.5</td>
+            <td><img src="./before/NFIN_Lb_2022_MKDN250005710-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./before/NFIN_Lb_2022_MKDN250005710-1A_22MVYCLT4_L4.base.png" /></td>
 
+                     <td>482.4</td>
+            <td>70.9</td>
+            <td>315.3</td>
+            <td>146</td>
+            <td>35.8</td>
+            <td>97.5</td>
+            <td><img src="./after/NFIN_Lb_2022_MKDN250005710-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./after/NFIN_Lb_2022_MKDN250005710-1A_22MVYCLT4_L4.base.png" /></td>
 
+            <td>NFIN_Lb_2022_MKDN250005710-1A_22MVYCLT4_L4.fq.gz<br>NFIN_Lb_2022_MKDN250005710-1A_22TTYTLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2039,15 +2462,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>248</td>
-
-            <td>459.4</td>
-            <td>67.9</td>
-            <td>302.0</td>
-            <td>147</td>
-            <td>35.2</td>
-            <td>97.3</td>
-
+            <td>248</td>   
 
             <td>466.8</td>
             <td>1.6</td>
@@ -2059,8 +2474,22 @@
             <td>96.7</td>
             <td>0</td>
             <td>9.9</td>
+            <td><img src="./before/SFIN_La_2022_MKDN250005711-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2022_MKDN250005711-1A_22MVYCLT4_L4.base.png" /></td>
 
+                     <td>459.4</td>
+            <td>67.9</td>
+            <td>302.0</td>
+            <td>147</td>
+            <td>35.2</td>
+            <td>97.3</td>
+            <td><img src="./after/SFIN_La_2022_MKDN250005711-1A_22MVYCLT4_L4.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2022_MKDN250005711-1A_22MVYCLT4_L4.base.png" /></td>
 
+            <td>SFIN_La_2022_MKDN250005711-1A_22MVYCLT4_L4.fq.gz<br>SFIN_La_2022_MKDN250005711-1A_22TTYTLT4_L5.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2071,15 +2500,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>240</td>
-
-            <td>441.5</td>
-            <td>65.4</td>
-            <td>290.6</td>
-            <td>148</td>
-            <td>35.5</td>
-            <td>99.4</td>
-
+            <td>240</td>   
 
             <td>448.2</td>
             <td>1.5</td>
@@ -2091,8 +2512,22 @@
             <td>99.0</td>
             <td>269</td>
             <td>25.5</td>
+            <td><img src="./before/SFIN_Lb_2022_MKDN250005712-1A_22TTYTLT4_L5.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2022_MKDN250005712-1A_22TTYTLT4_L5.base.png" /></td>
 
+                     <td>441.5</td>
+            <td>65.4</td>
+            <td>290.6</td>
+            <td>148</td>
+            <td>35.5</td>
+            <td>99.4</td>
+            <td><img src="./after/SFIN_Lb_2022_MKDN250005712-1A_22TTYTLT4_L5.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2022_MKDN250005712-1A_22TTYTLT4_L5.base.png" /></td>
 
+            <td>SFIN_Lb_2022_MKDN250005712-1A_22TTYTLT4_L5.fq.gz<br>SFIN_Lb_2022_MKDN250005712-1A_22MVYCLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2103,15 +2538,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>158</td>
-
-            <td>492.7</td>
-            <td>73.0</td>
-            <td>324.5</td>
-            <td>148</td>
-            <td>35.5</td>
-            <td>97.4</td>
-
+            <td>158</td>   
 
             <td>499.5</td>
             <td>1.4</td>
@@ -2123,8 +2550,22 @@
             <td>96.8</td>
             <td>269</td>
             <td>8.7</td>
+            <td><img src="./before/WFIN_La_2022_MKDN250005717-1A_22MVYCLT4_L3.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2022_MKDN250005717-1A_22MVYCLT4_L3.base.png" /></td>
 
+                     <td>492.7</td>
+            <td>73.0</td>
+            <td>324.5</td>
+            <td>148</td>
+            <td>35.5</td>
+            <td>97.4</td>
+            <td><img src="./after/WFIN_La_2022_MKDN250005717-1A_22MVYCLT4_L3.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2022_MKDN250005717-1A_22MVYCLT4_L3.base.png" /></td>
 
+            <td>WFIN_La_2022_MKDN250005717-1A_22MVYCLT4_L3.fq.gz<br>WFIN_La_2022_MKDN250005717-1A_22TTYTLT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2135,15 +2576,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>158</td>
-
-            <td>530.4</td>
-            <td>78.5</td>
-            <td>349.0</td>
-            <td>148</td>
-            <td>35.3</td>
-            <td>99.5</td>
-
+            <td>158</td>   
 
             <td>537.9</td>
             <td>1.4</td>
@@ -2155,8 +2588,22 @@
             <td>99.0</td>
             <td>269</td>
             <td>24.7</td>
+            <td><img src="./before/WFIN_Lb_2022_MKDN250005718-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2022_MKDN250005718-1A_22TTYTLT4_L4.base.png" /></td>
 
+                     <td>530.4</td>
+            <td>78.5</td>
+            <td>349.0</td>
+            <td>148</td>
+            <td>35.3</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Lb_2022_MKDN250005718-1A_22TTYTLT4_L4.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2022_MKDN250005718-1A_22TTYTLT4_L4.base.png" /></td>
 
+            <td>WFIN_Lb_2022_MKDN250005718-1A_22TTYTLT4_L4.fq.gz<br>WFIN_Lb_2022_MKDN250005718-1A_22MVYCLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2167,15 +2614,7 @@
             <td>AAU</td>
             <td>L</td>
             <td>a</td>
-            <td>296</td>
-
-            <td>443.1</td>
-            <td>65.7</td>
-            <td>291.8</td>
-            <td>148</td>
-            <td>35.4</td>
-            <td>97.7</td>
-
+            <td>296</td>   
 
             <td>447.9</td>
             <td>1.1</td>
@@ -2187,8 +2626,22 @@
             <td>97.2</td>
             <td>269</td>
             <td>10.3</td>
+            <td><img src="./before/LAAU_Ea_2023_MKDN250005731-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/LAAU_Ea_2023_MKDN250005731-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>443.1</td>
+            <td>65.7</td>
+            <td>291.8</td>
+            <td>148</td>
+            <td>35.4</td>
+            <td>97.7</td>
+            <td><img src="./after/LAAU_Ea_2023_MKDN250005731-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/LAAU_Ea_2023_MKDN250005731-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>LAAU_Ea_2023_MKDN250005731-1A_22MVYCLT4_L2.fq.gz<br>LAAU_Ea_2023_MKDN250005731-1A_22TTY7LT4_L4.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2199,15 +2652,7 @@
             <td>AAU</td>
             <td>L</td>
             <td>b</td>
-            <td>347</td>
-
-            <td>522.2</td>
-            <td>77.4</td>
-            <td>343.9</td>
-            <td>148</td>
-            <td>35.6</td>
-            <td>97.8</td>
-
+            <td>347</td>   
 
             <td>528.6</td>
             <td>1.2</td>
@@ -2219,8 +2664,22 @@
             <td>97.3</td>
             <td>268</td>
             <td>11.0</td>
+            <td><img src="./before/LAAU_Eb_2023_MKDN250005732-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/LAAU_Eb_2023_MKDN250005732-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>522.2</td>
+            <td>77.4</td>
+            <td>343.9</td>
+            <td>148</td>
+            <td>35.6</td>
+            <td>97.8</td>
+            <td><img src="./after/LAAU_Eb_2023_MKDN250005732-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/LAAU_Eb_2023_MKDN250005732-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>LAAU_Eb_2023_MKDN250005732-1A_22MVYCLT4_L2.fq.gz<br>LAAU_Eb_2023_MKDN250005732-1A_22TTY7LT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2231,15 +2690,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>325</td>
-
-            <td>360.0</td>
-            <td>53.2</td>
-            <td>236.6</td>
-            <td>147</td>
-            <td>35.2</td>
-            <td>99.5</td>
-
+            <td>325</td>   
 
             <td>364.4</td>
             <td>1.2</td>
@@ -2251,8 +2702,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>16.0</td>
+            <td><img src="./before/SFIN_Ea_2023_MKDN250005725-1A_22TTY7LT4_L7.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2023_MKDN250005725-1A_22TTY7LT4_L7.base.png" /></td>
 
+                     <td>360.0</td>
+            <td>53.2</td>
+            <td>236.6</td>
+            <td>147</td>
+            <td>35.2</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_Ea_2023_MKDN250005725-1A_22TTY7LT4_L7.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2023_MKDN250005725-1A_22TTY7LT4_L7.base.png" /></td>
 
+            <td>SFIN_Ea_2023_MKDN250005725-1A_22TTY7LT4_L7.fq.gz<br>SFIN_Ea_2023_MKDN250005725-1A_22MVYCLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2263,15 +2728,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>283</td>
-
-            <td>369.0</td>
-            <td>54.6</td>
-            <td>242.6</td>
-            <td>147</td>
-            <td>35.2</td>
-            <td>97.7</td>
-
+            <td>283</td>   
 
             <td>373.8</td>
             <td>1.3</td>
@@ -2283,8 +2740,22 @@
             <td>97.2</td>
             <td>269</td>
             <td>9.6</td>
+            <td><img src="./before/SFIN_Eb_2023_MKDN250005726-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2023_MKDN250005726-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>369.0</td>
+            <td>54.6</td>
+            <td>242.6</td>
+            <td>147</td>
+            <td>35.2</td>
+            <td>97.7</td>
+            <td><img src="./after/SFIN_Eb_2023_MKDN250005726-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2023_MKDN250005726-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>SFIN_Eb_2023_MKDN250005726-1A_22MVYCLT4_L2.fq.gz<br>SFIN_Eb_2023_MKDN250005726-1A_22TTY7LT4_L7.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2295,15 +2766,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>344</td>
-
-            <td>456.1</td>
-            <td>67.5</td>
-            <td>300.2</td>
-            <td>148</td>
-            <td>35.2</td>
-            <td>99.5</td>
-
+            <td>344</td>   
 
             <td>462.5</td>
             <td>1.4</td>
@@ -2315,8 +2778,22 @@
             <td>99.0</td>
             <td>269</td>
             <td>23.4</td>
+            <td><img src="./before/WFIN_Ea_2023_MKDN250005719-1A_22TTY7LT4_L8.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2023_MKDN250005719-1A_22TTY7LT4_L8.base.png" /></td>
 
+                     <td>456.1</td>
+            <td>67.5</td>
+            <td>300.2</td>
+            <td>148</td>
+            <td>35.2</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Ea_2023_MKDN250005719-1A_22TTY7LT4_L8.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2023_MKDN250005719-1A_22TTY7LT4_L8.base.png" /></td>
 
+            <td>WFIN_Ea_2023_MKDN250005719-1A_22TTY7LT4_L8.fq.gz<br>WFIN_Ea_2023_MKDN250005719-1A_22MVYCLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2327,15 +2804,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>303</td>
-
-            <td>489.7</td>
-            <td>72.5</td>
-            <td>322.2</td>
-            <td>148</td>
-            <td>35.1</td>
-            <td>99.5</td>
-
+            <td>303</td>   
 
             <td>496.6</td>
             <td>1.4</td>
@@ -2347,8 +2816,22 @@
             <td>99.0</td>
             <td>0</td>
             <td>21.7</td>
+            <td><img src="./before/WFIN_Eb_2023_MKDN250005720-1A_22TTY7LT4_L8.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2023_MKDN250005720-1A_22TTY7LT4_L8.base.png" /></td>
 
+                     <td>489.7</td>
+            <td>72.5</td>
+            <td>322.2</td>
+            <td>148</td>
+            <td>35.1</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Eb_2023_MKDN250005720-1A_22TTY7LT4_L8.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2023_MKDN250005720-1A_22TTY7LT4_L8.base.png" /></td>
 
+            <td>WFIN_Eb_2023_MKDN250005720-1A_22TTY7LT4_L8.fq.gz<br>WFIN_Eb_2023_MKDN250005720-1A_22MVYCLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2359,15 +2842,7 @@
             <td>OAU</td>
             <td>W</td>
             <td>a</td>
-            <td>229</td>
-
-            <td>484.5</td>
-            <td>71.8</td>
-            <td>319.0</td>
-            <td>148</td>
-            <td>35.6</td>
-            <td>99.4</td>
-
+            <td>229</td>   
 
             <td>490.2</td>
             <td>1.2</td>
@@ -2379,8 +2854,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>21.0</td>
+            <td><img src="./before/WOAU_Ea_2023_MKDN250005729-1A_22TTY7LT4_L6.qual.png" /></td>
+            <td><img src="./before/WOAU_Ea_2023_MKDN250005729-1A_22TTY7LT4_L6.base.png" /></td>
 
+                     <td>484.5</td>
+            <td>71.8</td>
+            <td>319.0</td>
+            <td>148</td>
+            <td>35.6</td>
+            <td>99.4</td>
+            <td><img src="./after/WOAU_Ea_2023_MKDN250005729-1A_22TTY7LT4_L6.qual.png" /></td>
+            <td><img src="./after/WOAU_Ea_2023_MKDN250005729-1A_22TTY7LT4_L6.base.png" /></td>
 
+            <td>WOAU_Ea_2023_MKDN250005729-1A_22TTY7LT4_L6.fq.gz<br>WOAU_Ea_2023_MKDN250005729-1A_22MVYCLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2391,15 +2880,7 @@
             <td>OAU</td>
             <td>W</td>
             <td>b</td>
-            <td>205</td>
-
-            <td>411.7</td>
-            <td>61.0</td>
-            <td>270.9</td>
-            <td>148</td>
-            <td>35.6</td>
-            <td>99.5</td>
-
+            <td>205</td>   
 
             <td>416.9</td>
             <td>1.3</td>
@@ -2411,8 +2892,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>20.0</td>
+            <td><img src="./before/WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.qual.png" /></td>
+            <td><img src="./before/WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.base.png" /></td>
 
+                     <td>411.7</td>
+            <td>61.0</td>
+            <td>270.9</td>
+            <td>148</td>
+            <td>35.6</td>
+            <td>99.5</td>
+            <td><img src="./after/WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.qual.png" /></td>
+            <td><img src="./after/WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.base.png" /></td>
 
+            <td>WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.fq.gz<br>WOAU_Eb_2023_MKDN250005730-1A_22MVYCLT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2423,15 +2918,7 @@
             <td>AAU</td>
             <td>L</td>
             <td>a</td>
-            <td>230</td>
-
-            <td>454.0</td>
-            <td>67.2</td>
-            <td>298.6</td>
-            <td>147</td>
-            <td>35.5</td>
-            <td>99.5</td>
-
+            <td>230</td>   
 
             <td>459.7</td>
             <td>1.2</td>
@@ -2443,8 +2930,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>17.3</td>
+            <td><img src="./before/LAAU_La_2023_MKDN250005733-1A_22TTY7LT4_L3.qual.png" /></td>
+            <td><img src="./before/LAAU_La_2023_MKDN250005733-1A_22TTY7LT4_L3.base.png" /></td>
 
+                     <td>454.0</td>
+            <td>67.2</td>
+            <td>298.6</td>
+            <td>147</td>
+            <td>35.5</td>
+            <td>99.5</td>
+            <td><img src="./after/LAAU_La_2023_MKDN250005733-1A_22TTY7LT4_L3.qual.png" /></td>
+            <td><img src="./after/LAAU_La_2023_MKDN250005733-1A_22TTY7LT4_L3.base.png" /></td>
 
+            <td>LAAU_La_2023_MKDN250005733-1A_22TTY7LT4_L3.fq.gz<br>LAAU_La_2023_MKDN250005733-1A_22MVYCLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2455,15 +2956,7 @@
             <td>AAU</td>
             <td>L</td>
             <td>b</td>
-            <td>178</td>
-
-            <td>541.7</td>
-            <td>80.1</td>
-            <td>355.9</td>
-            <td>147</td>
-            <td>35.4</td>
-            <td>98.0</td>
-
+            <td>178</td>   
 
             <td>548.2</td>
             <td>1.2</td>
@@ -2475,8 +2968,22 @@
             <td>97.5</td>
             <td>269</td>
             <td>9.8</td>
+            <td><img src="./before/LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./before/LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.base.png" /></td>
 
+                     <td>541.7</td>
+            <td>80.1</td>
+            <td>355.9</td>
+            <td>147</td>
+            <td>35.4</td>
+            <td>98.0</td>
+            <td><img src="./after/LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./after/LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.base.png" /></td>
 
+            <td>LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.fq.gz<br>LAAU_Lb_2023_MKDN250005734-1A_22TTY7LT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2487,15 +2994,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>279</td>
-
-            <td>380.5</td>
-            <td>56.1</td>
-            <td>249.4</td>
-            <td>147</td>
-            <td>35.4</td>
-            <td>97.4</td>
-
+            <td>279</td>   
 
             <td>386.2</td>
             <td>1.5</td>
@@ -2507,8 +3006,22 @@
             <td>96.8</td>
             <td>0</td>
             <td>11.9</td>
+            <td><img src="./before/SFIN_La_2023_MKDN250005723-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2023_MKDN250005723-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>380.5</td>
+            <td>56.1</td>
+            <td>249.4</td>
+            <td>147</td>
+            <td>35.4</td>
+            <td>97.4</td>
+            <td><img src="./after/SFIN_La_2023_MKDN250005723-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2023_MKDN250005723-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>SFIN_La_2023_MKDN250005723-1A_22MVYCLT4_L2.fq.gz<br>SFIN_La_2023_MKDN250005723-1A_22TTY7LT4_L7.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2519,15 +3032,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>204</td>
-
-            <td>361.0</td>
-            <td>53.3</td>
-            <td>237.0</td>
-            <td>147</td>
-            <td>35.5</td>
-            <td>97.8</td>
-
+            <td>204</td>   
 
             <td>365.6</td>
             <td>1.2</td>
@@ -2539,8 +3044,22 @@
             <td>97.2</td>
             <td>269</td>
             <td>12.1</td>
+            <td><img src="./before/SFIN_Lb_2023_MKDN250005724-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2023_MKDN250005724-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>361.0</td>
+            <td>53.3</td>
+            <td>237.0</td>
+            <td>147</td>
+            <td>35.5</td>
+            <td>97.8</td>
+            <td><img src="./after/SFIN_Lb_2023_MKDN250005724-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2023_MKDN250005724-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>SFIN_Lb_2023_MKDN250005724-1A_22MVYCLT4_L2.fq.gz<br>SFIN_Lb_2023_MKDN250005724-1A_22TTY7LT4_L7.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2551,15 +3070,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>293</td>
-
-            <td>390.1</td>
-            <td>57.9</td>
-            <td>257.3</td>
-            <td>148</td>
-            <td>35.5</td>
-            <td>99.6</td>
-
+            <td>293</td>   
 
             <td>394.8</td>
             <td>1.2</td>
@@ -2571,8 +3082,22 @@
             <td>99.3</td>
             <td>269</td>
             <td>16.2</td>
+            <td><img src="./before/WFIN_La_2023_MKDN250005721-1A_22TTY7LT4_L8.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2023_MKDN250005721-1A_22TTY7LT4_L8.base.png" /></td>
 
+                     <td>390.1</td>
+            <td>57.9</td>
+            <td>257.3</td>
+            <td>148</td>
+            <td>35.5</td>
+            <td>99.6</td>
+            <td><img src="./after/WFIN_La_2023_MKDN250005721-1A_22TTY7LT4_L8.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2023_MKDN250005721-1A_22TTY7LT4_L8.base.png" /></td>
 
+            <td>WFIN_La_2023_MKDN250005721-1A_22TTY7LT4_L8.fq.gz<br>WFIN_La_2023_MKDN250005721-1A_22MVYCLT4_L3.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2583,15 +3108,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>319</td>
-
-            <td>461.3</td>
-            <td>68.3</td>
-            <td>303.4</td>
-            <td>147</td>
-            <td>35.4</td>
-            <td>99.4</td>
-
+            <td>319</td>   
 
             <td>468.2</td>
             <td>1.5</td>
@@ -2603,8 +3120,22 @@
             <td>98.8</td>
             <td>0</td>
             <td>16.3</td>
+            <td><img src="./before/WFIN_Lb_2023_MKDN250005722-1A_22WY32LT3_L6.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2023_MKDN250005722-1A_22WY32LT3_L6.base.png" /></td>
 
+                     <td>461.3</td>
+            <td>68.3</td>
+            <td>303.4</td>
+            <td>147</td>
+            <td>35.4</td>
+            <td>99.4</td>
+            <td><img src="./after/WFIN_Lb_2023_MKDN250005722-1A_22WY32LT3_L6.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2023_MKDN250005722-1A_22WY32LT3_L6.base.png" /></td>
 
+            <td>WFIN_Lb_2023_MKDN250005722-1A_22WY32LT3_L6.fq.gz<br>WFIN_Lb_2023_MKDN250005722-1A_22TTY7LT4_L8.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2615,15 +3146,7 @@
             <td>OAU</td>
             <td>W</td>
             <td>a</td>
-            <td>356</td>
-
-            <td>456.5</td>
-            <td>67.5</td>
-            <td>299.9</td>
-            <td>147</td>
-            <td>36.2</td>
-            <td>97.7</td>
-
+            <td>356</td>   
 
             <td>464.6</td>
             <td>1.8</td>
@@ -2635,8 +3158,22 @@
             <td>97.1</td>
             <td>0</td>
             <td>11.8</td>
+            <td><img src="./before/WOAU_La_2023_MKDN250005727-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/WOAU_La_2023_MKDN250005727-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>456.5</td>
+            <td>67.5</td>
+            <td>299.9</td>
+            <td>147</td>
+            <td>36.2</td>
+            <td>97.7</td>
+            <td><img src="./after/WOAU_La_2023_MKDN250005727-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/WOAU_La_2023_MKDN250005727-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>WOAU_La_2023_MKDN250005727-1A_22MVYCLT4_L2.fq.gz<br>WOAU_La_2023_MKDN250005727-1A_22TTY7LT4_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2647,15 +3184,7 @@
             <td>OAU</td>
             <td>W</td>
             <td>b</td>
-            <td>335</td>
-
-            <td>488.4</td>
-            <td>72.2</td>
-            <td>321.0</td>
-            <td>147</td>
-            <td>35.6</td>
-            <td>97.8</td>
-
+            <td>335</td>   
 
             <td>496.1</td>
             <td>1.6</td>
@@ -2667,8 +3196,22 @@
             <td>97.2</td>
             <td>269</td>
             <td>11.8</td>
+            <td><img src="./before/WOAU_Lb_2023_MKDN250005728-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./before/WOAU_Lb_2023_MKDN250005728-1A_22MVYCLT4_L2.base.png" /></td>
 
+                     <td>488.4</td>
+            <td>72.2</td>
+            <td>321.0</td>
+            <td>147</td>
+            <td>35.6</td>
+            <td>97.8</td>
+            <td><img src="./after/WOAU_Lb_2023_MKDN250005728-1A_22MVYCLT4_L2.qual.png" /></td>
+            <td><img src="./after/WOAU_Lb_2023_MKDN250005728-1A_22MVYCLT4_L2.base.png" /></td>
 
+            <td>WOAU_Lb_2023_MKDN250005728-1A_22MVYCLT4_L2.fq.gz<br>WOAU_Lb_2023_MKDN250005728-1A_22TTY7LT4_L6.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2679,15 +3222,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>400</td>
-
-            <td>489.3</td>
-            <td>72.5</td>
-            <td>322.3</td>
-            <td>148</td>
-            <td>35.4</td>
-            <td>98.2</td>
-
+            <td>400</td>   
 
             <td>495.3</td>
             <td>1.2</td>
@@ -2699,8 +3234,22 @@
             <td>97.7</td>
             <td>268</td>
             <td>11.9</td>
+            <td><img src="./before/SFIN_Ea_2024_MKDN250005739-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_Ea_2024_MKDN250005739-1A_22MVYCLT4_L1.base.png" /></td>
 
+                     <td>489.3</td>
+            <td>72.5</td>
+            <td>322.3</td>
+            <td>148</td>
+            <td>35.4</td>
+            <td>98.2</td>
+            <td><img src="./after/SFIN_Ea_2024_MKDN250005739-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_Ea_2024_MKDN250005739-1A_22MVYCLT4_L1.base.png" /></td>
 
+            <td>SFIN_Ea_2024_MKDN250005739-1A_22MVYCLT4_L1.fq.gz<br>SFIN_Ea_2024_MKDN250005739-1A_22TTY7LT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2711,15 +3260,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>469</td>
-
-            <td>452.1</td>
-            <td>67.0</td>
-            <td>298.0</td>
-            <td>148</td>
-            <td>35.4</td>
-            <td>98.0</td>
-
+            <td>469</td>   
 
             <td>457.8</td>
             <td>1.2</td>
@@ -2731,8 +3272,22 @@
             <td>97.6</td>
             <td>267</td>
             <td>8.7</td>
+            <td><img src="./before/SFIN_Eb_2024_MKDN250005740-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_Eb_2024_MKDN250005740-1A_22MVYCLT4_L1.base.png" /></td>
 
+                     <td>452.1</td>
+            <td>67.0</td>
+            <td>298.0</td>
+            <td>148</td>
+            <td>35.4</td>
+            <td>98.0</td>
+            <td><img src="./after/SFIN_Eb_2024_MKDN250005740-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_Eb_2024_MKDN250005740-1A_22MVYCLT4_L1.base.png" /></td>
 
+            <td>SFIN_Eb_2024_MKDN250005740-1A_22MVYCLT4_L1.fq.gz<br>SFIN_Eb_2024_MKDN250005740-1A_22TTY7LT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2743,15 +3298,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>399</td>
-
-            <td>449.0</td>
-            <td>66.5</td>
-            <td>295.6</td>
-            <td>148</td>
-            <td>35.4</td>
-            <td>99.4</td>
-
+            <td>399</td>   
 
             <td>454.5</td>
             <td>1.2</td>
@@ -2763,8 +3310,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>20.5</td>
+            <td><img src="./before/WFIN_Ea_2024_MKDN250005735-1A_22TTY7LT4_L3.qual.png" /></td>
+            <td><img src="./before/WFIN_Ea_2024_MKDN250005735-1A_22TTY7LT4_L3.base.png" /></td>
 
+                     <td>449.0</td>
+            <td>66.5</td>
+            <td>295.6</td>
+            <td>148</td>
+            <td>35.4</td>
+            <td>99.4</td>
+            <td><img src="./after/WFIN_Ea_2024_MKDN250005735-1A_22TTY7LT4_L3.qual.png" /></td>
+            <td><img src="./after/WFIN_Ea_2024_MKDN250005735-1A_22TTY7LT4_L3.base.png" /></td>
 
+            <td>WFIN_Ea_2024_MKDN250005735-1A_22TTY7LT4_L3.fq.gz<br>WFIN_Ea_2024_MKDN250005735-1A_22MVYCLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2775,15 +3336,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>398</td>
-
-            <td>525.8</td>
-            <td>77.9</td>
-            <td>346.3</td>
-            <td>148</td>
-            <td>35.4</td>
-            <td>99.5</td>
-
+            <td>398</td>   
 
             <td>532.0</td>
             <td>1.2</td>
@@ -2795,8 +3348,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>22.1</td>
+            <td><img src="./before/WFIN_Eb_2024_MKDN250005736-1A_22TTY7LT4_L2.qual.png" /></td>
+            <td><img src="./before/WFIN_Eb_2024_MKDN250005736-1A_22TTY7LT4_L2.base.png" /></td>
 
+                     <td>525.8</td>
+            <td>77.9</td>
+            <td>346.3</td>
+            <td>148</td>
+            <td>35.4</td>
+            <td>99.5</td>
+            <td><img src="./after/WFIN_Eb_2024_MKDN250005736-1A_22TTY7LT4_L2.qual.png" /></td>
+            <td><img src="./after/WFIN_Eb_2024_MKDN250005736-1A_22TTY7LT4_L2.base.png" /></td>
 
+            <td>WFIN_Eb_2024_MKDN250005736-1A_22TTY7LT4_L2.fq.gz<br>WFIN_Eb_2024_MKDN250005736-1A_22MVYCLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2807,15 +3374,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>a</td>
-            <td>423</td>
-
-            <td>598.4</td>
-            <td>88.6</td>
-            <td>393.9</td>
-            <td>148</td>
-            <td>35.2</td>
-            <td>99.5</td>
-
+            <td>423</td>   
 
             <td>606.3</td>
             <td>1.3</td>
@@ -2827,8 +3386,22 @@
             <td>99.1</td>
             <td>269</td>
             <td>27.8</td>
+            <td><img src="./before/SFIN_La_2024_MKDN250005741-1A_22TTY7LT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_La_2024_MKDN250005741-1A_22TTY7LT4_L1.base.png" /></td>
 
+                     <td>598.4</td>
+            <td>88.6</td>
+            <td>393.9</td>
+            <td>148</td>
+            <td>35.2</td>
+            <td>99.5</td>
+            <td><img src="./after/SFIN_La_2024_MKDN250005741-1A_22TTY7LT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_La_2024_MKDN250005741-1A_22TTY7LT4_L1.base.png" /></td>
 
+            <td>SFIN_La_2024_MKDN250005741-1A_22TTY7LT4_L1.fq.gz<br>SFIN_La_2024_MKDN250005741-1A_22MVYCLT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2839,15 +3412,7 @@
             <td>FIN</td>
             <td>S</td>
             <td>b</td>
-            <td>310</td>
-
-            <td>667.7</td>
-            <td>98.9</td>
-            <td>439.5</td>
-            <td>147</td>
-            <td>35.3</td>
-            <td>98.1</td>
-
+            <td>310</td>   
 
             <td>677.0</td>
             <td>1.4</td>
@@ -2859,8 +3424,22 @@
             <td>97.6</td>
             <td>269</td>
             <td>11.1</td>
+            <td><img src="./before/SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./before/SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.base.png" /></td>
 
+                     <td>667.7</td>
+            <td>98.9</td>
+            <td>439.5</td>
+            <td>147</td>
+            <td>35.3</td>
+            <td>98.1</td>
+            <td><img src="./after/SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./after/SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.base.png" /></td>
 
+            <td>SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.fq.gz<br>SFIN_Lb_2024_MKDN250005742-1A_22TTY7LT4_L1.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2871,15 +3450,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>a</td>
-            <td>412</td>
-
-            <td>545.1</td>
-            <td>80.8</td>
-            <td>359.0</td>
-            <td>147</td>
-            <td>35.2</td>
-            <td>98.2</td>
-
+            <td>412</td>   
 
             <td>551.6</td>
             <td>1.2</td>
@@ -2891,8 +3462,22 @@
             <td>97.6</td>
             <td>269</td>
             <td>13.0</td>
+            <td><img src="./before/WFIN_La_2024_MKDN250005737-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_La_2024_MKDN250005737-1A_22MVYCLT4_L1.base.png" /></td>
 
+                     <td>545.1</td>
+            <td>80.8</td>
+            <td>359.0</td>
+            <td>147</td>
+            <td>35.2</td>
+            <td>98.2</td>
+            <td><img src="./after/WFIN_La_2024_MKDN250005737-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_La_2024_MKDN250005737-1A_22MVYCLT4_L1.base.png" /></td>
 
+            <td>WFIN_La_2024_MKDN250005737-1A_22MVYCLT4_L1.fq.gz<br>WFIN_La_2024_MKDN250005737-1A_22TTY7LT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2903,15 +3488,7 @@
             <td>FIN</td>
             <td>W</td>
             <td>b</td>
-            <td>370</td>
-
-            <td>529.0</td>
-            <td>78.5</td>
-            <td>348.7</td>
-            <td>148</td>
-            <td>35.4</td>
-            <td>98.3</td>
-
+            <td>370</td>   
 
             <td>534.6</td>
             <td>1.0</td>
@@ -2923,8 +3500,22 @@
             <td>97.8</td>
             <td>269</td>
             <td>10.4</td>
+            <td><img src="./before/WFIN_Lb_2024_MKDN250005738-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./before/WFIN_Lb_2024_MKDN250005738-1A_22MVYCLT4_L1.base.png" /></td>
 
+                     <td>529.0</td>
+            <td>78.5</td>
+            <td>348.7</td>
+            <td>148</td>
+            <td>35.4</td>
+            <td>98.3</td>
+            <td><img src="./after/WFIN_Lb_2024_MKDN250005738-1A_22MVYCLT4_L1.qual.png" /></td>
+            <td><img src="./after/WFIN_Lb_2024_MKDN250005738-1A_22MVYCLT4_L1.base.png" /></td>
 
+            <td>WFIN_Lb_2024_MKDN250005738-1A_22MVYCLT4_L1.fq.gz<br>WFIN_Lb_2024_MKDN250005738-1A_22TTY7LT4_L2.fq.gz</td>
+            <td class="reads"><pre>
+
+</pre></td>
 
         </tr>
     
@@ -2946,7 +3537,9 @@
    </body>
 
    <script>
-    const keywords = ["SFIN_Ea_2015", "SFIN_Eb_2015", "WFIN_Ea_2015", "WFIN_Eb_2015", "SFIN_La_2016", "SFIN_Lb_2016r", "SFIN_Ea_2017", "SFIN_Eb_2017", "SFIN_La_2017", "SFIN_Lb_2017"]; // Your keywords
+    const keywords = ["SFIN_Ea_2015", "SFIN_Eb_2015", "WFIN_Ea_2015", "WFIN_Eb_2015", 
+    "SFIN_La_2016", "SFIN_Lb_2016r", "SFIN_Ea_2017", "SFIN_Eb_2017", "SFIN_La_2017", 
+    "SFIN_Lb_2017"];
 
     document.querySelectorAll("td").forEach(cell => {
         keywords.forEach(keyword => {
