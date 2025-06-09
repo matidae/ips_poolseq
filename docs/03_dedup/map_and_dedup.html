@@ -1,0 +1,1392 @@
+
+<html>
+  <head>
+    <style>
+      tr:nth-child(odd) { background-color: #fff; }
+      tr:nth-child(even) { background-color: #f2f2f2; }
+
+      table { border-collapse: collapse; width: auto; }
+
+      th, td {
+        border: 1px solid #ccc;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 14px;
+        padding: 5px 6px;
+      }
+      th { background-color: #ddd; border-color: #bbb; }
+      img { max-width: 300px; height: auto; }
+      body { font-family: sans-serif; font-size: 14px; }
+      .top_header { background-color: #d3d3d3; padding: 6px; border-color: #bbb; }
+      .title { font-family: sans-serif; font-size: 18px; font-weight: bold; }
+      .legend {border:1px solid #ccc; margin-right:6px; display:inline-block; width:12px; height:12px;}
+    </style>   
+  </head>
+  <body>
+<br><br><span class="title">Mapping output, before and after deduplication.<br><br></span>
+
+<div style="font-family: sans-serif;">  
+  <div style="display: flex; gap: 16px; align-items: center; font-family: sans-serif;">
+    <div><span><strong>Mean depth:</strong></span</div>
+    <div><span class="legend"; style="background:#ff9999;"></span> 0 - 100</div>
+    <div><span class="legend"; style="background:#ffcc99;"></span> 100 - 200  </div>
+    <div><span class="legend"; style="background:#ffffcc;"></span> 200 - 300 </div>
+    <div><span class="legend"; style="background:#99ff99;"></span> > 300 </div>
+  </div> 
+  <br>
+<table border='1'>
+  <thead><tr>
+<th>Idn</th>
+<th>Year</th>
+<th>Country</th>
+<th>Region</th>
+<th>Time</th>
+<th>Rep</th>
+<th>Raw_reads</th>
+<th>QC_reads</th>
+<th>Mapped_reads</th>
+<th>Dedup_reads</th>
+<th>Mean_depth</th>
+<th>Depth</th>
+<th>Insertion size</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>SFIN_Ea_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>319.9</td>
+<td>72.7</td>
+<td>59.3</td>
+<td>49.4</td>
+<td class="cov_cell">20.1</td>
+ <td><img src="./depth/SFIN_Ea_2015.depth.500K_bins.png" alt="./depth/SFIN_Ea_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>310.8</td>
+<td>56.8</td>
+<td>53.5</td>
+<td>45.2</td>
+<td class="cov_cell">18.7</td>
+ <td><img src="./depth/SFIN_Eb_2015.depth.500K_bins.png" alt="./depth/SFIN_Eb_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>383.5</td>
+<td>271.6</td>
+<td>210.9</td>
+<td>177.6</td>
+<td class="cov_cell">52.5</td>
+ <td><img src="./depth/WFIN_Ea_2015.depth.500K_bins.png" alt="./depth/WFIN_Ea_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>387.6</td>
+<td>308.6</td>
+<td>239.0</td>
+<td>199.3</td>
+<td class="cov_cell">54.8</td>
+ <td><img src="./depth/WFIN_Eb_2015.depth.500K_bins.png" alt="./depth/WFIN_Eb_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>460.9</td>
+<td>450.4</td>
+<td>414.3</td>
+<td>329.4</td>
+<td class="cov_cell">192.7</td>
+ <td><img src="./depth/SFIN_La_2015.depth.500K_bins.png" alt="./depth/SFIN_La_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>463.6</td>
+<td>454.9</td>
+<td>419.7</td>
+<td>334.9</td>
+<td class="cov_cell">191.8</td>
+ <td><img src="./depth/SFIN_Lb_2015.depth.500K_bins.png" alt="./depth/SFIN_Lb_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>480.4</td>
+<td>471.7</td>
+<td>349.5</td>
+<td>285.0</td>
+<td class="cov_cell">161.4</td>
+ <td><img src="./depth/WFIN_La_2015.depth.500K_bins.png" alt="./depth/WFIN_La_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2015</td>
+<td>2015</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>593.2</td>
+<td>582.1</td>
+<td>416.4</td>
+<td>330.7</td>
+<td class="cov_cell">184.9</td>
+ <td><img src="./depth/WFIN_Lb_2015.depth.500K_bins.png" alt="./depth/WFIN_Lb_2015.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2015.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2016</td>
+<td>2016</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>358.5</td>
+<td>300.1</td>
+<td>279.5</td>
+<td>229.3</td>
+<td class="cov_cell">74.9</td>
+ <td><img src="./depth/SFIN_Ea_2016.depth.500K_bins.png" alt="./depth/SFIN_Ea_2016.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2016.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2016</td>
+<td>2016</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>406.0</td>
+<td>336.6</td>
+<td>313.8</td>
+<td>254.7</td>
+<td class="cov_cell">81.7</td>
+ <td><img src="./depth/SFIN_Eb_2016.depth.500K_bins.png" alt="./depth/SFIN_Eb_2016.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2016.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2016</td>
+<td>2016</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>505.3</td>
+<td>491.6</td>
+<td>19.9</td>
+<td>17.3</td>
+<td class="cov_cell">5.8</td>
+ <td><img src="./depth/SFIN_La_2016.depth.500K_bins.png" alt="./depth/SFIN_La_2016.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2016.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>391.7</td>
+<td>309.3</td>
+<td>264.2</td>
+<td>217.6</td>
+<td class="cov_cell">59.5</td>
+ <td><img src="./depth/WFIN_Ea_2017.depth.500K_bins.png" alt="./depth/WFIN_Ea_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>420.6</td>
+<td>378.6</td>
+<td>323.7</td>
+<td>274.2</td>
+<td class="cov_cell">69.8</td>
+ <td><img src="./depth/WFIN_Eb_2017.depth.500K_bins.png" alt="./depth/WFIN_Eb_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_La_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>N</td>
+<td>L</td>
+<td>a</td>
+<td>426.7</td>
+<td>269.4</td>
+<td>242.7</td>
+<td>202.4</td>
+<td class="cov_cell">54.2</td>
+ <td><img src="./depth/NFIN_La_2017.depth.500K_bins.png" alt="./depth/NFIN_La_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_La_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_Lb_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>N</td>
+<td>L</td>
+<td>b</td>
+<td>487.2</td>
+<td>395.3</td>
+<td>378.2</td>
+<td>300.8</td>
+<td class="cov_cell">83.1</td>
+ <td><img src="./depth/NFIN_Lb_2017.depth.500K_bins.png" alt="./depth/NFIN_Lb_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_Lb_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>307.9</td>
+<td>166.1</td>
+<td>145.9</td>
+<td>121.6</td>
+<td class="cov_cell">39.2</td>
+ <td><img src="./depth/SFIN_Lb_2017.depth.500K_bins.png" alt="./depth/SFIN_Lb_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>452.7</td>
+<td>419.5</td>
+<td>384.6</td>
+<td>311.9</td>
+<td class="cov_cell">101.9</td>
+ <td><img src="./depth/WFIN_La_2017.depth.500K_bins.png" alt="./depth/WFIN_La_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2017</td>
+<td>2017</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>462.7</td>
+<td>416.2</td>
+<td>373.8</td>
+<td>304.1</td>
+<td class="cov_cell">97.9</td>
+ <td><img src="./depth/WFIN_Lb_2017.depth.500K_bins.png" alt="./depth/WFIN_Lb_2017.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2017.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>452.2</td>
+<td>406.4</td>
+<td>398.2</td>
+<td>312.5</td>
+<td class="cov_cell">101.0</td>
+ <td><img src="./depth/SFIN_Ea_2018.depth.500K_bins.png" alt="./depth/SFIN_Ea_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>402.7</td>
+<td>340.6</td>
+<td>333.6</td>
+<td>266.5</td>
+<td class="cov_cell">87.4</td>
+ <td><img src="./depth/SFIN_Eb_2018.depth.500K_bins.png" alt="./depth/SFIN_Eb_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>458.3</td>
+<td>452.3</td>
+<td>413.6</td>
+<td>298.5</td>
+<td class="cov_cell">190.7</td>
+ <td><img src="./depth/WFIN_Ea_2018.depth.500K_bins.png" alt="./depth/WFIN_Ea_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>529.2</td>
+<td>523.3</td>
+<td>470.1</td>
+<td>352.6</td>
+<td class="cov_cell">215.0</td>
+ <td><img src="./depth/WFIN_Eb_2018.depth.500K_bins.png" alt="./depth/WFIN_Eb_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>396.8</td>
+<td>370.2</td>
+<td>339.6</td>
+<td>275.8</td>
+<td class="cov_cell">80.0</td>
+ <td><img src="./depth/SFIN_La_2018.depth.500K_bins.png" alt="./depth/SFIN_La_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>465.0</td>
+<td>430.6</td>
+<td>397.2</td>
+<td>322.9</td>
+<td class="cov_cell">89.4</td>
+ <td><img src="./depth/SFIN_Lb_2018.depth.500K_bins.png" alt="./depth/SFIN_Lb_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>447.5</td>
+<td>416.2</td>
+<td>305.4</td>
+<td>249.6</td>
+<td class="cov_cell">73.0</td>
+ <td><img src="./depth/WFIN_La_2018.depth.500K_bins.png" alt="./depth/WFIN_La_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2018</td>
+<td>2018</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>419.2</td>
+<td>393.3</td>
+<td>293.6</td>
+<td>240.2</td>
+<td class="cov_cell">70.6</td>
+ <td><img src="./depth/WFIN_Lb_2018.depth.500K_bins.png" alt="./depth/WFIN_Lb_2018.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2018.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_Ea_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>N</td>
+<td>E</td>
+<td>a</td>
+<td>639.7</td>
+<td>629.8</td>
+<td>337.9</td>
+<td>281.9</td>
+<td class="cov_cell">127.3</td>
+ <td><img src="./depth/NFIN_Ea_2019.depth.500K_bins.png" alt="./depth/NFIN_Ea_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_Ea_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_Eb_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>N</td>
+<td>E</td>
+<td>b</td>
+<td>703.7</td>
+<td>683.4</td>
+<td>367.9</td>
+<td>303.0</td>
+<td class="cov_cell">135.5</td>
+ <td><img src="./depth/NFIN_Eb_2019.depth.500K_bins.png" alt="./depth/NFIN_Eb_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_Eb_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>464.6</td>
+<td>446.2</td>
+<td>412.7</td>
+<td>322.6</td>
+<td class="cov_cell">201.5</td>
+ <td><img src="./depth/SFIN_Ea_2019.depth.500K_bins.png" alt="./depth/SFIN_Ea_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>515.1</td>
+<td>506.5</td>
+<td>462.7</td>
+<td>356.2</td>
+<td class="cov_cell">219.5</td>
+ <td><img src="./depth/SFIN_Eb_2019.depth.500K_bins.png" alt="./depth/SFIN_Eb_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>390.6</td>
+<td>380.7</td>
+<td>341.9</td>
+<td>266.9</td>
+<td class="cov_cell">170.9</td>
+ <td><img src="./depth/WFIN_Ea_2019.depth.500K_bins.png" alt="./depth/WFIN_Ea_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>445.8</td>
+<td>437.2</td>
+<td>393.0</td>
+<td>307.9</td>
+<td class="cov_cell">193.0</td>
+ <td><img src="./depth/WFIN_Eb_2019.depth.500K_bins.png" alt="./depth/WFIN_Eb_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>370.0</td>
+<td>364.8</td>
+<td>334.8</td>
+<td>262.6</td>
+<td class="cov_cell">166.9</td>
+ <td><img src="./depth/SFIN_La_2019.depth.500K_bins.png" alt="./depth/SFIN_La_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>424.7</td>
+<td>416.3</td>
+<td>376.3</td>
+<td>304.6</td>
+<td class="cov_cell">189.3</td>
+ <td><img src="./depth/SFIN_Lb_2019.depth.500K_bins.png" alt="./depth/SFIN_Lb_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>213.2</td>
+<td>192.9</td>
+<td>183.3</td>
+<td>150.9</td>
+<td class="cov_cell">57.6</td>
+ <td><img src="./depth/WFIN_La_2019.depth.500K_bins.png" alt="./depth/WFIN_La_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2019</td>
+<td>2019</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>521.3</td>
+<td>487.0</td>
+<td>463.5</td>
+<td>359.3</td>
+<td class="cov_cell">115.9</td>
+ <td><img src="./depth/WFIN_Lb_2019.depth.500K_bins.png" alt="./depth/WFIN_Lb_2019.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2019.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>443.0</td>
+<td>435.8</td>
+<td>392.6</td>
+<td>304.7</td>
+<td class="cov_cell">191.4</td>
+ <td><img src="./depth/SFIN_Ea_2020.depth.500K_bins.png" alt="./depth/SFIN_Ea_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>536.4</td>
+<td>527.1</td>
+<td>322.2</td>
+<td>251.0</td>
+<td class="cov_cell">160.1</td>
+ <td><img src="./depth/SFIN_Eb_2020.depth.500K_bins.png" alt="./depth/SFIN_Eb_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>466.6</td>
+<td>440.3</td>
+<td>429.6</td>
+<td>344.3</td>
+<td class="cov_cell">102.9</td>
+ <td><img src="./depth/WFIN_Ea_2020.depth.500K_bins.png" alt="./depth/WFIN_Ea_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>425.7</td>
+<td>401.0</td>
+<td>391.4</td>
+<td>311.6</td>
+<td class="cov_cell">96.4</td>
+ <td><img src="./depth/WFIN_Eb_2020.depth.500K_bins.png" alt="./depth/WFIN_Eb_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>426.8</td>
+<td>412.4</td>
+<td>405.5</td>
+<td>310.6</td>
+<td class="cov_cell">111.6</td>
+ <td><img src="./depth/SFIN_La_2020.depth.500K_bins.png" alt="./depth/SFIN_La_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>409.1</td>
+<td>392.5</td>
+<td>386.4</td>
+<td>305.8</td>
+<td class="cov_cell">106.9</td>
+ <td><img src="./depth/SFIN_Lb_2020.depth.500K_bins.png" alt="./depth/SFIN_Lb_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>425.9</td>
+<td>376.7</td>
+<td>370.5</td>
+<td>290.1</td>
+<td class="cov_cell">84.2</td>
+ <td><img src="./depth/WFIN_La_2020.depth.500K_bins.png" alt="./depth/WFIN_La_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2020</td>
+<td>2020</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>414.9</td>
+<td>371.7</td>
+<td>366.1</td>
+<td>286.4</td>
+<td class="cov_cell">86.4</td>
+ <td><img src="./depth/WFIN_Lb_2020.depth.500K_bins.png" alt="./depth/WFIN_Lb_2020.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2020.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>378.3</td>
+<td>350.8</td>
+<td>343.5</td>
+<td>273.4</td>
+<td class="cov_cell">86.1</td>
+ <td><img src="./depth/SFIN_Ea_2021.depth.500K_bins.png" alt="./depth/SFIN_Ea_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>419.6</td>
+<td>393.8</td>
+<td>379.7</td>
+<td>297.6</td>
+<td class="cov_cell">94.6</td>
+ <td><img src="./depth/SFIN_Eb_2021.depth.500K_bins.png" alt="./depth/SFIN_Eb_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>506.1</td>
+<td>493.9</td>
+<td>466.1</td>
+<td>347.0</td>
+<td class="cov_cell">216.4</td>
+ <td><img src="./depth/WFIN_Ea_2021.depth.500K_bins.png" alt="./depth/WFIN_Ea_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>521.5</td>
+<td>498.8</td>
+<td>492.8</td>
+<td>384.9</td>
+<td class="cov_cell">134.6</td>
+ <td><img src="./depth/WFIN_Eb_2021.depth.500K_bins.png" alt="./depth/WFIN_Eb_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>442.1</td>
+<td>434.5</td>
+<td>381.8</td>
+<td>297.7</td>
+<td class="cov_cell">178.1</td>
+ <td><img src="./depth/SFIN_La_2021.depth.500K_bins.png" alt="./depth/SFIN_La_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>417.5</td>
+<td>409.2</td>
+<td>359.3</td>
+<td>285.0</td>
+<td class="cov_cell">173.8</td>
+ <td><img src="./depth/SFIN_Lb_2021.depth.500K_bins.png" alt="./depth/SFIN_Lb_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>444.0</td>
+<td>430.3</td>
+<td>429.5</td>
+<td>316.9</td>
+<td class="cov_cell">124.2</td>
+ <td><img src="./depth/WFIN_La_2021.depth.500K_bins.png" alt="./depth/WFIN_La_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2021</td>
+<td>2021</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>530.5</td>
+<td>521.8</td>
+<td>502.7</td>
+<td>374.4</td>
+<td class="cov_cell">232.5</td>
+ <td><img src="./depth/WFIN_Lb_2021.depth.500K_bins.png" alt="./depth/WFIN_Lb_2021.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2021.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_Ea_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>N</td>
+<td>E</td>
+<td>a</td>
+<td>468.2</td>
+<td>459.4</td>
+<td>401.1</td>
+<td>305.0</td>
+<td class="cov_cell">182.8</td>
+ <td><img src="./depth/NFIN_Ea_2022.depth.500K_bins.png" alt="./depth/NFIN_Ea_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_Ea_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_Eb_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>N</td>
+<td>E</td>
+<td>b</td>
+<td>557.5</td>
+<td>548.6</td>
+<td>476.8</td>
+<td>354.1</td>
+<td class="cov_cell">213.3</td>
+ <td><img src="./depth/NFIN_Eb_2022.depth.500K_bins.png" alt="./depth/NFIN_Eb_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_Eb_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>503.5</td>
+<td>496.6</td>
+<td>455.4</td>
+<td>353.5</td>
+<td class="cov_cell">223.8</td>
+ <td><img src="./depth/SFIN_Ea_2022.depth.500K_bins.png" alt="./depth/SFIN_Ea_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>796.9</td>
+<td>781.0</td>
+<td>445.2</td>
+<td>374.6</td>
+<td class="cov_cell">228.4</td>
+ <td><img src="./depth/SFIN_Eb_2022.depth.500K_bins.png" alt="./depth/SFIN_Eb_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>519.0</td>
+<td>511.7</td>
+<td>469.5</td>
+<td>356.5</td>
+<td class="cov_cell">226.6</td>
+ <td><img src="./depth/WFIN_Ea_2022.depth.500K_bins.png" alt="./depth/WFIN_Ea_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>646.4</td>
+<td>637.2</td>
+<td>593.0</td>
+<td>440.2</td>
+<td class="cov_cell">275.0</td>
+ <td><img src="./depth/WFIN_Eb_2022.depth.500K_bins.png" alt="./depth/WFIN_Eb_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_La_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>N</td>
+<td>L</td>
+<td>a</td>
+<td>531.2</td>
+<td>524.2</td>
+<td>473.7</td>
+<td>362.6</td>
+<td class="cov_cell">219.4</td>
+ <td><img src="./depth/NFIN_La_2022.depth.500K_bins.png" alt="./depth/NFIN_La_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_La_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>NFIN_Lb_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>N</td>
+<td>L</td>
+<td>b</td>
+<td>488.6</td>
+<td>482.4</td>
+<td>418.1</td>
+<td>325.4</td>
+<td class="cov_cell">196.9</td>
+ <td><img src="./depth/NFIN_Lb_2022.depth.500K_bins.png" alt="./depth/NFIN_Lb_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/NFIN_Lb_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>466.8</td>
+<td>459.4</td>
+<td>406.6</td>
+<td>292.1</td>
+<td class="cov_cell">189.9</td>
+ <td><img src="./depth/SFIN_La_2022.depth.500K_bins.png" alt="./depth/SFIN_La_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>448.2</td>
+<td>441.5</td>
+<td>381.8</td>
+<td>282.3</td>
+<td class="cov_cell">184.8</td>
+ <td><img src="./depth/SFIN_Lb_2022.depth.500K_bins.png" alt="./depth/SFIN_Lb_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>499.5</td>
+<td>492.7</td>
+<td>451.2</td>
+<td>343.3</td>
+<td class="cov_cell">222.5</td>
+ <td><img src="./depth/WFIN_La_2022.depth.500K_bins.png" alt="./depth/WFIN_La_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2022</td>
+<td>2022</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>537.9</td>
+<td>530.4</td>
+<td>489.7</td>
+<td>366.2</td>
+<td class="cov_cell">236.2</td>
+ <td><img src="./depth/WFIN_Lb_2022.depth.500K_bins.png" alt="./depth/WFIN_Lb_2022.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2022.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>LAAU_Ea_2023</td>
+<td>2023</td>
+<td>AAU</td>
+<td>L</td>
+<td>E</td>
+<td>a</td>
+<td>447.9</td>
+<td>443.1</td>
+<td>414.6</td>
+<td>338.0</td>
+<td class="cov_cell">216.3</td>
+ <td><img src="./depth/LAAU_Ea_2023.depth.500K_bins.png" alt="./depth/LAAU_Ea_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/LAAU_Ea_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>LAAU_Eb_2023</td>
+<td>2023</td>
+<td>AAU</td>
+<td>L</td>
+<td>E</td>
+<td>b</td>
+<td>528.6</td>
+<td>522.2</td>
+<td>479.8</td>
+<td>375.2</td>
+<td class="cov_cell">239.4</td>
+ <td><img src="./depth/LAAU_Eb_2023.depth.500K_bins.png" alt="./depth/LAAU_Eb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/LAAU_Eb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>364.4</td>
+<td>360.0</td>
+<td>346.8</td>
+<td>285.3</td>
+<td class="cov_cell">185.2</td>
+ <td><img src="./depth/SFIN_Ea_2023.depth.500K_bins.png" alt="./depth/SFIN_Ea_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>373.8</td>
+<td>369.0</td>
+<td>352.6</td>
+<td>295.1</td>
+<td class="cov_cell">189.9</td>
+ <td><img src="./depth/SFIN_Eb_2023.depth.500K_bins.png" alt="./depth/SFIN_Eb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>462.5</td>
+<td>456.1</td>
+<td>435.4</td>
+<td>329.8</td>
+<td class="cov_cell">218.3</td>
+ <td><img src="./depth/WFIN_Ea_2023.depth.500K_bins.png" alt="./depth/WFIN_Ea_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>496.6</td>
+<td>489.7</td>
+<td>476.2</td>
+<td>368.7</td>
+<td class="cov_cell">243.4</td>
+ <td><img src="./depth/WFIN_Eb_2023.depth.500K_bins.png" alt="./depth/WFIN_Eb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WOAU_Ea_2023</td>
+<td>2023</td>
+<td>OAU</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>490.2</td>
+<td>484.5</td>
+<td>456.2</td>
+<td>354.1</td>
+<td class="cov_cell">226.2</td>
+ <td><img src="./depth/WOAU_Ea_2023.depth.500K_bins.png" alt="./depth/WOAU_Ea_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WOAU_Ea_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WOAU_Eb_2023</td>
+<td>2023</td>
+<td>OAU</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>416.9</td>
+<td>411.7</td>
+<td>387.6</td>
+<td>304.9</td>
+<td class="cov_cell">195.1</td>
+ <td><img src="./depth/WOAU_Eb_2023.depth.500K_bins.png" alt="./depth/WOAU_Eb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WOAU_Eb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>LAAU_La_2023</td>
+<td>2023</td>
+<td>AAU</td>
+<td>L</td>
+<td>L</td>
+<td>a</td>
+<td>459.7</td>
+<td>454.0</td>
+<td>435.6</td>
+<td>355.7</td>
+<td class="cov_cell">225.8</td>
+ <td><img src="./depth/LAAU_La_2023.depth.500K_bins.png" alt="./depth/LAAU_La_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/LAAU_La_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>LAAU_Lb_2023</td>
+<td>2023</td>
+<td>AAU</td>
+<td>L</td>
+<td>L</td>
+<td>b</td>
+<td>548.2</td>
+<td>541.7</td>
+<td>521.9</td>
+<td>419.2</td>
+<td class="cov_cell">261.5</td>
+ <td><img src="./depth/LAAU_Lb_2023.depth.500K_bins.png" alt="./depth/LAAU_Lb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/LAAU_Lb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>386.2</td>
+<td>380.5</td>
+<td>343.6</td>
+<td>276.9</td>
+<td class="cov_cell">178.6</td>
+ <td><img src="./depth/SFIN_La_2023.depth.500K_bins.png" alt="./depth/SFIN_La_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>365.6</td>
+<td>361.0</td>
+<td>324.1</td>
+<td>263.7</td>
+<td class="cov_cell">169.6</td>
+ <td><img src="./depth/SFIN_Lb_2023.depth.500K_bins.png" alt="./depth/SFIN_Lb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>394.8</td>
+<td>390.1</td>
+<td>348.9</td>
+<td>292.2</td>
+<td class="cov_cell">187.9</td>
+ <td><img src="./depth/WFIN_La_2023.depth.500K_bins.png" alt="./depth/WFIN_La_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2023</td>
+<td>2023</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>468.2</td>
+<td>461.3</td>
+<td>421.0</td>
+<td>323.7</td>
+<td class="cov_cell">212.1</td>
+ <td><img src="./depth/WFIN_Lb_2023.depth.500K_bins.png" alt="./depth/WFIN_Lb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WOAU_La_2023</td>
+<td>2023</td>
+<td>OAU</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>464.6</td>
+<td>456.5</td>
+<td>424.3</td>
+<td>321.6</td>
+<td class="cov_cell">208.2</td>
+ <td><img src="./depth/WOAU_La_2023.depth.500K_bins.png" alt="./depth/WOAU_La_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WOAU_La_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WOAU_Lb_2023</td>
+<td>2023</td>
+<td>OAU</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>496.1</td>
+<td>488.4</td>
+<td>457.2</td>
+<td>346.0</td>
+<td class="cov_cell">223.5</td>
+ <td><img src="./depth/WOAU_Lb_2023.depth.500K_bins.png" alt="./depth/WOAU_Lb_2023.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WOAU_Lb_2023.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Ea_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>a</td>
+<td>495.3</td>
+<td>489.3</td>
+<td>440.2</td>
+<td>336.7</td>
+<td class="cov_cell">219.2</td>
+ <td><img src="./depth/SFIN_Ea_2024.depth.500K_bins.png" alt="./depth/SFIN_Ea_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Ea_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Eb_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>S</td>
+<td>E</td>
+<td>b</td>
+<td>457.8</td>
+<td>452.1</td>
+<td>408.6</td>
+<td>313.4</td>
+<td class="cov_cell">202.9</td>
+ <td><img src="./depth/SFIN_Eb_2024.depth.500K_bins.png" alt="./depth/SFIN_Eb_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Eb_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Ea_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>a</td>
+<td>454.5</td>
+<td>449.0</td>
+<td>417.4</td>
+<td>325.4</td>
+<td class="cov_cell">214.2</td>
+ <td><img src="./depth/WFIN_Ea_2024.depth.500K_bins.png" alt="./depth/WFIN_Ea_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Ea_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Eb_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>W</td>
+<td>E</td>
+<td>b</td>
+<td>532.0</td>
+<td>525.8</td>
+<td>489.9</td>
+<td>375.2</td>
+<td class="cov_cell">248.0</td>
+ <td><img src="./depth/WFIN_Eb_2024.depth.500K_bins.png" alt="./depth/WFIN_Eb_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Eb_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_La_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>a</td>
+<td>606.3</td>
+<td>598.4</td>
+<td>567.0</td>
+<td>406.7</td>
+<td class="cov_cell">262.3</td>
+ <td><img src="./depth/SFIN_La_2024.depth.500K_bins.png" alt="./depth/SFIN_La_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_La_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>SFIN_Lb_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>S</td>
+<td>L</td>
+<td>b</td>
+<td>677.0</td>
+<td>667.7</td>
+<td>631.7</td>
+<td>458.8</td>
+<td class="cov_cell">292.7</td>
+ <td><img src="./depth/SFIN_Lb_2024.depth.500K_bins.png" alt="./depth/SFIN_Lb_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/SFIN_Lb_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_La_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>a</td>
+<td>551.6</td>
+<td>545.1</td>
+<td>517.5</td>
+<td>387.1</td>
+<td class="cov_cell">251.3</td>
+ <td><img src="./depth/WFIN_La_2024.depth.500K_bins.png" alt="./depth/WFIN_La_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_La_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+<tr>
+<td>WFIN_Lb_2024</td>
+<td>2024</td>
+<td>FIN</td>
+<td>W</td>
+<td>L</td>
+<td>b</td>
+<td>534.6</td>
+<td>529.0</td>
+<td>490.1</td>
+<td>387.3</td>
+<td class="cov_cell">247.2</td>
+ <td><img src="./depth/WFIN_Lb_2024.depth.500K_bins.png" alt="./depth/WFIN_Lb_2024.depth.500K_bins.png"></td>
+<td><img src="./insertion_size_metrics/WFIN_Lb_2024.dedup.sort.insertion_metrics_histogram.png" width="160px"></td>
+</tr>
+</tbody>
+</table>
+
+<script>
+  document.querySelectorAll('td.cov_cell').forEach(function(cov) {
+    let val = parseFloat(cov.textContent);
+    if (!isNaN(val)) {
+      if (val < 100) {
+        cov.style.backgroundColor = '#ff9999';
+      } else if (val < 200) {
+        cov.style.backgroundColor = '#ffcc99';
+      } else if (val < 300) {
+        cov.style.backgroundColor = '#ffffcc';
+      } else {
+        cov.style.backgroundColor = '#99ff99';
+      }
+    }
+  });
+</script>
