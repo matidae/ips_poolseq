@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SNPs read depth</title>
+  <link rel="icon" type="image/png" href="../favicon_sbb.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      scroll-behavior: smooth;
+    }
+
+   
+    .fig-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .fig-row img {
+      max-width: 600px;
+      height: auto;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Mapping depth before and after deduplication</h2>
+
+<h3>FIN E samples</h3>
+<div class="fig-row">
+  <img src="./NFIN_E.SNPs_depth.png">
+  <img src="./WFIN_E.SNPs_depth.png">
+  <img src="./SFIN_E.SNPs_depth.png">
+</div>
+
+<h3>FIN L samples</h3>
+<div class="fig-row">
+  <img src="./NFIN_L.SNPs_depth.png">
+  <img src="./WFIN_L.SNPs_depth.png">
+  <img src="./SFIN_L.SNPs_depth.png">
+</div>
+
+<h3>AUS E samples</h3>
+<div class="fig-row">
+  <img src="./LAAU_E.SNPs_depth.png">
+  <img src="./WOAU_E.SNPs_depth.png">
+</div>
+
+<h3>AUS L samples</h3>
+<div class="fig-row">
+  <img src="./LAAU_L.SNPs_depth.png">
+  <img src="./WOAU_L.SNPs_depth.png">
+</div>
+
+</body>
+</html>
