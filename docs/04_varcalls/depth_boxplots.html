@@ -9,14 +9,13 @@
       font-family: Arial, sans-serif;
       padding: 20px;
       scroll-behavior: smooth;
-    }
-
-   
+      padding-bottom: 100px; 
+    }   
     .fig-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 20px;      
     }
 
     .fig-row img {
@@ -24,36 +23,58 @@
       height: auto;
       border: 1px solid #ddd;
     }
+
+.zoomable:hover {
+  transform: scale(1.8);
+  transition: transform 0.3s ease;
+  z-index: 10;
+  position: relative;  
+}
+.zoom_center:hover{
+  transform-origin: center center;
+}
+.zoom_right:hover{
+  transform-origin: center right;
+}
+.zoom_left:hover{
+  transform-origin: center left;
+}
+
   </style>
 </head>
 <body>
 
 <h2>SNPs read depth boxplots</h2>
-
+<h3>Sum of all samples</h3>
+<div class="fig-row">
+  <img src="./boxplots/total_SNPs_depth.png" style="max-width: 300px;"  class="zoomable zoom_left">
+</div>
+<hr>
+<h2>Genic SNPs</h2>
 <h3>FIN E samples</h3>
 <div class="fig-row">
-  <img src="./NFIN_E.SNPs_depth.png">
-  <img src="./WFIN_E.SNPs_depth.png">
-  <img src="./SFIN_E.SNPs_depth.png">
+  <img src="./boxplots/NFIN_E.SNPs_depth.png" class="zoomable zoom_left">
+  <img src="./boxplots/WFIN_E.SNPs_depth.png" class="zoomable zoom_center">
+  <img src="./boxplots/SFIN_E.SNPs_depth.png" class="zoomable zoom_right">
 </div>
 
 <h3>FIN L samples</h3>
 <div class="fig-row">
-  <img src="./NFIN_L.SNPs_depth.png">
-  <img src="./WFIN_L.SNPs_depth.png">
-  <img src="./SFIN_L.SNPs_depth.png">
+  <img src="./boxplots/NFIN_L.SNPs_depth.png" class="zoomable zoom_left">
+  <img src="./boxplots/WFIN_L.SNPs_depth.png" class="zoomable zoom_center">
+  <img src="./boxplots/SFIN_L.SNPs_depth.png" class="zoomable zoom_rigth">
 </div>
 
 <h3>AUS E samples</h3>
 <div class="fig-row">
-  <img src="./LAAU_E.SNPs_depth.png">
-  <img src="./WOAU_E.SNPs_depth.png">
+  <img src="./boxplots/LAAU_E.SNPs_depth.png" class="zoomable zoom_left">
+  <img src="./boxplots/WOAU_E.SNPs_depth.png" class="zoomable zoom_center" >
 </div>
 
 <h3>AUS L samples</h3>
 <div class="fig-row">
-  <img src="./LAAU_L.SNPs_depth.png">
-  <img src="./WOAU_L.SNPs_depth.png">
+  <img src="./boxplots/LAAU_L.SNPs_depth.png" class="zoomable zoom_left">
+  <img src="./boxplots/WOAU_L.SNPs_depth.png" class="zoomable zoom_center">
 </div>
 
 </body>
