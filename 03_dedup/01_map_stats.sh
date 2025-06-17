@@ -51,21 +51,28 @@ done > ../../results/03_dedup/samtools_metrics/mapped_reads_before_dedup
 
 # Get a list of how many reads remain mapped after deduplication
 for i in $(cat ../../results/01_proc_reads/all_poolseq_report.tsv | grep -v Idn | cut -f1); do 
-    cat ../../results/03_dedup/samtools_metrics/$i.samtools.flagstat | grep "mapped.*%" | \
+    cat $out/samtools_metrics/$i.samtools.flagstat | grep "mapped.*%" | \
     awk 'OFS="\t" {printf "%.1f\n", $1/1e6 }'; 
 done > ../../results/03_dedup/samtools_metrics/mapped_reads_after_dedup
 
 # Prepare the table with data from the previous report
-awk 'OFS="\t" {print $1,$2, $4, $5, $3, $6, $15, $7}'  ../../results/01_proc_reads/all_poolseq_report.tsv | \
-    grep -v Idn > ../../results/03_dedup/half_previous_table
+awk 'OFS="\t" {print $1,$2, $4, $5, $3, $6, $15, $7, $10}'  ../../results/01_proc_reads/all_poolseq_report.tsv | \
+    grep -v Idn > $out/half_previous_table
 
 # Write column names for summary table
-echo -e "Idn\tYear\tCountry\tRegion\tTime\tRep\tRaw_reads\tQC_reads\tMapped_reads\tDedup_reads\tMean_depth" \
-    > ../../results/03_dedup/summary_table
+echo -e "Idn\tYear\tCountry\tRegion\tTime\tRep\tRaw_reads\tQC_reads\tLength\tMapped_reads\tDedup_reads\tMean_depth" \
+    > $out/summary_table.tsv
 
 # Output a summary table with all the data needed for the html report
-paste ../../results/03_dedup/half_previous_table \
-    ../../results/03_dedup/samtools_metrics/mapped_reads_before_dedup \
-    ../../results/03_dedup/samtools_metrics/mapped_reads_after_dedup  \
-    ../../results/03_dedup/mosdepth/exact_mean_coverage.sort \
-    >> ../../results/03_dedup/summary_table
+paste $out/half_previous_table \
+    $out/samtools_metrics/mapped_reads_before_dedup \
+    $out/samtools_metrics/mapped_reads_after_dedup  \
+    $out/mosdepth/exact_mean_coverage.sort \
+    >> $out/summary_table.tsv
+
+# Delete all temporal files
+rm  $out/half_previous_table \
+    $out/samtools_metrics/mapped_reads_before_dedup \
+    $out/samtools_metrics/mapped_reads_after_dedup  \
+    $out/mosdepth/exact_mean_coverage.sort
+
