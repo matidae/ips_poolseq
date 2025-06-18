@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-wd = "../../results/04_varcalls/"
+wd = "../../results/04_varcalls"
 
 def sum_depth_alleles(i):
     depth = int(i.split(",")[0]) + int(i.split(",")[1])

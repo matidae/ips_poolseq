@@ -34,7 +34,7 @@ awk 'OFS="\t"{ if ($3=="gene") print $1, $4, $5 }' "$genome/Ityp_1.0.converted.g
 bcftools view -h "$wd/ips.filter.m05.vcf.gz" | tee "$wd/genic_variants.vcf" "$wd/intergenic_variants.vcf" > /dev/null
 
 #Extract genic SNPs
-bedtools intersect -a "$wd/ips.filter.m05.vcf.gz" -b "$genome/Ityp_1.0.converted.genes.bed" -wa >> "$wd/genic_variants.vcf"
+bedtools intersect -a "$wd/ips.filter.m05.vcf.gz" -b "$genome/Ityp_1.0.converted.genes.bed" -u >> "$wd/genic_variants.vcf"
 bgzip "$wd/genic_variants.vcf"
 
 # Extract intergenic SNPs
