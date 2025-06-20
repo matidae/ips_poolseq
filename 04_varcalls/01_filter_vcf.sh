@@ -14,7 +14,9 @@ eval "$(conda shell.bash hook)"
 conda activate extra
 
 wd="../../results/04_varcalls"
-genome="../../data/reference"
+reference="../../data/reference"
+gff="Ips_typograpgus_LG16corrected.liftoff.gff"
+genes="Ips_typograpgus_LG16corrected.liftoff.genes.bed"
 
 # Filter VCF: -v snps (only snps), -m2 -M2 (biallelic) -e 'GT="./."' (exclude missing GT)
 bcftools view "$wd/ips_merged.vcf.gz" -m2 -M2 -v snps -e 'GT="./." || INFO/MQ<20 || QUAL<20' \
@@ -27,18 +29,18 @@ bcftools filter "$wd/ips.filter.vcf.gz" -e 'MAF[0] < 0.05' -Oz -o "$wd/ips.filte
 bcftools view -v indels $wd/ips_merged.vcf.gz | bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\n' > "$wd/ips_indels.tsv"
 
 # Make a bed file of genes to extract genic SNPs
-awk 'OFS="\t"{ if ($3=="gene") print $1, $4, $5 }' "$genome/Ityp_1.0.converted.gff3" > "$genome/Ityp_1.0.converted.genes.bed"
+awk 'OFS="\t"{ if ($3=="gene") print $1, $4, $5 }' "$reference/$gff" > "$reference/$bed"
 
 # Intersect gene coordinates with VCF file to distinguish genic and intergenic SNPs
 # Create header of vcf file since bedtools omits it
 bcftools view -h "$wd/ips.filter.m05.vcf.gz" | tee "$wd/genic_variants.vcf" "$wd/intergenic_variants.vcf" > /dev/null
 
 #Extract genic SNPs
-bedtools intersect -a "$wd/ips.filter.m05.vcf.gz" -b "$genome/Ityp_1.0.converted.genes.bed" -u >> "$wd/genic_variants.vcf"
+bedtools intersect -a "$wd/ips.filter.m05.vcf.gz" -b "$reference/$bed" -u >> "$wd/genic_variants.vcf"
 bgzip "$wd/genic_variants.vcf"
 
 # Extract intergenic SNPs
-bedtools intersect -a "$wd/ips.filter.m05.vcf.gz" -b "$genome/Ityp_1.0.converted.genes.bed" -v >> "$wd/intergenic_variants.vcf"
+bedtools intersect -a "$wd/ips.filter.m05.vcf.gz" -b "$reference/$bed" -v >> "$wd/intergenic_variants.vcf"
 bgzip  "$wd/intergenic_variants.vcf"
 
 # Create header of readcounts table
