@@ -69,7 +69,7 @@ def make_boxplots(stats_file):
             actual_labels.append(label)
 
         # Create a new figure for each group
-        fig, ax = plt.subplots(figsize=(20, 6))
+        fig, ax = plt.subplots(figsize=(16, 6))
         ax.axhline(100, color='gray', linestyle='--')
         ax.axhline(200, color='gray', linestyle='--')
         ax.axhline(300, color='gray', linestyle='--')
@@ -90,10 +90,10 @@ def make_boxplots(stats_file):
             cap.set(color=edge_color, linewidth=1.5)
         for pos, box in zip(positions, boxplot_data):
             if box['med'] is not None:
-                ax.text(pos - 0.28, box['med'] -5 , f"{box['med']:.0f}", ha='right', va='bottom', fontsize=14, color='black')
-        ax.set_xticklabels(actual_labels, rotation=60, fontsize=14)        
+                ax.text(pos - 0.28, box['med'] -5 , f"{box['med']:.0f}", ha='right', va='bottom', fontsize=12, color='black')
+        ax.set_xticklabels(actual_labels, rotation=60, fontsize=12)        
         ax.set_title(prefix)        
-        ax.set_ylabel("Depth", fontsize=14)        
+        ax.set_ylabel("Depth", fontsize=12)        
         plt.ylim(-10, 400)
         plt.tight_layout()        
         plot_name = prefix + ".SNPs_depth.png"       
