@@ -26,11 +26,18 @@ color= "#009688"
 # Barplot of null variance estimates per sample
 def plot_null_variance_bar(nv_file):
     nv = pd.read_csv(nv_file, sep="\t", header=None, names=["sample", "nv"])
+    # Extract parts for sorting
+    nv[["group", "season", "year"]] = nv["sample"].str.extract(r"^([A-Z]+)_([EL])_(\d{4})")    
+    nv["year"] = nv["year"].astype(int) # Convert year to integer     
+    season_order = {"E": 0, "L": 1} # Define season order (E < L)
+    nv["season_order"] = nv["season"].map(season_order)
+    # Sort by group, then season (E before L), then year
+    nv = nv.sort_values(by=["group", "season_order", "year"])    
     plt.figure(figsize=(12,6))
     plt.style.use("ggplot")
     plt.bar(nv["sample"], nv["nv"], color=color)
     plt.xticks(rotation=90)
-    plt.ylabel("Null variance estimate (nv_init)")
+    plt.ylabel("Null variance estimate")
     plt.tight_layout()
     plt.savefig(f"{wd}/nv_per_sample.png")
     plt.close()
@@ -41,7 +48,7 @@ def plot_dz_diff_by_freq(freq_file):
     plt.figure(figsize=(8, 5))
     plt.style.use("ggplot")
     plt.plot(df["pcat"], df["avg_abs_diff"], marker='o', color=color)
-    plt.xlabel("Allele frequency bin (pcat)")
+    plt.xlabel("Allele frequency bin")
     plt.ylabel("Average absolute difference between replicates")    
     plt.grid(True)    
     plt.tight_layout()
@@ -51,7 +58,7 @@ def plot_dz_diff_by_freq(freq_file):
     # Bar plot of SNP counts per bin
     plt.figure(figsize=(8, 5))
     plt.bar(df["pcat"], df["count"], color=color)
-    plt.xlabel("Allele frequency bin (pcat)")
+    plt.xlabel("Allele frequency bin")
     plt.ylabel("Number of SNPs")
     plt.grid(axis='y')
     plt.tight_layout()
