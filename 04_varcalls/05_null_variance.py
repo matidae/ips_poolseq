@@ -16,21 +16,21 @@ from random import shuffle
 from math import sqrt, asin, sin
 
 # Files input and outputs
-wd = "../../results/04_varcalls"
-infile = f"{wd}/genic_m_and_z.tsv"
-paired = f"{wd}/paired_samples.txt"
-norep = f"{wd}/paired_samples.no_replicate.txt"
-out_hist=f"{wd}/pairdz.byfreq.txt"
-out_nv=f"{wd}/nv.genic_m_and_z"
-out_summary = f"{wd}/null_variance_summary.tsv"
+work_dir = "../../results/04_varcalls"
+m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"
+paired_out = f"{work_dir}/paired_samples.txt"
+norep = f"{work_dir}/paired_samples.no_replicate.txt"
+out_hist=f"{work_dir}/pairdz.byfreq.txt"
+out_nv=f"{work_dir}/nv.genic_m_and_z"
+out_summary = f"{work_dir}/null_variance_summary.tsv"
 
 # Generate the file paired_samples.txt
-def paired_samples(infile, paired, norep):
+def paired_samples(m_and_z_in, paired_out, norep):
     sample_dict = {}
     xpositions = {} # maps sample to column idx of replicates
     # Open genic_m_and_z to get the header
-    with open(infile, "r") as f, open(paired, "w") as out_paired, open(norep, "w") as out_norep:
-        reader = csv.reader(f, delimiter="\t")
+    with open(m_and_z_in, "r") as m_and_z_fh, open(paired_out, "w") as paired_fh, open(norep, "w") as out_norep:
+        reader = csv.reader(m_and_z_fh, delimiter="\t")
         header = next(reader)
         for idx, sample in enumerate(header[4:], start=4):  # start in col 4:
             location, season_rep, year = sample.split("_")
@@ -44,14 +44,14 @@ def paired_samples(infile, paired, norep):
         for (location, season, year), reps in sorted(sample_dict.items()):
             if "a" in reps and "b" in reps:
                 name = f"{location}_{season}_{year}"
-                out_paired.write(f"{name}\t{reps['a']}\t{reps['b']}\n")
+                paired_fh.write(f"{name}\t{reps['a']}\t{reps['b']}\n")
                 xpositions[name] = [int(reps['a']), int(reps['b'])]
             else:
                 # Write non paired samples to file
                 out_norep.write(f"{location}_{season}_{year}: {reps}\n")
     return xpositions
 
-def calculate_null_variance(xpositions, infile):    
+def calculate_null_variance(xpositions, infile):
     min2 = 100 #Minimum read depth
     minMAF = 0.05 #Minimum allele frequency
 
@@ -136,7 +136,7 @@ def write_output(stats, changedist):
                 # Write pcat, count, and average absolute difference to output file out1
                 hist_f.write(f"{pcat}\t{count}\t{avg_abs_diff}\n")
 
-xpositions = paired_samples(infile, paired, norep)
-stats, changedist = calculate_null_variance(xpositions, infile)
+xpositions = paired_samples(m_and_z_in, paired_out, norep)
+stats, changedist = calculate_null_variance(xpositions, m_and_z_in)
 write_output(stats, changedist)
 
