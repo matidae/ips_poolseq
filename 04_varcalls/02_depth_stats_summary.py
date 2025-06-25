@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-#----------------------------------------------------------------------
-# Calculates basic statistics about the read depth for each sample and for the total
+#------------------------------------------------------------------------------
+# Compute summary statistics of read depths per sample and overall
 #
 # Input: 
 #   - genic_readcounts.tsv: file with CHR, POS, REF, ALT, ADs* for all samples
 #   - intergenic_readcounts.tsv 
 # Output: 
-#   - genic.depth.stats.tsv: table of statistics (median, quantiles, IQR) 
+#   - genic.depth.stats.tsv: summary statistics (mean, median, quantiles, IQR, whiskers) 
 #   - intergenic.depth.stats.tsv
-#----------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 import pandas as pd
 from utils import parse_counts
