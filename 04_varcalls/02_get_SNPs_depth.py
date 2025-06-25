@@ -1,49 +1,59 @@
 #!/usr/bin/env python3
 
 #----------------------------------------------------------------------
-# Calculates basic statistics of readcounts for each sample and for the total sum
-# Run: ./02_get_SNPs_depth.py
-# In: genic_readcounts.tsv and intergenic_readcounts.tsv (output of 01_filter_vcf.sh)
-# Out: tables of statistics (median, quantiles, IQR) for further calculations and for making boxplots
+# Calculates basic statistics about the read depth for each sample and for the total
+#
+# Input: 
+#   - genic_readcounts.tsv: file with CHR, POS, REF, ALT, ADs* for all samples
+#   - intergenic_readcounts.tsv 
+# Output: 
+#   - genic.depth.stats.tsv: table of statistics (median, quantiles, IQR) 
+#   - intergenic.depth.stats.tsv
 #----------------------------------------------------------------------
 
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+from utils import parse_counts
 
-wd = "../../results/04_varcalls"
+work_dir = "../../results/04_varcalls"
 
-def sum_depth_alleles(i):
-    depth = int(i.split(",")[0]) + int(i.split(",")[1])
-    return(depth)
-
+# Input files
+genic_counts_in = f"{work_dir}/genic_readcounts.tsv" 
+intergenic_counts_in = f"{work_dir}/intergenic_readcounts.tsv" 
+# Output files
+genic_depth_stats_out = f"{work_dir}/genic_depth_stats.tsv"
+intergenic_depth_stats_out = f"{work_dir}/intergenic_depth_stats.tsv"
+    
 def compute_sample_quantiles(input_file, output_file):
     df = pd.read_csv(input_file, sep="\t", header=0)
     # Extract sample column names
     sample_cols = df.columns[4:]         
     # Iterate over cols and use apply to sum alleles depths
     for sample in sample_cols:
-        df[sample] = df[sample].apply(sum_depth_alleles)
+        df[sample] = df[sample].apply(lambda x: sum(parse_counts(x)))
     
     df["TOTAL"] = df[sample_cols].sum(axis=1)
     sample_cols = list(sample_cols) + ["TOTAL"]
 
     stats = df[sample_cols].describe().T
-    stats["mean"] = stats["mean"].map("{:.2f}".format)
-    stats["std"] = stats["std"].map("{:.2f}".format)
+    stats["mean"] = stats["mean"].round(1)
+    stats["std"] = stats["std"].round(1)
 
     stats["iqr"] = stats["75%"] - stats["25%"]    
-    stats["whislo"] = (stats["25%"] - 1.5 * stats["iqr"]).clip(lower=0)
-    stats["whishi"] = stats["75%"] + 1.5 * stats["iqr"]
-   
-    stats["median"] = df[sample_cols].median().map("{:.1f}".format)
-    stats["whislo"] = stats["whislo"].round(1)
-    stats["whishi"] = stats["whishi"].round(1)
+    stats["whislo"] = (stats["25%"] - 1.5 * stats["iqr"]).clip(lower=0).round(1)
+    stats["whishi"] = (stats["75%"] + 1.5 * stats["iqr"]).round(1)
+       
+    stats["median"] = df[sample_cols].median().round(1)
+    stats["median_50"] = (stats["median"].astype(float)*0.5).round(1)
+    stats["median_150"] = (stats["median"].astype(float)*1.5).round(1)
 
-    # Cast int-type columns back to int
-    int_cols = stats.columns.difference(["mean", "std", "median", "whislo", "whishi"])
+    # Cast columns back to int
+    int_cols = stats.columns.difference(["mean", "std", "median", "whislo", "whishi","median_50", "median_150"])
     stats[int_cols] = stats[int_cols].astype(int)    
-    stats.to_csv(output_file, sep="\t", float_format="%.2f")
+    stats.to_csv(output_file, sep="\t")
 
-compute_sample_quantiles(f"{wd}/genic_readcounts.tsv", f"{wd}/genic.snp_total_depths.stats.tsv")
-compute_sample_quantiles(f"{wd}/intergenic_readcounts.tsv", f"{wd}/intergenic.snp_total_depths.stats.tsv")
+def main():
+    compute_sample_quantiles(genic_counts_in, genic_depth_stats_out)
+    compute_sample_quantiles(intergenic_counts_in, intergenic_depth_stats_out)    
+
+if __name__ == "__main__":
+    main()
