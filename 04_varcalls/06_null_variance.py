@@ -86,8 +86,7 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
             # Calculate initial nucleotide variation estimate (nv_init)
             null_var = dz2_mean - readdepth_var
             
-            summary_fh.write(f"{sample_name}\t{n}\t{dz2_mean:.6f}\t{readdepth_var:.6f}\t\
-                             {rdprop:.6f}\t{null_var:.6f}\n")            
+            summary_fh.write(f"{sample_name}\t{n}\t{dz2_mean:.6f}\t{readdepth_var:.6f}\t{rdprop:.6f}\t{null_var:.6f}\n")            
             
         # Process the changedist histogram symmetrical bins
         for pbin in range(51):
@@ -96,9 +95,9 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
             # Only process bins with at least one data point
             if count > 0:
                 # Calculate average absolute difference in this bin
-                avg_abs_diff = total_abs_diff / float(count)        
+                avg_abs_diff = total_abs_diff / float(count)                        
                 # Write pcat, count, and average absolute difference to output file out1
-                dz2_bin_fh.write(f"{pbin}\t{count}\t{avg_abs_diff}\n")           
+                dz2_bin_fh.write(f"{pbin}\t{count}\t{avg_abs_diff:.6f}\n")           
 
 def main():
     samples_reps = load_paired_samples()
