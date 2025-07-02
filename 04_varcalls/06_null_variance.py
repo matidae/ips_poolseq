@@ -21,7 +21,6 @@ m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"
 
 # Output files
 dz2_bin_out=f"{work_dir}/dz2_by_pbin.tsv"
-#nv_out=f"{work_dir}/nv.genic_m_and_z"
 summary_out = f"{work_dir}/null_variance_summary.tsv"
 
 def calculate_null_variance(samples_reps, m_and_z_in):
@@ -75,6 +74,7 @@ def calculate_null_variance(samples_reps, m_and_z_in):
 
 def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
     with open(dz2_bin_out, 'w') as dz2_bin_fh, open(summary_out, 'w') as summary_fh:
+        summary_fh.write("Sample\tCount\tDZ2_mean\tReadDepth_var\tRDprop\tNull_var\n")
         for sample_name in samples_reps:            
             n = int(stats[sample_name][0])
             # Calculate mean of squared difference of z (dz2_ mean)
@@ -86,8 +86,9 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
             # Calculate initial nucleotide variation estimate (nv_init)
             null_var = dz2_mean - readdepth_var
             
-            summary_fh.write(f"{sample_name}\t{n}\t{dz2_mean:.6f}\t{readdepth_var:.6f}\t{rdprop:.6f}\t{null_var:.6f}\n")            
+            summary_fh.write(f"{sample_name}\t{n}\t{dz2_mean:.6f}\t{readdepth_var:.6f}\t{rdprop:.6f}\t{null_var:.6f}\n")
             
+        dz2_bin_fh.write("pbin\tcount\tavg_abs_diff\n")
         # Process the changedist histogram symmetrical bins
         for pbin in range(51):
             count = changedist[pbin][0]
@@ -97,7 +98,7 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
                 # Calculate average absolute difference in this bin
                 avg_abs_diff = total_abs_diff / float(count)                        
                 # Write pcat, count, and average absolute difference to output file out1
-                dz2_bin_fh.write(f"{pbin}\t{count}\t{avg_abs_diff:.6f}\n")           
+                dz2_bin_fh.write(f"{pbin}\t{count}\t{avg_abs_diff:.6f}\n")       
 
 def main():
     samples_reps = load_paired_samples()
