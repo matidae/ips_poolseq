@@ -6,15 +6,15 @@
 #
 # Inputs:
 #   - nv.genic_m_and_z: null variance estimates per sample
-#   - paired_samples.txt: sample names and replicate column indices
+#   - samples_paired.tsv: sample names and replicate column indices
 #   - genic_m_and_z.tsv: allele frequencies and counts per SNP
 #
 # Output:
-#   - snpdev.m_z.txt: SNP-level coverage, comparisons, chi-square stat, and p-value
+#   - snpdev.m_and_z.tsv: SNP-level coverage, comparisons, chi-square stat, and p-value
 #----------------------------------------------------------------------
 
 
-from math import sqrt, asin
+from math import sqrt
 from scipy.stats import chi2
 from utils import load_paired_samples
 from math import pi
@@ -46,7 +46,7 @@ def aggregate_SNPs_by_coverage_bin(stats, dcat, p_value):
 
 def write_SNP_stats(snpdev_out, cols_mz, m_total, snpstats, p_value, is_valid):
     if is_valid:        
-        snpdev_out.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t{snpstats[1]:.4f}\t{p_value:.4f}\n")
+        snpdev_out.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t{snpstats[1]:.4f}\t{p_value:.6f}\n")
     else:
         snpdev_out.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t-99\t1.0\n")       
 
@@ -55,7 +55,7 @@ def main():
     paired_samples = load_paired_samples()
 
     with open(m_and_z_in, "r") as m_and_z_fh, open(snpdev_out, "w") as snpdev_fh:
-        snpdev_fh.write("CHROM\tPOS\tCOV\tNcomp\tChi2\tpval\n")
+        snpdev_fh.write("CHROM\tPOS\tDepth\tNcomp\tChi2\tpval\n")
         next(m_and_z_fh)    
         stats={}    
 
