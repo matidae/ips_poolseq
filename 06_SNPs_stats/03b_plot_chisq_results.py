@@ -44,7 +44,7 @@ def plot_depth_vs_pval(df):
     df["pval"] = df["pval"].replace(0, np.nextafter(0, 1))
     # Calculate -log10(pval)
     df["-log10(pval)"] = -np.log10(df["pval"])
-    df = df.copy()        
+    df = df.copy() 
 
     plt.style.use("ggplot")
     plt.figure(figsize=(10, 6))
@@ -67,7 +67,7 @@ def plot_depth_vs_pval(df):
 
 def main():
     df = load_data()
-    #plot_pval_histogram(df)
+    plot_pval_histogram(df)
     plot_depth_vs_pval(df)
 
 if __name__ == "__main__":
