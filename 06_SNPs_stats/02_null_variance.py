@@ -74,7 +74,7 @@ def calculate_null_variance(samples_reps, m_and_z_in):
 
 def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
     with open(dz2_bin_out, 'w') as dz2_bin_fh, open(summary_out, 'w') as summary_fh:
-        summary_fh.write("Sample\tCount\tDZ2_mean\tReadDepth_var\tRDprop\tNull_var\n")
+        summary_fh.write("Sample\tCount\tDZ2_mean\tDepth_var\tDepth_prop_var\tNull_var\n")
         for sample_name in samples_reps:            
             n = int(stats[sample_name][0])
             # Calculate mean of squared difference of z (dz2_ mean)

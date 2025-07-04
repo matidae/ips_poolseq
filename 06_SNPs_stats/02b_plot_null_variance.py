@@ -14,13 +14,14 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
 work_dir = "../../results/06_SNPs_stats"
 #Input files
 null_var_in = f"{work_dir}/null_variance_summary.tsv"
 dz2_bin_in=f"{work_dir}/dz2_by_pbin.tsv"
 
 color= "#009688"
+plt.style.use("ggplot")
+
 # Barplot of null variance estimates per sample
 def plot_null_variance_bar(nv_file):
     nv = pd.read_csv(nv_file, sep="\t", usecols=["Sample", "Null_var"])
@@ -48,8 +49,7 @@ def plot_null_variance_bar(nv_file):
         null_vars_with_gaps.append(row["Null_var"])        
         
         prev_gs = current_gs
-    plt.figure(figsize=(14, 6))
-    plt.style.use("ggplot")
+    plt.figure(figsize=(14, 6))    
     plt.bar(range(len(samples_with_gaps)), null_vars_with_gaps, color=color)
     plt.xticks(ticks=range(len(samples_with_gaps)), labels=samples_with_gaps, rotation=90)
     plt.ylabel("Null variance estimate")
@@ -60,8 +60,7 @@ def plot_null_variance_bar(nv_file):
 # Plot replicate dz averge and SNP counts  per allele frequency bin
 def plot_dz_diff_by_freq(freq_file):
     df = pd.read_csv(freq_file, sep="\t")
-    plt.figure(figsize=(8, 5))
-    plt.style.use("ggplot")
+    plt.figure(figsize=(8, 5))    
     plt.plot(df["pbin"], df["avg_abs_diff"], marker='o', color=color)
     plt.xlabel("Allele frequency bin")
     plt.ylabel("Average absolute difference between replicates")    
@@ -79,46 +78,31 @@ def plot_dz_diff_by_freq(freq_file):
     plt.savefig(f"{work_dir}/snp_counts_per_bin.png")
     plt.close()
 
-import seaborn as sns
-
-# Load data
 def more_plots(null_var_in):
-    df = pd.read_csv(null_var_in, sep="\t")
+    df = pd.read_csv(null_var_in, sep="\t")    
+    fig, ax = plt.subplots(figsize=(7, 6))
+    # Scatter plot
+    ax.scatter(
+        df["Depth_var"], df["DZ2_mean"], color=color, s=20)
+    # Label dots where DZ2_mean > 0.025
+    offset = 0.0003
+    for i, (_, row) in enumerate(df[df["DZ2_mean"] > 0.0255].iterrows()):
+        ax.text(
+            row["Depth_var"],
+            row["DZ2_mean"] + (offset if i % 2 == 0 else -offset),  # Added offset 
+            str(row["Sample"]), fontsize=10, ha="left", va="bottom")   
+    ax.set_xlabel("Mean depth variance")
+    ax.set_ylabel("Mean z_diff_sq ")
 
-    sns.set(style="whitegrid")
-
-    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
-
-   # Scatter plot DZ2_mean vs ReadDepth_var (no change)
-    sns.scatterplot(data=df, x="ReadDepth_var", y="DZ2_mean", hue="Sample", ax=axs[0], palette="tab20", legend=False)
-    axs[0].set_title("DZ2_mean vs ReadDepth_var")
-    axs[0].set_xlabel("Mean Read Depth Variance (ReadDepth_var)")
-    axs[0].set_ylabel("Mean Squared Difference (DZ2_mean)")
-
+    # Diagonal line y=x
     lims = [
-        min(axs[0].get_xlim()[0], axs[0].get_ylim()[0]),
-        max(axs[0].get_xlim()[1], axs[0].get_ylim()[1])
+        min(ax.get_xlim()[0], ax.get_ylim()[0]),
+        max(ax.get_xlim()[1], ax.get_ylim()[1])
     ]
-    axs[0].plot(lims, lims, 'k--', alpha=0.5)
-    axs[0].set_xlim(lims)
-    axs[0].set_ylim(lims)
-
-    # Barplot without palette warning & fix tick labels rotation
-    sns.barplot(data=df, x="Sample", y="RDprop", ax=axs[1])
-    axs[1].set_title("Proportion Variance Explained by Read Depth (RDprop)")
-    axs[1].set_xlabel("Sample")
-    axs[1].set_ylabel("RDprop")
-    plt.setp(axs[1].get_xticklabels(), rotation=45, ha='right')  # <-- correct way to rotate and align x labels
-
-
+    ax.plot(lims, lims, 'k--', alpha=0.5)    
     plt.tight_layout()
-
-    # Save figure as PNG
-    fig.savefig("null_variance_plots.png", dpi=300)
-
-    # If you want to see it locally, uncomment this:
-    # plt.show()
-
+    fig.savefig(f"{work_dir}/dz2_vs_depth_var.png", dpi=300)
+    plt.close()
 
 def main():
     #plot_null_variance_bar(null_var_in)
@@ -127,6 +111,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
