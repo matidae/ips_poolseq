@@ -7,7 +7,7 @@
 #   - ips_merged.vcf: vcf file for all samples
 #
 # Output: 
-#   - stats_filter.tsv: file with number of SNPs per sample filtered by quality and genotype
+#   - stats_filter.tsv: file with number and proportion of SNPs per sample filtered by quality and genotype
 #-------------------------------------------------------------------------------
 
 work_dir="../../results/04_varcalls"
@@ -25,4 +25,4 @@ bcftools view "$work_dir/ips_merged.vcf.gz" -m2 -M2 -v snps -e 'INFO/MQ<20 || QU
   > "$work_dir/genotype_filter.tsv"
 
 paste "$work_dir/qual_filter.tsv" "$work_dir/genotype_filter.tsv" \
-| awk -v total="$total_snps" '{print $2, $1, $3, $1/total, $3/total}' > "$work_dir/summary_filter.tsv"
+| awk -v total="$total_snps" '{print $2, $1, $3, $1/total, $3/total}' > "$work_dir/stats_filter.tsv"
