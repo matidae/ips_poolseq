@@ -7,7 +7,8 @@
 #
 # Input:
 #   - ips_merged.vcf: vcf file for all samples
-# Output: 
+# Output:
+#   - genic_variants.vcf.gz : filtered VCF file 
 #   - genic_readcounts.tsv : read counts of filtered SNPs from genic regions
 #   - intergenic_readcounts.tsv : read counts of filtered SNPs from intergenic regions
 #-------------------------------------------------------------------------------
