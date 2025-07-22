@@ -16,21 +16,21 @@ conda activate extra
 
 work_dir="../../results/04_varcalls"
 genome="../../data/reference"
-bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | sort | tr '\n' ' ')
+bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | egrep -v SFIN_La_2016 | sort | tr '\n' ' ')
 
 bedtools makewindows -g "$genome/Ips_typograpgus_LG16corrected.final.fasta.fai" -w 1000000 \
     | awk '{print $1":"$2+1"-"$3}' > "$work_dir/regions_1M.txt"
 
 #Run bcftools mpileup and call in parallel taking genome chunks defined in regions_1M
-cat "$work_dir/regions_1M.txt" | parallel -j40 '
+cat "$work_dir/regions_1M.txt" | parallel -j40 "
     region={};
-    chunk=$(echo $region | sed "s/[:-]/_/g");
+    chunk=\$(echo \$region | sed 's/[:-]/_/g');
     bcftools mpileup -Ou -I -a FORMAT/AD --max-depth 5000 \
-        -r $region \
-        -f '"$genome"/Ips_typograpgus_LG16corrected.final.fasta \
-        '"$bam"' |
-    bcftools call -vmO v -o '"$work_dir"/region_{#}_$chunk.vcf
-'
+        -r \$region \
+        -f \"$genome/Ips_typograpgus_LG16corrected.final.fasta\" \
+        $bam |
+    bcftools call -vmO v -o \"$work_dir/region_{#}_\${chunk}.vcf\"
+"
 # Compress and index each VCF file
 for i in "$work_dir"/*.vcf; do
     bgzip "$i"
