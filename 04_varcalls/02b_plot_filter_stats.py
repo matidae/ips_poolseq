@@ -5,7 +5,7 @@
 # Input: 
 #   - missing_GT_stats.tsv : table with counts and proportion of missing GT per sample
 # Output: 
-#   - barplot of percent of missing SNPs missing GT per sample
+#   - missing_GT_barplot.png: barplot of percent of SNPs missing GT per sample
 #----------------------------------------------------------------------
 
 import matplotlib.pyplot as plt
@@ -35,14 +35,14 @@ def main(gt_in, gt_barplot):
     plt.figure(figsize=(12, 6))
     bars = plt.bar(samples, proportions, color="#009688")
     plt.xticks(rotation=90, fontsize=8)
-    plt.ylabel("Proportion of SNPs missing genotype per sample")
-    plt.ylim(0, max(proportions) + 5)
+    plt.ylabel("Proportion of SNPs missing genotype")
+    plt.ylim(0, max(proportions) + 2)
 
     # Add labels to bars with pct of missing GT > 1%
     for i, bar in enumerate(bars):
         if bar.get_height() >= 1: 
             height = bar.get_height()
-            label = f"{counts[i]}%\n({proportions[i]:.1f})"
+            label = f"{counts[i]}\n({proportions[i]:.1f}%)"
             plt.text(bar.get_x() + bar.get_width() / 2, height + 0.1, label,
                         ha='center', va='bottom', fontsize=8, rotation=0, color="black")
     # Save plot

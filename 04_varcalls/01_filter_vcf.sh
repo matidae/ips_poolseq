@@ -30,7 +30,8 @@ python3 01aux_filter_MAF.py
 
 #Exclude SNPs with missing genotype GT ./.
 bcftools view "$work_dir/ips.biallelic_q20_m20.maf05.vcf.gz" -e 'GT="./."' \
--Oz -o "$work_dir/ips.biallelic_q20_m20.maf05.gt.vcf.gz" 
+-Oz -o "$work_dir/ips.biallelic_q20_m20.maf05.gt.vcf.gz"
+
 # Make a bed file of genes to extract genic and intergenic SNPs
 awk 'OFS="\t"{ if ($3=="gene") print $1, $4, $5 }' "$reference/$gff" > "$reference/$bed"
 
