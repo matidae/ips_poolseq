@@ -24,13 +24,22 @@
             padding: 10px;
             box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
         }
+        .zoomable:hover {
+            transform: scale(1.8);
+            transition: transform 0.3s ease;
+            z-index: 10;
+            position: relative;  
+        }      
+        .zoom_left:hover {
+            transform-origin: center left;
+        }
     </style>
 </head>
 <body>   
 
     <h3>P-values form chi square test (less than 0.01 will be discarded)</h3>
-    <img src="pval_histogram.png">
+    <img src="pval_histogram.png" class="zoomable zoom_left">
     <h3>-log10(p-values) vs total SNP depth </h3>
-    <img src="pval_vs_depth.png">
+    <img src="pval_vs_depth.png" class="zoomable zoom_left">
 </body>
 </html>

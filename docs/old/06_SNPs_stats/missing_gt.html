@@ -30,25 +30,16 @@
             z-index: 10;
             position: relative;  
         }      
-        .zoom_left:hover{
+        .zoom_left:hover {
             transform-origin: center left;
         }
-
     </style>
 </head>
 <body>   
 
-    <h3>Null variance estimates per sample</h3>
-    <img src="nv_per_sample.png" class="zoomable zoom_left">
-
-    <h3>Replicate differences across AFs</h3>
-    <img src="avg_zdiff_per_bin.png" class="zoomable zoom_left">
-
-     <h3>Mean z_diff_sq vs depth_var</h3>
-    <img src="dz2_vs_depth_var.png" class="zoomable zoom_left">
-
-    <h3>SNPs counts per AF bin</h3>
-    <img src="snp_counts_per_bin.png" class="zoomable zoom_left">
-
+    <h3>Proportion of SNPs missing GT in all samples</h3>
+    <img src="missing_GT_barplot.png" class="zoomable zoom_left">
+    <h3>Proportion of SNPs missing GT (excluding SFIN_La_2016 & MAF recalculated)</h3>
+    <img src="missing_GT_barplot.2.png" class="zoomable zoom_left">
 </body>
 </html>
