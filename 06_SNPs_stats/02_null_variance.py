@@ -26,6 +26,7 @@ summary_out = f"{work_dir}/null_variance_summary.tsv"
 def calculate_null_variance(samples_reps, m_and_z_in):
     min_read_depth = 100 # Minimum read depth
     min_MAF = 0.05 # Minimum minor allele frequency
+    
     # Transformed AF boundaries
     zlow = 2.0 * asin(sqrt(min_MAF)) 
     zhigh = 2.0 * asin(sqrt(1.0 - min_MAF))
@@ -101,8 +102,11 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
                 dz2_bin_fh.write(f"{pbin}\t{count}\t{avg_abs_diff:.6f}\n")       
 
 def main():
+    # Load indexes of paired samples (replicates A and B)
     samples_reps = load_paired_samples()
+    # Calculate null variance and get stats for plotting histogram
     stats, changedist = calculate_null_variance(samples_reps, m_and_z_in)
+    # Write files for histogram and null variance summary
     write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out)
 
 if __name__ == "__main__":
