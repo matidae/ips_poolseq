@@ -13,7 +13,7 @@
 
 from math import sqrt, asin, sin
 from utils import load_paired_samples
-import sys
+
 work_dir = "../../results/06_SNPs_stats"
 
 # Input files
@@ -22,7 +22,6 @@ m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"
 # Output files
 dz2_bin_out=f"{work_dir}/dz2_by_pbin.tsv"
 summary_out = f"{work_dir}/null_variance_summary.tsv"
-discarded_out = f"{work_dir}/null_variance_discarded.tsv"
 
 def calculate_null_variance(samples_reps, m_and_z_in):
     min_read_depth = 100 # Minimum read depth
@@ -35,16 +34,14 @@ def calculate_null_variance(samples_reps, m_and_z_in):
     stats = {sample: [0, 0.0, 0.0] for sample in samples_reps} # Statistics for samples
     changedist = [[0, 0.0] for _ in range(51)] # Bins for dz2 changes by AF.
 
-    with open(m_and_z_in, "r") as m_and_z_fh, open(discarded_out, "w") as discarded_fh:
+    with open(m_and_z_in, "r") as m_and_z_fh:
         next(m_and_z_fh)
-        for line in m_and_z_fh:
+        for line in m_and_z_fh:            
             cols = line.strip().split('\t')
             for sample_name, (idx_a, idx_b) in samples_reps.items():
                 m_z_a = cols[idx_a].split(",")
                 m_z_b = cols[idx_b].split(",")                
                 if 'NA' in m_z_a or 'NA' in m_z_b:
-                    discarded_fh.write("Discarded by NA: " + str(m_z_a) + "," + str(m_z_b) + "\n")
-                    discarded_fh.write(line + "\n")
                     continue
                 # Load variables m (depth) and z (transformed AF)
                 m_a, z_a = int(m_z_a[0]), float(m_z_a[1])
@@ -52,14 +49,10 @@ def calculate_null_variance(samples_reps, m_and_z_in):
                  # Compute mean z-value of the two replicates
                 z_mean = (z_a + z_b) / 2.0
                 # Skip low coverage pairs
-                if m_a < min_read_depth or m_b < min_read_depth:                                       
-                    discarded_fh.write("Discarded by read_depth: " + str(m_a) + "," + str(m_b) + "\n")
-                    discarded_fh.write(line + "\n")
+                if m_a < min_read_depth or m_b < min_read_depth:                    
                     continue               
                 # Skip pairs outside the threshold
                 if not (zlow < z_mean < zhigh):                    
-                    discarded_fh.write("Discarded by z_mean: " + str(z_mean) + "\n")
-                    discarded_fh.write(line + "\n")
                     continue
                 
                 # Increment count of valid data points
@@ -77,7 +70,7 @@ def calculate_null_variance(samples_reps, m_and_z_in):
                 changedist[pcat][0] += 1
                 # Accumulate absolute difference in z for this bin
                 changedist[pcat][1] += abs(z_a - z_b)
-    sys.exit()
+
     return stats, changedist
 
 def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
