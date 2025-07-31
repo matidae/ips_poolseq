@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------
 # Plot summary figures based on null variance and divergence calculations.
 # In:
-#   - null_variance_summary.tsv: summary statistics for dz² and depth variance
+#   - null_variance_summary.tsv: summary statistics for dz2 and depth variance
 #   - dz2_by_pbin.tsv: dz differences across allele frequency bins
 # Outputs:
 #   - nv_per_sample.png: bar plot of null variance estimates per sample
@@ -105,8 +105,8 @@ def more_plots(null_var_in):
     plt.close()
 
 def main():
-    #plot_null_variance_bar(null_var_in)
-    #plot_dz_diff_by_freq(dz2_bin_in)
+    plot_null_variance_bar(null_var_in)
+    plot_dz_diff_by_freq(dz2_bin_in)
     more_plots(null_var_in)
 
 if __name__ == "__main__":
