@@ -16,7 +16,13 @@ conda activate extra
 
 work_dir="../../results/04_varcalls"
 genome="../../data/reference"
-bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | egrep -v SFIN_La_2016 | sort | tr '\n' ' ')
+exclude="$work_dir/exclude_samples.txt"
+
+if [[ -s "$exclude_file" ]]; then
+    bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | egrep -v -f "$exclude_file" | sort | tr '\n' ' ')
+else
+    bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | sort | tr '\n' ' ')
+fi
 
 bedtools makewindows -g "$genome/Ips_typograpgus_LG16corrected.final.fasta.fai" -w 1000000 \
     | awk '{print $1":"$2+1"-"$3}' > "$work_dir/regions_1M.txt"
