@@ -15,15 +15,18 @@ eval "$(conda shell.bash hook)"
 conda activate extra
 
 work_dir="../../results/04_varcalls"
+#Directory with genome and gene bed files
 genome="../../data/reference"
-exclude="$work_dir/exclude_samples.txt"
-
+#List of samples to exclude from varcalling
+exclude_file="$work_dir/exclude_samples.txt"
+#List of dedup sorted bam files for analysis (optional removal of ones listed in exclude_file)
 if [[ -s "$exclude_file" ]]; then
     bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | egrep -v -f "$exclude_file" | sort | tr '\n' ' ')
 else
     bam=$(find ../../data/03_dedup/ -name "*.dedup.sort.bam" | sort | tr '\n' ' ')
 fi
 
+# Make windows of the genome in regions of 1M for parallel run of varcalling 
 bedtools makewindows -g "$genome/Ips_typograpgus_LG16corrected.final.fasta.fai" -w 1000000 \
     | awk '{print $1":"$2+1"-"$3}' > "$work_dir/regions_1M.txt"
 
