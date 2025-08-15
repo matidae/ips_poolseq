@@ -18,4 +18,5 @@ def load_depth_threshold():
     with open(depth_threshold ,"r") as f:
         for line in f:
             pass
-        return map(float, line.strip().split('\t')[-2:])
+        min_depth, max_depth = map(float, line.strip().split('\t')[-2:])
+        return min_depth, max_depth
