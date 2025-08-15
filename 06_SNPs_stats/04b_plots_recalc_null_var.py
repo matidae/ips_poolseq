@@ -15,28 +15,28 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
 work_dir = "../../results/06_SNPs_stats"
 
-def plot_histogram_mean_inv_depth(df, output_file='plot1_mean_inv_depth_hist.png'):
+def plot_histogram_mean_inv_depth(df, output_file='plot_mean_inv_depth_hist.png'):
     plt.figure(figsize=(8, 5))
     sns.histplot(df['mean_inv_depth'], bins=20, kde=True, color='skyblue')
-    plt.title('Distribution of Mean Inverse Depth per Sample')
-    plt.xlabel('Mean Inverse Depth')
-    plt.ylabel('Number of Samples')
+    plt.title('Distribution of mean inverse depth per sample')
+    plt.xlabel('Mean inverse depth')
+    plt.ylabel('Number of samples')
     plt.tight_layout()
     plt.savefig(output_file)
     plt.close()
-    print(f'Saved histogram plot to {output_file}')
 
 def plot_boxplot_null_var_by_group(df, output_file='plot2_null_var_boxplot.png'):
     # Extract group prefix from sample name (prefix before first underscore)
     df['group'] = df['sample'].apply(lambda x: x.split('_')[0])
     
     plt.figure(figsize=(10, 6))
-    sns.boxplot(x='group', y='null_var', data=df, palette='Set2')
-    plt.title('Null Variance Distribution by Sample Group')
-    plt.xlabel('Sample Group')
-    plt.ylabel('Null Variance')
+    sns.boxplot(x='group', y='null_var', data=df, palette='Set2', legend=False, hue='group')
+    plt.title('Null variance distribution by sample group')
+    plt.xlabel('Sample group')
+    plt.ylabel('Null variance')
     plt.tight_layout()
     plt.savefig(output_file)
     plt.close()
@@ -49,10 +49,10 @@ def plot_scatter_null_var_vs_mean_inv_depth(df, output_file='plot4_null_var_vs_m
     scatter = plt.scatter(df['mean_inv_depth'], df['null_var'],
                           s=sizes, alpha=0.7, c=df['rdprop'], cmap='viridis')
     
-    plt.colorbar(scatter, label='Read Depth Proportion (rdprop)')
-    plt.title('Null Variance vs Mean Inverse Depth (point size ~ # SNPs)')
-    plt.xlabel('Mean Inverse Depth')
-    plt.ylabel('Null Variance')
+    plt.colorbar(scatter, label='Read depth proportion (rdprop)')
+    plt.title('Null variance vs Mean inverse depth (point size ~ # SNPs)')
+    plt.xlabel('Mean inverse depth')
+    plt.ylabel('Null variance')
     plt.tight_layout()
     plt.savefig(output_file)
     plt.close()
@@ -60,7 +60,7 @@ def plot_scatter_null_var_vs_mean_inv_depth(df, output_file='plot4_null_var_vs_m
 
 def main():
     # Load data
-    df = pd.read_csv(f'{work_dir}/null_variance_summary.filtered.tsv2', sep='\t')
+    df = pd.read_csv(f'{work_dir}/null_variance_summary.recalc.tsv', sep='\t')
     
     plot_histogram_mean_inv_depth(df)
     plot_boxplot_null_var_by_group(df)
