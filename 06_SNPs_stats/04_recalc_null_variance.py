@@ -18,8 +18,8 @@ from utils import load_paired_samples, load_depth_threshold
 work_dir = "../../results/06_SNPs_stats"
 
 # Input files
-null_var_in = f"{work_dir}/null_variance_summary.tsv"  # Null variance data input
 m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"           # Genic m and z data input
+null_var_in = f"{work_dir}/null_variance_summary.tsv"  # Null variance data input
 snpdev_in = f"{work_dir}/snpdev_m_and_z.tsv"           # SNP deviation input file
 
 # Output files
@@ -34,10 +34,8 @@ zhigh= 2.0*asin(sqrt(1.0-minMAF))
 
 #dev2 = 3.0 #filter for genotype data
 
-min_depth, max_depth = load_depth_threshold()
-
 # Filter SNPs by p-value from Chi-square test. Discard those with p-value<0.01
-def filter_SNPs(snpdev_in):
+def filter_SNPs(snpdev_in, min_depth, max_depth):
     valid_SNPs = set()
     pval_min = 0.01
     with open(snpdev_in, "r") as snpdev_fh:
@@ -53,7 +51,7 @@ def filter_SNPs(snpdev_in):
 
 # Process SNPs file, filter SNPs, and update stats
 def process_snps(m_and_z_in, snp_filter_out, valid_snps, paired_samples, stats):    
-    with open(m_and_z_in) as m_and_z_fh, open(snp_filter_out, 'w') as snp_filter_fh:
+    with open(m_and_z_in, 'r') as m_and_z_fh, open(snp_filter_out, 'w') as snp_filter_fh:
         header = next(m_and_z_fh)
         snp_filter_fh.write(header)
         for line in m_and_z_fh:
@@ -70,7 +68,7 @@ def process_snps(m_and_z_in, snp_filter_out, valid_snps, paired_samples, stats):
                     continue
 
                 z1, z2 = float(z1), float(z2)
-                z_mean = (z1 + z2) / 2
+                z_mean = (z1 + z2) / 2.0
                 if not (zlow < z_mean < zhigh):
                     continue
 
@@ -88,16 +86,25 @@ def calculate_null_variance(null_var_recalc_out, stats):
         for sample, data in stats.items():
             if data['count'] == 0:
                 continue
+            # Calculate means 
             mean_dz2 = data['sum_dz2'] / data['count']
             mean_inv_depth = data['sum_inv_depth'] / data['count']
+            # Estimate null variance
             null_var = mean_dz2 - mean_inv_depth
-
+            # Prop. of variance explained by read depth
+            rd_prop = mean_inv_depth/mean_dz2
             null_var_recalc_fh.write(
-    f"{sample}\t{null_var:.6f}\t{data['count']}\t{mean_dz2:.6f}\t{mean_inv_depth:.6f}\t{mean_inv_depth/mean_dz2:.4f}\n")
+                f"{sample}\t{null_var:.6f}\t{data['count']}\t{mean_dz2:.6f}\t"
+                f"{mean_inv_depth:.6f}\t{rd_prop:.4f}\n")
 
-valid_SNPs = filter_SNPs(snpdev_in)
-paired_samples = load_paired_samples()
-stats = {sample: {'count': 0, 'sum_dz2': 0.0, 'sum_inv_depth': 0.0} for sample in paired_samples}
+def main():
+    min_depth, max_depth = load_depth_threshold()
+    valid_SNPs = filter_SNPs(snpdev_in, min_depth, max_depth)
+    paired_samples = load_paired_samples()
+    stats = {sample: {'count': 0, 'sum_dz2': 0.0, 'sum_inv_depth': 0.0} for sample in paired_samples}
 
-process_snps(m_and_z_in, snp_filter_out, valid_SNPs, paired_samples, stats)
-calculate_null_variance(null_var_recalc_out, stats)
+    process_snps(m_and_z_in, snp_filter_out, valid_SNPs, paired_samples, stats)
+    calculate_null_variance(null_var_recalc_out, stats)
+
+if __name__ == "__main__":
+    main()
