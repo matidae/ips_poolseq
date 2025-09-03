@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
 
+#----------------------------------------------------------------------
+# Recalculate null variance for remaining SNPs after filtering results from previous steps
+#
+# Inputs:
+#   - null_variance_summary.recalc.tsv: recalculated null variance estimates per sample
+#   - genic_m_and_z.filter.tsv: filtered allele frequencies and counts per SNP
+# Output:
+#   - Z.by.year.tsv — Z values per year
+#   - DZ.by.interval.tsv — diff in Z values in consecutive year intervals 
+#----------------------------------------------------------------------
+
+
 import re
 import csv
 from math import sqrt, asin
@@ -13,8 +25,8 @@ null_var_in = f"{work_dir}/null_variance_summary.recalc.tsv"  # Null variance da
 m_and_z_in = f"{work_dir}/genic_m_and_z.filter.tsv"           # Genic m and z data input
 
 # Output files
-z_by_year_out = f"{work_dir}/Z.by.year.tsv"            # Filtered SNP data output
-dz_by_year_out = f"{work_dir}/DZ.by.interval.tsv"      # Recalculated null variance output
+z_by_year_out = f"{work_dir}/Z.by.year.tsv"            # Z values per year
+dz_by_year_out = f"{work_dir}/DZ.by.interval.tsv"      # Diff in Z values in consecutive year intervals 
 
 
 def parse_groupings_from_genic_file(m_and_z_in): 
@@ -40,7 +52,6 @@ def parse_groupings_from_genic_file(m_and_z_in):
             grouped[group][season][rep] = []
 
         grouped[group][season][rep].append(col)
-        print(grouped)
 
     return grouped
 
