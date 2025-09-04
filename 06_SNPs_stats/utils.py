@@ -1,3 +1,5 @@
+import csv
+
 depths_dir = "../../results/05_SNPs_depths"
 stats_dir = "../../results/06_SNPs_stats"
 
@@ -20,3 +22,12 @@ def load_depth_threshold():
             pass
         min_depth, max_depth = map(float, line.strip().split('\t')[-2:])
         return min_depth, max_depth
+
+def load_null_variance_recalc():
+    null_var = {}
+    null_var_file = f"{stats_dir}/null_variance_summary.recalc.tsv"    
+    with open(null_var_file, newline='') as null_var_fh:
+        null_var_read = csv.reader(null_var_fh, delimiter='\t')
+        for row in null_var_read:
+            null_var[row[0]] = row[5]
+    return null_var
