@@ -27,7 +27,8 @@ def load_null_variance_recalc():
     null_var = {}
     null_var_file = f"{stats_dir}/null_variance_summary.recalc.tsv"    
     with open(null_var_file, newline='') as null_var_fh:
+        next(null_var_fh)
         null_var_read = csv.reader(null_var_fh, delimiter='\t')
         for row in null_var_read:
-            null_var[row[0]] = row[5]
+            null_var[row[0]] = float(row[1])
     return null_var
