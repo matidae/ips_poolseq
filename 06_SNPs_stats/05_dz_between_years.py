@@ -25,7 +25,7 @@ m_and_z_in = f"{work_dir}/genic_m_and_z.filter.tsv"           # Genic m and z da
 # Output files
 z_by_year_out = f"{work_dir}/Z.by.year.tsv"            # Z values per year
 dz_by_year_out = f"{work_dir}/DZ.by.interval.tsv"      # Diff in Z values in consecutive year intervals 
-import sys
+
 def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
     minMAF = 0.05
     zlow = 2.0*asin(sqrt(minMAF))
@@ -72,8 +72,7 @@ def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
                                 vstat[key][1]+=(null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0
                                 vstat[key][2]+=(1.0/float(m_a) + 1.0/float(m_b))/4.0
 
-                        # Get total replicates depth
-                        
+                        # Get total replicates depth                        
                         if c == 0:
                             last = [ z_mean, (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 ]
                             print(last)
@@ -82,13 +81,6 @@ def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
                             if (z_mean+last[0])/2.0 >zlow and (z_mean+last[0])/2.0 <zhigh: 
                                 dz2 = z_mean - last[0]
                                 evar = (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 + last[1]
-                                print("#", dz2, evar)
-
-
-            print(pre)
-            print (paired_samples_select)
-            
-        sys.exit()
         for line in m_and_z_fh:
             cols = line.strip().split('\t')            
             m_total = 0
@@ -101,7 +93,6 @@ def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
                 # Get total replicates depth
                 m_total += (m_a + m_b)
     
-
 def main():
     null_var = load_null_variance_recalc()
     paired_samples = load_paired_samples()
