@@ -23,76 +23,102 @@ null_var_in = f"{work_dir}/null_variance_summary.recalc.tsv"  # Null variance da
 m_and_z_in = f"{work_dir}/genic_m_and_z.filter.tsv"           # Genic m and z data input
 
 # Output files
-z_by_year_out = f"{work_dir}/Z.by.year.tsv"            # Z values per year
-dz_by_year_out = f"{work_dir}/DZ.by.interval.tsv"      # Diff in Z values in consecutive year intervals 
+#z_by_year_out = f"{work_dir}/Z.by.year.tsv"            # Z values per year
+#dz_by_year_out = f"{work_dir}/DZ.by.interval.tsv"      # Diff in Z values in consecutive year intervals 
 
 def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
     minMAF = 0.05
     zlow = 2.0*asin(sqrt(minMAF))
     zhigh= 2.0*asin(sqrt(1.0-minMAF))
-    
-    with open(m_and_z_in, "r") as m_and_z_fh, open(z_by_year_out, "w") as z_by_year_fh:
-        #z_by_year_fh.write("CHROM\tPOS\tREF\tALT")
-        next(m_and_z_fh)
-        #print(paired_samples)        
-        for pre in prefixes:
-            paired_samples_select = {}
-            # Get all samples from same country and season
-            for key, val in paired_samples.items():
-                if key.startswith(pre):                
-                    paired_samples_select[key] = val
-            # 
-            # Iterate over each group of replicates
-            print(paired_samples_select)
-            if len(paired_samples_select) > 1:
-                vstat = {}
-                for k in paired_samples_select.keys():
-                    vstat[k]=[0,0.0,0.0]
-                c = 0
-                last = []
-                z_mean = -1000
-                for key, val in paired_samples_select.items():                    
-                    rep_a_idx = paired_samples_select[key][0]
-                    rep_b_idx = paired_samples_select[key][1]                
-                    for line in m_and_z_fh:
-                        cols = line.strip().split('\t')                    
-                        rep_a = cols[rep_a_idx].split(",")
-                        rep_b = cols[rep_b_idx].split(",")
-                                                                
-                        m_a = int(rep_a[0])                    
+    min_depth = 100
+
+    for pre in prefixes:
+        paired_samples_same= {}
+        # Get all samples from same country and season
+        for key, val in paired_samples.items():
+            if key.startswith(pre):                
+                paired_samples_same[key] = val
+        
+        if len(paired_samples_same) > 1:
+            vstat = {}
+            for k in paired_samples_same.keys():
+                vstat[k]=[0,0.0,0.0]
+
+            # Output files for this prefix
+            z_by_year_out = f"{work_dir}/Z.by.year.{pre}.tsv"
+            dz_by_year_out = f"{work_dir}/DZ.by.interval.{pre}.tsv"
+                       
+            with open(m_and_z_in, "r") as m_and_z_fh, \
+                open(z_by_year_out, "w") as z_by_year_fh, \
+                open(dz_by_year_out, "w") as dz_by_year_fh :
+
+                # Header
+                header = m_and_z_fh.readline().strip().split("\t")
+                z_by_year_fh.write("CHROM\tPOS\tREF\tALT")
+                dz_by_year_fh.write("CHROM\tPOS\tREF\tALT")
+
+                for sample in paired_samples_same:
+                    z_by_year_fh.write(f"\t{sample}")
+                for i in range(len(paired_samples_same) - 1):
+                    dz_by_year_fh.write(f"\t{pre}_interval{i+1}")
+                z_by_year_fh.write("\n")
+                dz_by_year_fh.write("\n")
+
+                for line in m_and_z_fh:
+                    cols = line.strip().split('\t')
+                    row_start = "\t".join(cols[:4])
+                    z_by_year_fh.write(row_start)
+                    dz_by_year_fh.write(row_start)
+                    last = None
+                    m_total = 0
+
+                    # Iterate over each group of replicates
+                    for sample in paired_samples:
+                        rep_a = cols[paired_samples[sample][0]].split(",")
+                        m_a = int(rep_a[0])
+                        rep_b = cols[paired_samples[sample][1]].split(",")
                         m_b = int(rep_b[0])
-                    
-                        if m_a <= 100 and m_b <= 100:
+                        # Get total replicates depth
+                        m_total += (m_a + m_b)
+
+                   # next(m_and_z_fh)
+                    #print(paired_samples)       
+
+                        if m_a <= min_depth and m_b <= min_depth:
                             z_a = float(rep_a[1])                    
                             z_b = float(rep_b[1])
                             z_mean=(z_a + z_b)/2.0
-                            SE = sqrt(null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0  
-                            if z_mean > zlow and z_mean < zhigh:
-                                vstat[key][0]+=1
-                                vstat[key][1]+=(null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0
-                                vstat[key][2]+=(1.0/float(m_a) + 1.0/float(m_b))/4.0
+                            var = (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0
+                            std_error = sqrt(var)
 
-                        # Get total replicates depth                        
-                        if c == 0:
-                            last = [ z_mean, (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 ]
-                            print(last)
-                            c+=1
-                        else:
-                            if (z_mean+last[0])/2.0 >zlow and (z_mean+last[0])/2.0 <zhigh: 
+                            if z_mean > zlow and z_mean < zhigh:
+                                z_by_year_fh.write('\t'+str(z_mean)+','+str(std_error)+','+str(m_a)+','+str(m_b))
+                            else:
+                                z_by_year_fh.write("\tNA,NA,0,0")
+                            #    vstat[key][0]+=1
+                            #    vstat[key][1]+= var
+                            #    vstat[key][2]+=(1.0/float(m_a) + 1.0/float(m_b))/4.0
+
+                        # Get total replicates depth      
+                        #if last is not None and zlow < (z_mean + last[0]) / 2.0 < zhigh:                  
+                        #if c == 0:
+                        #    last = [ z_mean, (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 ]
+                        #    print(last)
+                        #    c+=1
+                        #else:
+                            if (last is not None and z_mean+last[0])/2.0 >zlow and (z_mean+last[0])/2.0 <zhigh: 
                                 dz2 = z_mean - last[0]
                                 evar = (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 + last[1]
-        for line in m_and_z_fh:
-            cols = line.strip().split('\t')            
-            m_total = 0
-            # Iterate over each group of replicates
-            for sample in paired_samples:
-                rep_a = cols[paired_samples[sample][0]].split(",")
-                m_a = int(rep_a[0])
-                rep_b = cols[paired_samples[sample][1]].split(",")
-                m_b = int(rep_b[0])
-                # Get total replicates depth
-                m_total += (m_a + m_b)
+                                z_by_year_fh.write('\t', dz2, evar)
+                            else:
+                                z_by_year_fh.write('\tNA')
+
+
+                print(pre)
+                print (paired_samples_select)
+                
     
+
 def main():
     null_var = load_null_variance_recalc()
     paired_samples = load_paired_samples()
