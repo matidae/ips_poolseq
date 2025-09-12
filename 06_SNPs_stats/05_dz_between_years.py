@@ -73,7 +73,7 @@ def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
                     m_total = 0
 
                     # Iterate over each group of replicates
-                    for sample in paired_samples:
+                    for sample in paired_samples_same:
                         rep_a = cols[paired_samples[sample][0]].split(",")
                         m_a = int(rep_a[0])
                         rep_b = cols[paired_samples[sample][1]].split(",")
@@ -82,9 +82,8 @@ def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
                         m_total += (m_a + m_b)
 
                    # next(m_and_z_fh)
-                    #print(paired_samples)       
 
-                        if m_a <= min_depth and m_b <= min_depth:
+                        if m_a >= min_depth and m_b >= min_depth:
                             z_a = float(rep_a[1])                    
                             z_b = float(rep_b[1])
                             z_mean=(z_a + z_b)/2.0
@@ -95,29 +94,13 @@ def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
                                 z_by_year_fh.write('\t'+str(z_mean)+','+str(std_error)+','+str(m_a)+','+str(m_b))
                             else:
                                 z_by_year_fh.write("\tNA,NA,0,0")
-                            #    vstat[key][0]+=1
-                            #    vstat[key][1]+= var
-                            #    vstat[key][2]+=(1.0/float(m_a) + 1.0/float(m_b))/4.0
 
-                        # Get total replicates depth      
-                        #if last is not None and zlow < (z_mean + last[0]) / 2.0 < zhigh:                  
-                        #if c == 0:
-                        #    last = [ z_mean, (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 ]
-                        #    print(last)
-                        #    c+=1
-                        #else:
                             if (last is not None and z_mean+last[0])/2.0 >zlow and (z_mean+last[0])/2.0 <zhigh: 
                                 dz2 = z_mean - last[0]
                                 evar = (null_var[key] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 + last[1]
                                 z_by_year_fh.write('\t', dz2, evar)
                             else:
                                 z_by_year_fh.write('\tNA')
-
-
-                print(pre)
-                print (paired_samples_select)
-                
-    
 
 def main():
     null_var = load_null_variance_recalc()
