@@ -7,11 +7,10 @@
 #   - null_variance_summary.recalc.tsv: recalculated null variance estimates per sample
 #   - genic_m_and_z.filter.tsv: filtered allele frequencies and counts per SNP
 # Output:
-#   - Z.by.year.tsv — Z values per year
-#   - DZ.by.interval.tsv — diff in Z values in consecutive year intervals 
+#   - Z.by.year.{prefix}.tsv — Z values per year
+#   - DZ.by.interval.{prefix}.tsv — diff in Z values in consecutive year intervals 
 #----------------------------------------------------------------------
 
-import re
 from math import sqrt, asin
 from utils import load_paired_samples, load_null_variance_recalc
 
@@ -23,8 +22,8 @@ null_var_in = f"{work_dir}/null_variance_summary.recalc.tsv"  # Null variance da
 m_and_z_in = f"{work_dir}/genic_m_and_z.filter.tsv"           # Genic m and z data input
 
 # Output files
-#z_by_year_out = f"{work_dir}/Z.by.year.tsv"            # Z values per year
-#dz_by_year_out = f"{work_dir}/DZ.by.interval.tsv"      # Diff in Z values in consecutive year intervals 
+#z_by_year_out = f"{work_dir}/Z.by.year.{prefix}.tsv"         # Z values per year
+#dz_by_year_out = f"{work_dir}/DZ.by.interval.{prefix}.tsv"   # Diff in Z values in consecutive year intervals 
 
 def calculate_dz_by_year(prefixes, paired_samples, null_var, m_and_z_in):
     minMAF = 0.05
