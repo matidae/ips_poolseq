@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Null variance</title>    
+  <link rel="icon" type="image/png" href="../favicon_sbb.png">
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+            background-color: #f8f9fa;
+        }
+        h3 {
+            margin-top: 2em;
+            color: #343a40;
+        }
+        img {
+            display: block;
+            max-width: 600px;
+            height: auto;
+            margin-top: 1em;
+            border: 1px solid #ccc;
+            background: white;
+            padding: 10px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+        .zoomable:hover {
+            transform: scale(1.8);
+            transition: transform 0.3s ease;
+            z-index: 10;
+            position: relative;  
+        }      
+        .zoom_left:hover {
+            transform-origin: center left;
+        }
+    </style>
+</head>
+<body>   
+
+    <h3>nSNPs vs null variance</h3>
+<img src="nullvar_depth_plots/nSNPs_vs_nullvar.png" class="zoomable zoom_left">
+
+<h3>nSNPs vs effective number of genomes</h3>
+<img src="nullvar_depth_plots/nSNPs_vs_ne_genomes.png" class="zoomable zoom_left">
+
+<h3>Depth vs nSNPs</h3>
+<img src="nullvar_depth_plots/depths_vs_nsnps.png" class="zoomable zoom_left">
+
+<h3>Depth vs effective genomes (rep a)</h3>
+<img src="nullvar_depth_plots/depths_vs_ngenomes_rep_a_depth.png" class="zoomable zoom_left">
+
+<h3>Depth vs effective genomes (rep b)</h3>
+<img src="nullvar_depth_plots/depths_vs_ngenomes_rep_b_depth.png" class="zoomable zoom_left">
+
+<h3>Depth vs effective genomes (both)</h3>
+<img src="nullvar_depth_plots/depths_vs_ngenomes_rep_depth.png" class="zoomable zoom_left">
+
+<h3>Depth vs null variance (median)</h3>
+<img src="nullvar_depth_plots/depths_vs_nullvar_rep_median.png" class="zoomable zoom_left">
+
+<h3>Depth vs null variance (rep a)</h3>
+<img src="nullvar_depth_plots/depths_vs_nullvar_rep_a.png" class="zoomable zoom_left">
+
+<h3>Depth vs null variance (rep b)</h3>
+<img src="nullvar_depth_plots/depths_vs_nullvar_rep_b.png" class="zoomable zoom_left">
+
+</body>
+</html>
