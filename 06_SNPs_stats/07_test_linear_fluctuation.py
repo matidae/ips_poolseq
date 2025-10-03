@@ -65,16 +65,13 @@ def tests(z_by_year_in, n_years, var_drift):
                             z.append(float(value.split(",")[0]))
                             se.append(float(value.split(",")[1]))
                             years.append(header_years[idx])                  
-
-                    if len(z) >= n_years:
-                        z_mean = sum(z)/len(z)
+                    n_z = len(z)                    
+                    if n_z >= n_years:
+                        z_mean = sum(z)/n_z
                         if z_mean > z_low and z_mean < z_high:
                             # Drift model
-                            cov_matrix = []
-                            for j in range(len(z)):
-                                row_cmat = [0.0] * len(z)
-                                row_cmat[j] = se[j] ** 2
-                                cov_matrix.append(row_cmat)                            
+                            cov_matrix = np.zeros((n_z, n_z))
+                            np.fill_diagonal(cov_matrix, np.array(se) ** 2)
                             
                             for x in range(1, len(z)):
                                 yr_x = years[x] - years[0]
