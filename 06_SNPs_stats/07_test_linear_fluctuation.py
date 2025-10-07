@@ -42,12 +42,12 @@ def get_years_and_ne(prefix, ne_in):
     return (None, None)
 
 
-def tests(z_by_year_in, n_years, var_drift):
+def test_models(z_by_year_in, n_years, var_drift, tests_out):
     
-#    with open(ne_tests_out, "w") as ne_tests_fh:        
-#       ne_tests_fh.write("\t".join([
-#           "CHROM", "POS", "REF", "ALT", "tests","mu_null", "LL0", "mu98", "mu21", "LL1", 
-#           "LRT_1df", "pval_1df", "LL_sat", "LRT_df", "pval_df" ]) + "\n")
+    with open(tests_out, "w") as tests_fh:
+        tests_fh.write("\t".join([
+           "CHROM", "POS", "REF", "ALT", "tests","mu_null", "LL0", "mu_start", "mu_last", "LL1", 
+           "LRT_1df", "pval_1df", "LL_sat", "LRT_df", "pval_df" ]) + "\n")
         with open(z_by_year_in) as z_by_year_fh:
             cols = z_by_year_fh.readline().strip().split("\t")
             if len(cols) > 5:
@@ -70,15 +70,8 @@ def tests(z_by_year_in, n_years, var_drift):
                         z_mean = sum(z)/n_z
                         if z_mean > z_low and z_mean < z_high:
                             # Drift model (null hypothesis)
-                            # Initialize an empty covariance matrix with zeros
-                            cov_matrix = np.zeros((n_z, n_z))                            
-                            # Get the difference between each year to first year
-                            t = np.array(years) - years[0]
-                            # Compute covariance matrix as: cov[i, j] = var_drift * min(t[i], t[j])
-                            cov_matrix = var_drift * np.minimum.outer(t, t)
-                            # Add error variance se^2 to diagonal
-                            np.fill_diagonal(cov_matrix, np.diag(cov_matrix) + np.square(se))
-
+                            # Get the covariance matrix
+                            cov_matrix = build_covariance_matrix(n_z, years, var_drift, se)
                             # Inverse of covariance matrix
                             inv_cov_matrix = np.linalg.inv(cov_matrix)
                             # Transform z into a numpy array for linalg operations
@@ -87,13 +80,60 @@ def tests(z_by_year_in, n_years, var_drift):
                             null_vector = np.ones(len(z))
                             # Maximum likelihood estimate for the null hypothesis (drift model)
                             mu0 = (null_vector @ inv_cov_matrix @ z_array) / (null_vector @ inv_cov_matrix @ null_vector)
-                            LL0 = log_likelihood_drift(mu0, z_array, cov_matrix)
-                            LL01 = LL_b(mu0, z_array, cov_matrix)
-                            print("LL0:  ", LL0)
+                            LL0 = log_likelihood_null(mu0, z_array, cov_matrix)                            
 
+                            # Design matrix X for linear model (columns: coefficients for mu_start and mu_last)
+                            years = np.array(years)
+                            total_years = years[-1] - years[0]
+                            coef_start = 1.0 - (years - years[0]) / total_years
+                            coef_end   = (years - years[0]) / total_years
+                            X = np.column_stack((coef_start, coef_end)) #(n, 2) matrix                           
                             
+                            # Multiply X transposed by inv_cov_ matrix to get the weighted transpose ( X^T * C^-1 )
+                            Xt_weighted = X.T @ inv_cov_matrix   #(2, n) matrix
+                            
+                            # Compute the "normal equation" matrix: (X^T C^-1 X)
+                            normal_matrix = Xt_weighted @ X             #(2, 2) matrix
+                               
+                            # Compute the weighted response vector: (X^T C^-1 z)
+                            weighted_response = Xt_weighted @ z_array   #(2, 2) matrix                            
 
-def log_likelihood_drift(mu0, z_array, cov_matrix):
+                            # Solve for bhat: coefficients (mu_start, mu_end) of the linear model
+                            # Equivalent to: bhat = (X^T C^-1 X)^(-1) * (X^T C^-1 z)
+                            bhat = np.linalg.inv(normal_matrix) @ weighted_response
+                            
+                            LL1 = log_likelihood_selection(bhat, z_array, cov_matrix, years)                            
+
+                            # Likelihood ratio test (LRT) for selection
+                            LRT_selection = 2.0 * (LL1 - LL0)
+                            pvalue_selection = 1.0 - chi2.cdf(LRT_selection, df=1)
+
+                            # Fluctuating (alternative) model: mean vector = observed z
+                            # In multivariate normal terms, this is the "perfect fit" log-likelihood.
+                            LL_fluctuating = log(multivariate_normal.pdf(z_array, z_array, cov_matrix))
+                            # Likelihood ratio test against null
+                            LRT_fluctuating = 2.0 * (LL_fluctuating - LL0)
+                            #Calculate df as number of extra parameters in fluctuating model compared to null model
+                            df = len(z_array) - 1
+                            pvalue_fluctuating = 1.0 - chi2.cdf(LRT_fluctuating, df=df)
+
+                            tests_fh.write(
+                                "\t".join([*cols[:4], str(n_z), f"{mu0:.6f}", f"{LL0:.6f}", 
+                                           f"{bhat[0]:.6f}", f"{bhat[1]:.6f}", f"{LL1:.6f}",
+                                           f"{LRT_selection:.6f}", f"{pvalue_selection:.6f}", 
+                                           f"{LRT_fluctuating:.6f}", f"{pvalue_fluctuating:.6f}"]) + "\n")
+
+
+def build_covariance_matrix(n_z, years, var_drift, se):               
+    # Get the difference between each year to first year
+    t = np.array(years) - years[0]
+    # Compute covariance matrix as: cov[i, j] = var_drift * min(t[i], t[j])
+    cov_matrix = var_drift * np.minimum.outer(t, t)
+    # Add error variance se^2 to diagonal
+    np.fill_diagonal(cov_matrix, np.diag(cov_matrix) + np.square(se))
+    return cov_matrix
+    
+def log_likelihood_null(mu0, z_array, cov_matrix):
     mvec = [mu0] * len(z_array)
     probd = multivariate_normal.pdf(z_array, mvec, cov_matrix)
     if probd > 0 :
@@ -115,6 +155,25 @@ def log_likelihood_selection(mu_params, z_array, cov_matrix, years):
         return -99999
 
 
+def LL_b(mu0, z_array, cov_matrix):
+    # Inverse of covariance matrix
+    inv_cov = np.linalg.inv(cov_matrix)  # shape: (n_z, n_z)
+
+    # Residual vector: observed minus mean
+    residual = z_array - mu0  # shape: (n_z,)
+
+    # Multivariate normal log-likelihood formula:
+    # LL = -0.5 * (log(det(2*pi*Cov)) + (z - mu)^T @ Cov^-1 @ (z - mu))
+    sign, logdet = np.linalg.slogdet(cov_matrix)
+    if sign <= 0:
+        raise ValueError("Covariance matrix is not positive definite!")
+
+    term = residual @ inv_cov @ residual  # scalar
+
+    log_likelihood = -0.5 * (logdet + term + len(z_array) * np.log(2 * np.pi))
+
+    return log_likelihood
+
 
 def main():
     paired_samples = load_paired_samples()    
@@ -124,12 +183,12 @@ def main():
     for pre in prefixes:
         n_years, ne = get_years_and_ne(pre, ne_in)
         z_by_year_in = f"{work_dir}/z_by_year.{pre}.tsv"
-       # ne_tests_out = f"{work_dir}/Ne_tests_{pre}.tsv"
+        tests_out = f"{work_dir}/tests_{pre}.tsv"
         if ne is not None:
             var_drift = 1.0 / (2.0 * ne) if ne > 0 else 1.0 / (2.0 * 1.0)
             z_path=Path(z_by_year_in)
             if z_path.is_file():
-                tests(z_by_year_in, n_years, var_drift)
+                test_models(z_by_year_in, n_years, var_drift, tests_out)
 
 if __name__ == "__main__":
     main()
