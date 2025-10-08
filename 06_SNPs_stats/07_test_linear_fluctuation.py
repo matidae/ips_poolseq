@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 #----------------------------------------------------------------------
-# 
+# Tests SNP allele frequency trajectories for signatures of selection.
+# Uses three models for AF data across years: null(drift), directional, fluctating
+# Calculates  likelihood ratios (LRT) and p-values 
 #
 # Inputs:
-#   - 
+#   - z_by_year.{prefix}.tsv — z-scores per SNP and per year
+#
 # Output:
-#   - 
-#----------------------------------------------------------------------
+#   - tests_{prefix}.tsv — likelihoods, LRTs, and p-values per SNP
+#
+#----------------------------------------------------------------------  
 
 from pathlib import Path
 import numpy as np
@@ -20,9 +24,11 @@ work_dir = "../../results/06_SNPs_stats"
 
 # Input files
 ne_in = f"{work_dir}/Ne_estimates.tsv"
+
 #z_by_year_in = f"{work_dir}/Z.by.year.{prefix}.tsv"   # Z values per year
 
 # Output files
+#tests_out = f"{work_dir}/tests_{prefix}.tsv"
 
 
 minMAF = 0.05
@@ -38,11 +44,11 @@ def get_years_and_ne(prefix, ne_in):
             if cols[0] == prefix:
                 n_years = int(cols[3])
                 ne      = float(cols[9])
-                return (n_years, ne)
-    return (None, None)
+                return n_years, ne
+    return None, None
 
 
-def test_models(z_by_year_in, n_years, var_drift, tests_out):    
+def run_selection_models(z_by_year_in, n_years, var_drift, tests_out):    
     with open(tests_out, "w") as tests_fh:
         tests_fh.write("\t".join([
            "CHROM", "POS", "REF", "ALT", "n_years","mu_null", "LL0", "mu_start", "mu_last", "LL1", 
@@ -110,7 +116,7 @@ def test_models(z_by_year_in, n_years, var_drift, tests_out):
 
                             # Fluctuating (alternative) model: mean vector = observed z
                             # In multivariate normal terms, this is the "perfect fit" log-likelihood.
-                            LL2 = log(multivariate_normal.pdf(z_array, z_array, cov_matrix))
+                            LL2 = multivariate_normal.logpdf(z_array, z_array, cov_matrix)
                             # Likelihood ratio test against null
                             LRT_fluctuating = 2.0 * (LL2 - LL0)
                             #Calculate df as number of extra parameters in fluctuating model compared to null model
@@ -132,6 +138,7 @@ def build_covariance_matrix(n_z, years, var_drift, se):
     # Add error variance se^2 to diagonal
     np.fill_diagonal(cov_matrix, np.diag(cov_matrix) + np.square(se))
     return cov_matrix
+
     
 def log_likelihood_null(mu0, z_array, cov_matrix):
     mvec = [mu0] * len(z_array)
@@ -162,7 +169,8 @@ def main():
             var_drift = 1.0 / (2.0 * ne) if ne > 0 else 1.0 / (2.0 * 1.0)
             z_path=Path(z_by_year_in)
             if z_path.is_file():
-                test_models(z_by_year_in, n_years, var_drift, tests_out)
+                run_selection_models(z_by_year_in, n_years, var_drift, tests_out)
+
 
 if __name__ == "__main__":
     main()
