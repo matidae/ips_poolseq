@@ -2,7 +2,7 @@
 
 #----------------------------------------------------------------------
 # Adjusts p-values from likelihood ratio tests for multiple comparisons
-# using the Benjamini–Hochberg False Discovery Rate (FDR) correction.
+# using the Benjamini-Hochberg FDR correction.
 #
 # Inputs:
 #   - tests_{prefix}.tsv — evolutionary models tests results per SNP
