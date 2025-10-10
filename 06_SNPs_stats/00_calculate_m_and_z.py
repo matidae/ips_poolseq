@@ -15,15 +15,15 @@ import os
 from math import sqrt, asin
 from utils import parse_counts, load_depth_threshold
 
-work_dir = "../../results/04_varcalls"
-out_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/06_SNPs_stats"
+input_dir = "../../results/04_varcalls"
 
 # Input files
-depth_stats_in = f"{work_dir}/genic_depth_stats.tsv"
-readcounts_in = f"{work_dir}/genic_readcounts.tsv"
+depth_stats_in = f"{input_dir}/genic_depth_stats.tsv"
+readcounts_in = f"{input_dir}/genic_readcounts.tsv"
 # Output files
-m_and_z_out = f"{out_dir}/genic_m_and_z.tsv"
-m_and_z_excluded_out = f"{out_dir}/genic_m_and_z.excluded.tsv"
+m_and_z_out = f"{work_dir}/genic_m_and_z.tsv"
+m_and_z_excluded_out = f"{work_dir}/genic_m_and_z.excluded.tsv"
 
 min_depth, max_depth = load_depth_threshold()
 
@@ -37,9 +37,10 @@ def calculate_z_score(ref, alt):
     return m, f"{p:.4f}", f"{z:.4f}"
 
 def main():
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-    with open(readcounts_in, 'r') as readcounts_fh, open(m_and_z_out, 'w') as m_and_z_fh, open(m_and_z_excluded_out, 'w') as m_and_z_excluded_fh:
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
+    with open(readcounts_in, 'r') as readcounts_fh, open(m_and_z_out, 'w') as \
+    m_and_z_fh, open(m_and_z_excluded_out, 'w') as m_and_z_excluded_fh:
         header = next(readcounts_fh)
         m_and_z_fh.write(header)
         for line in readcounts_fh:        

@@ -14,7 +14,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-work_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/07_null_variance"
+
 #Input files
 null_var_in = f"{work_dir}/null_variance_summary.tsv"
 dz2_bin_in=f"{work_dir}/dz2_by_pbin.tsv"

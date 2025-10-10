@@ -14,8 +14,9 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import numpy as np
 
-
 work_dir = "../../results/06_SNPs_stats"
+input_dir = "../../results/06_SNPs_stats"
+
 # Input files
 input_file = f"{work_dir}/snpdev_m_and_z.tsv"
 # Output files

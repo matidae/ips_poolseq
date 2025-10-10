@@ -10,7 +10,6 @@
 #
 # Output:
 #   - tests_{prefix}.tsv — likelihoods, LRTs, and p-values per SNP
-#
 #----------------------------------------------------------------------  
 
 from pathlib import Path
@@ -23,12 +22,11 @@ from utils import load_paired_samples
 work_dir = "../../results/06_SNPs_stats"
 
 # Input files
-ne_in = f"{work_dir}/Ne_estimates.tsv"
-
+ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
 #z_by_year_in = f"{work_dir}/Z.by.year.{prefix}.tsv"   # Z values per year
 
 # Output files
-#tests_out = f"{work_dir}/tests_{prefix}.tsv"
+#tests_out = f"{work_dir}/tests_{prefix}.tsv" # Output file with mu, LRT, p-values for each SNP
 
 
 minMAF = 0.05
@@ -43,7 +41,7 @@ def get_years_and_ne(prefix, ne_in):
             cols = line.strip().split("\t")
             if cols[0] == prefix:
                 n_years = int(cols[3])
-                ne      = float(cols[9])
+                ne = float(cols[9])
                 return n_years, ne
     return None, None
 
@@ -51,8 +49,8 @@ def get_years_and_ne(prefix, ne_in):
 def run_selection_models(z_by_year_in, n_years, var_drift, tests_out):    
     with open(tests_out, "w") as tests_fh:
         tests_fh.write("\t".join([
-           "CHROM", "POS", "REF", "ALT", "n_years","mu_null", "LL0", "mu_start", "mu_last", "LL1", 
-           "LRT_LL1-LL0", "pval_1df", "LL2", "LRT_LL2-LL0", "pval_df" ]) + "\n")
+           "CHROM", "POS", "REF", "ALT", "n_years","mu_null", "LL0", "mu_start", "mu_end", "LL1", 
+           "LRT1", "pval_LRT1", "LL2", "LRT2", "pval_LRT2" ]) + "\n")
         with open(z_by_year_in) as z_by_year_fh:
             cols = z_by_year_fh.readline().strip().split("\t")
             if len(cols) > 5:
@@ -87,7 +85,7 @@ def run_selection_models(z_by_year_in, n_years, var_drift, tests_out):
                             mu0 = (null_vector @ inv_cov_matrix @ z_array) / (null_vector @ inv_cov_matrix @ null_vector)
                             LL0 = log_likelihood_null(mu0, z_array, cov_matrix)                            
 
-                            # Design matrix X for linear model (columns: coefficients for mu_start and mu_last)
+                            # Design matrix X for linear model (columns: coefficients for mu_start and mu_end)
                             years = np.array(years)
                             total_years = years[-1] - years[0]
                             coef_start = 1.0 - (years - years[0]) / total_years

@@ -14,10 +14,11 @@
 from math import sqrt, asin, sin
 from utils import load_paired_samples
 
-work_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/07_null_variance"
+input_dir = "../../results/06_SNPs_stats"
 
 # Input files
-m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"
+m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"
 
 # Output files
 dz2_bin_out=f"{work_dir}/dz2_by_pbin.tsv"

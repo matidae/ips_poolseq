@@ -20,7 +20,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-work_dir = "../../results/06_SNPs_stats/plots"
+work_dir = "../../results/07_null_variance/plots"
 
 # Input files
 nullvar_in = "../../results/06_SNPs_stats/null_variance_summary.tsv"

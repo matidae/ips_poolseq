@@ -10,7 +10,7 @@
 
 import csv
 
-work_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/07_null_variance"
 
 # Input file
 null_var_in = f"{work_dir}/null_variance_summary.tsv"

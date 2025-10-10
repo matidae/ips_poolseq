@@ -18,9 +18,11 @@ from scipy.stats import chi2
 from utils import load_paired_samples
 import pandas as pd
 
-work_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/07_null_variance"
+input_dir = "../../results/06_SNPs_stats"
+
 # Input files
-m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"
+m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"
 null_var_in = f"{work_dir}/null_variance_summary.tsv"
 # Ouput file
 snpdev_out = f"{work_dir}/snpdev_m_and_z.tsv"
