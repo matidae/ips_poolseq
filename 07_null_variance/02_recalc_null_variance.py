@@ -15,10 +15,11 @@
 from math import sqrt, asin
 from utils import load_paired_samples, load_depth_threshold
 
-work_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/07_null_variance"
+input_dir = "../../results/06_SNPs_stats"
 
 # Input files
-m_and_z_in = f"{work_dir}/genic_m_and_z.tsv"           # Genic m and z data input
+m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"           # Genic m and z data input
 null_var_in = f"{work_dir}/null_variance_summary.tsv"  # Null variance data input
 snpdev_in = f"{work_dir}/snpdev_m_and_z.tsv"           # SNP deviation input file
 
@@ -82,7 +83,7 @@ def process_snps(m_and_z_in, snp_filter_out, valid_snps, paired_samples, stats):
 # Recalculate null variance for each sample and write to file
 def calculate_null_variance(null_var_recalc_out, stats):    
     with open(null_var_recalc_out, 'w') as null_var_recalc_fh:
-        null_var_recalc_fh.write("sample\tnull_var\tn_snp\tmean_dz2\tmean_inv_depth\trdprop\n")
+        null_var_recalc_fh.write("Sample\tNull_var\tn_SNP\tMean_DZ2\tMean_inv_depth\trdprop\n")
         for sample, data in stats.items():
             if data['count'] == 0:
                 continue

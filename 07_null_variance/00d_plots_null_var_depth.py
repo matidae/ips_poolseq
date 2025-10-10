@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 work_dir = "../../results/07_null_variance/plots"
 
 # Input files
-nullvar_in = "../../results/06_SNPs_stats/null_variance_summary.tsv"
+nullvar_in = "../../results/07_null_variance/null_variance_summary.tsv"
 depths_in = "../../results/05_SNPs_depths/genic_depth_stats.tsv"
 qubit_in = "../../results/01_proc_reads/sample_qubit"
 
@@ -144,12 +144,12 @@ def main():
         .drop(columns="sample").dropna()
     
     # Call each plot function
-    plot_nullvar_nSNPs(df_nullvar, f'{work_dir}/nullvar_nSNPs_plot.png')
-    plot_ne_genomes_nSNPs(df_nullvar, f'{work_dir}/ne_genomes_nSNPs_plot.png')
-    plot_depths_nSNPs(df_nullvar, f'{work_dir}/depths_nSNPs_plot.png')
-    plot_ne_genomes_depths(df_nullvar, f'{work_dir}/ne_genomes_depth_plot.png')
-    plot_depths_qubit(df_qubit, f'{work_dir}/depths_qubit_plot_rep_a.png', 'a')
-    plot_depths_qubit(df_qubit, f'{work_dir}/depths_qubit_plot_rep_b.png', 'b')
+    plot_nullvar_nSNPs(df_nullvar, f'{work_dir}/00d_nullvar_nSNPs_plot.png')
+    plot_ne_genomes_nSNPs(df_nullvar, f'{work_dir}/00d_ne_genomes_nSNPs_plot.png')
+    plot_depths_nSNPs(df_nullvar, f'{work_dir}/00d_depths_nSNPs_plot.png')
+    plot_ne_genomes_depths(df_nullvar, f'{work_dir}/00d_ne_genomes_depth_plot.png')
+    plot_depths_qubit(df_qubit, f'{work_dir}/00d_depths_qubit_plot_rep_a.png', 'a')
+    plot_depths_qubit(df_qubit, f'{work_dir}/00d_depths_qubit_plot_rep_b.png', 'b')
 
 
 if __name__ == '__main__':

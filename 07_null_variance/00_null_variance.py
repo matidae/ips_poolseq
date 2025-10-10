@@ -11,6 +11,7 @@
 #    (mean dz2 between reps, mean read depth var, prop dz2 explained by read depth, null variance)
 #-------------------------------------------------------------------------------
 
+import os
 from math import sqrt, asin, sin
 from utils import load_paired_samples
 
@@ -103,6 +104,8 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
                 dz2_bin_fh.write(f"{pbin}\t{count}\t{avg_abs_diff:.6f}\n")       
 
 def main():
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
     # Load indexes of paired samples (replicates A and B)
     samples_reps = load_paired_samples()
     # Calculate null variance and get stats for plotting histogram

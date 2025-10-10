@@ -14,14 +14,14 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import numpy as np
 
-work_dir = "../../results/06_SNPs_stats"
-input_dir = "../../results/06_SNPs_stats"
+work_dir = "../../results/07_null_variance"
+plot_dir = "../../results/07_null_variance/plots"
 
 # Input files
 input_file = f"{work_dir}/snpdev_m_and_z.tsv"
 # Output files
-pval_histogram_plot = f"{work_dir}/pval_histogram.png"
-pval_vs_depth_plot = f"{work_dir}/pval_vs_depth.png"
+pval_histogram_plot = f"{plot_dir}/01b_pval_histogram.png"
+pval_vs_depth_plot = f"{plot_dir}/01b_pval_vs_depth.png"
 
 color= "#009688"
 plt.style.use("ggplot")

@@ -11,10 +11,12 @@
 #   - snp_counts_per_bin.png: SNP counts per allele frequency bin
 #----------------------------------------------------------------------
 
+import os
 import matplotlib.pyplot as plt
 import pandas as pd
 
 work_dir = "../../results/07_null_variance"
+plot_dir = "../../results/07_null_variance/plots"
 
 #Input files
 null_var_in = f"{work_dir}/null_variance_summary.tsv"
@@ -55,7 +57,7 @@ def plot_null_variance_bar(nv_file):
     plt.xticks(ticks=range(len(samples_with_gaps)), labels=samples_with_gaps, rotation=90)
     plt.ylabel("Null variance estimate")
     plt.tight_layout()
-    plt.savefig(f"{work_dir}/nv_per_sample.png")
+    plt.savefig(f"{plot_dir}/00b_nv_per_sample.png")
     plt.close()
 
 # Plot replicate dz averge and SNP counts  per allele frequency bin
@@ -67,7 +69,7 @@ def plot_dz_diff_by_freq(freq_file):
     plt.ylabel("Average absolute difference between replicates")    
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig(f"{work_dir}/avg_zdiff_per_bin.png")
+    plt.savefig(f"{plot_dir}/00b_avg_zdiff_per_bin.png")
     plt.close()
 
     plt.figure(figsize=(8, 5))
@@ -76,7 +78,7 @@ def plot_dz_diff_by_freq(freq_file):
     plt.ylabel("Number of SNPs")
     plt.grid(axis='y')
     plt.tight_layout()
-    plt.savefig(f"{work_dir}/snp_counts_per_bin.png")
+    plt.savefig(f"{plot_dir}/00b_snp_counts_per_bin.png")
     plt.close()
 
 def more_plots(null_var_in):
@@ -102,10 +104,12 @@ def more_plots(null_var_in):
     ]
     ax.plot(lims, lims, 'k--', alpha=0.5)    
     plt.tight_layout()
-    fig.savefig(f"{work_dir}/dz2_vs_depth_var.png", dpi=300)
+    fig.savefig(f"{plot_dir}/00b_dz2_vs_depth_var.png", dpi=300)
     plt.close()
 
 def main():
+    if not os.path.exists(plot_dir):
+        os.makedirs(plot_dir)
     plot_null_variance_bar(null_var_in)
     plot_dz_diff_by_freq(dz2_bin_in)
     more_plots(null_var_in)
