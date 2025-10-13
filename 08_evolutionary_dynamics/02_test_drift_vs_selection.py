@@ -6,7 +6,7 @@
 # Calculates  likelihood ratios (LRT) and p-values 
 #
 # Inputs:
-#   - z_by_year.{prefix}.tsv — z-scores per SNP and per year
+#   - z_year.{prefix}.tsv — z-scores per SNP and per year
 #
 # Output:
 #   - tests_{prefix}.tsv — likelihoods, LRTs, and p-values per SNP
@@ -23,7 +23,7 @@ work_dir = "../../results/08_evolutionary_dynamics"
 
 # Input files
 ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
-#z_by_year_in = f"{work_dir}/Z.by.year.{prefix}.tsv"   # Z values per year
+#z_year_in = f"{work_dir}/z_year.{prefix}.tsv"   # z values per year
 
 # Output files
 #tests_out = f"{work_dir}/tests_{prefix}.tsv" # Output file with mu, LRT, p-values for each SNP
@@ -46,18 +46,18 @@ def get_years_and_ne(prefix, ne_in):
     return None, None
 
 
-def run_selection_models(z_by_year_in, n_years, var_drift, tests_out):    
+def run_selection_models(z_year_in, n_years, var_drift, tests_out):    
     with open(tests_out, "w") as tests_fh:
         tests_fh.write("\t".join([
            "CHROM", "POS", "REF", "ALT", "n_years","mu_null", "LL0", "mu_start", "mu_end", "LL1", 
            "LRT1", "pval_LRT1", "LL2", "LRT2", "pval_LRT2" ]) + "\n")
-        with open(z_by_year_in) as z_by_year_fh:
-            cols = z_by_year_fh.readline().strip().split("\t")
+        with open(z_year_in) as z_year_fh:
+            cols = z_year_fh.readline().strip().split("\t")
             if len(cols) > 5:
                 header = cols[4:]  # All years columns
                 header_years = [int(h.split("_")[-1]) for h in header]
                 
-                for row in z_by_year_fh:
+                for row in z_year_fh:
                     cols = row.rstrip().split("\t")
                     z = []
                     se = []
@@ -103,7 +103,7 @@ def run_selection_models(z_by_year_in, n_years, var_drift, tests_out):
 
                             # Solve for bhat: coefficients (mu_start, mu_end) of the linear model
                             # Equivalent to: bhat = (X^T C^-1 X)^(-1) * (X^T C^-1 z)
-                            #bhat = np.linalg.inv(normal_matrix) @ weighted_response
+                            # bhat = np.linalg.inv(normal_matrix) @ weighted_response
                             bhat = np.linalg.solve(normal_matrix, weighted_response)
                             
                             LL1 = log_likelihood_selection(bhat, z_array, cov_matrix, years)                            
@@ -124,8 +124,8 @@ def run_selection_models(z_by_year_in, n_years, var_drift, tests_out):
                             tests_fh.write(
                                 "\t".join([*cols[:4], str(n_z), f"{mu0:.6f}", f"{LL0:.6f}", 
                                            f"{bhat[0]:.6f}", f"{bhat[1]:.6f}", 
-                                           f"{LL1:.6f}", f"{LRT_selection:.6f}", f"{pvalue_selection:.6f}", 
-                                           f"{LL2:.6f}", f"{LRT_fluctuating:.6f}", f"{pvalue_fluctuating:.6f}"]) + "\n")
+                                           f"{LL1:.6f}", f"{LRT_selection:.4e}", f"{pvalue_selection:.4e}", 
+                                           f"{LL2:.6f}", f"{LRT_fluctuating:.4e}", f"{pvalue_fluctuating:.4e}"]) + "\n")
 
 
 def build_covariance_matrix(n_z, years, var_drift, se):               
@@ -137,12 +137,12 @@ def build_covariance_matrix(n_z, years, var_drift, se):
     np.fill_diagonal(cov_matrix, np.diag(cov_matrix) + np.square(se))
     return cov_matrix
 
-    
+
 def log_likelihood_null(mu0, z_array, cov_matrix):
     mvec = [mu0] * len(z_array)
     probd = multivariate_normal.logpdf(z_array, mvec, cov_matrix)
     return probd
-    
+
 
 def log_likelihood_selection(mu_params, z_array, cov_matrix, years):
     mu_start, mu_end = mu_params
@@ -161,13 +161,13 @@ def main():
     # Process for each prefix
     for pre in prefixes:
         n_years, ne = get_years_and_ne(pre, ne_in)
-        z_by_year_in = f"{work_dir}/z_by_year.{pre}.tsv"
+        z_year_in = f"{work_dir}/z_year.{pre}.tsv"
         tests_out = f"{work_dir}/tests_{pre}.tsv"
         if ne is not None:
             var_drift = 1.0 / (2.0 * ne) if ne > 0 else 1.0 / (2.0 * 1.0)
-            z_path=Path(z_by_year_in)
+            z_path=Path(z_year_in)
             if z_path.is_file():
-                run_selection_models(z_by_year_in, n_years, var_drift, tests_out)
+                run_selection_models(z_year_in, n_years, var_drift, tests_out)
 
 
 if __name__ == "__main__":
