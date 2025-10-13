@@ -6,7 +6,7 @@
 # It corrects for sampling error and estimates Ne using both IQR and mean-square 
 #
 # Inputs:
-#   - Z.by.year.{prefix}.tsv - Z values per year per population
+#   - z_year.{prefix}.tsv - z values per year per population
 # Output:
 #   - Ne_estimates.tsv - Ne estimates for each population
 #----------------------------------------------------------------------
@@ -18,7 +18,7 @@ import numpy as np
 work_dir = "../../results/08_evolutionary_dynamics"
 
 # Input files
-# Z.by.year.{prefix}.tsv - Z values per year (loaded dynamically)
+# z_year.{prefix}.tsv - z values per year (loaded dynamically)
 
 # Output files
 ne_out = f"{work_dir}/Ne_estimates.tsv" # Ne results file
@@ -30,7 +30,7 @@ z_high= 2.0*asin(sqrt(1.0-minMAF))
 def get_samples_years(prefixes):    
     prefixes_ne = {}
     for pre in prefixes:
-        with open(f"{work_dir}/z_by_year.{pre}.tsv") as pre_fh:
+        with open(f"{work_dir}/z_year.{pre}.tsv") as pre_fh:
             header = pre_fh.readline().strip().split("\t")
             ncols = len(header)            
             if ncols > 5:                
@@ -43,12 +43,12 @@ def compute_dz_variance(prefix):
     dzlist = []
     mean_evar =0
     mean_dz2 = 0    
-    z_by_interval_in = f"{work_dir}/z_by_year.{prefix}.tsv"
+    z_interval_in = f"{work_dir}/z_year.{prefix}.tsv"
     dz_out = f"{work_dir}/dz_max.{prefix}.tsv"
-    with open(z_by_interval_in, 'r') as z_by_interval_fh, open(dz_out, "w") as dz_fh:
-        next(z_by_interval_fh)
+    with open(z_interval_in, 'r') as z_interval_fh, open(dz_out, "w") as dz_fh:
+        next(z_interval_fh)
         n_row = 0
-        for row in z_by_interval_fh:
+        for row in z_interval_fh:
             cols = row.strip().split("\t")
             n_row += 1
             # Get first and last year z values
