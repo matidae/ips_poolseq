@@ -28,7 +28,7 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
     minMAF = 0.05
     zlow = 2.0*asin(sqrt(minMAF))
     zhigh= 2.0*asin(sqrt(1.0-minMAF))
-    min_depth = 50
+    min_depth = 80
 
     for pre in prefixes:
         paired_samples_set= {}
@@ -117,11 +117,13 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
                                     dz_by_interval_fh.write("\tNA,NA")
                             else:                            
                                 year_count+=1
-                            last_z = [z_mean, (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0]                            
+                            last_z = [z_mean, (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0]
                     else:
                         z_by_year_fh.write("\tNA,NA,0,0")                     
                         if dz_by_interval_fh:
-                            dz_by_interval_fh.write("\tNA,NA")
+                            if year_count > 0:
+                                dz_by_interval_fh.write("\tNA,NA@")
+                            year_count+=1
                         last_z = ["NA","NA"]
 
                 z_by_year_fh.write("\n")
