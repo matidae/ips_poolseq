@@ -94,8 +94,10 @@ def calculate_null_variance(null_var_recalc_out, stats):
             null_var = mean_dz2 - mean_inv_depth
             # Prop. of variance explained by read depth
             rd_prop = mean_inv_depth/mean_dz2
+            #Ne of diploid genomes
+            ne = 1/null_var
             null_var_recalc_fh.write(
-                f"{sample}\t{null_var:.6f}\t{data['count']}\t{mean_dz2:.6f}\t"
+                f"{sample}\t{null_var:.6f}\t{rd_prop:.0f}\t{data['count']}\t{mean_dz2:.6f}\t"
                 f"{mean_inv_depth:.6f}\t{rd_prop:.4f}\n")
 
 def main():
