@@ -40,26 +40,50 @@ def tsv_to_html_table(tsv_in, title):
 
     table = ['<table>']
     # Header row
-    table.append('<tr>')
+    table.append('<thead><tr>')
     for cell in rows[0]:
         table.append(f'<th>{cell}</th>')
-    table.append('</tr>')
+    table.append('</tr></thead><tbody>')
     # Data rows
     for row in rows[1:]:
         table.append('<tr>')
         for cell in row:
             table.append(f'<td>{cell}</td>')
         table.append('</tr>')
-    table.append('</table>')    
+    table.append('</tbody></table>')    
     table_content =  '\n'.join(table)
     
     html_header = f"""<html><head><meta charset="UTF-8">
-  <style>
+    <style>
     table {{ border-collapse: collapse; width: 100%; font-family: sans-serif; }}
     th, td {{ border: 1px solid #999; padding: 4px; text-align: right; }}
-    th {{ background-color: #f2f2f2; }}
+    th {{ background-color: #f2f2f2; cursor: pointer; }}
+    th:hover {{ background-color: #e0e0e0; }}
     h2 {{ font-family: sans-serif; }}
   </style>
+    <script>
+    // Simple sortable table script
+    document.addEventListener('DOMContentLoaded', () => {{
+      const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+      const comparer = (idx, asc) => (a, b) => {{
+        const v1 = getCellValue(asc ? a : b, idx);
+        const v2 = getCellValue(asc ? b : a, idx);
+        const n1 = parseFloat(v1.replace(/,/g, ''));
+        const n2 = parseFloat(v2.replace(/,/g, ''));
+        const bothNumeric = !isNaN(n1) && !isNaN(n2);
+        return bothNumeric ? n1 - n2 : v1.localeCompare(v2);
+      }};
+
+      document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {{
+        const table = th.closest('table');
+        const tbody = table.querySelector('tbody');
+        Array.from(tbody.querySelectorAll('tr'))
+          .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+          .forEach(tr => tbody.appendChild(tr));
+      }})));
+    }});
+  </script>
 </head>
 <body>
 <h2>{title}</h2>

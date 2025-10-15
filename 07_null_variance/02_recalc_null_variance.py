@@ -83,7 +83,7 @@ def process_snps(m_and_z_in, snp_filter_out, valid_snps, paired_samples, stats):
 # Recalculate null variance for each sample and write to file
 def calculate_null_variance(null_var_recalc_out, stats):    
     with open(null_var_recalc_out, 'w') as null_var_recalc_fh:
-        null_var_recalc_fh.write("Sample\tNull_var\tn_SNP\tMean_DZ2\tMean_inv_depth\trdprop\n")
+        null_var_recalc_fh.write("Sample\tCount\tDZ2_mean\tDepth_var\tDepth_prop_var\tNull_var\tn_genomes\n")
         for sample, data in stats.items():
             if data['count'] == 0:
                 continue
@@ -97,8 +97,8 @@ def calculate_null_variance(null_var_recalc_out, stats):
             #Ne of diploid genomes
             ne = 1/null_var
             null_var_recalc_fh.write(
-                f"{sample}\t{null_var:.6f}\t{rd_prop:.0f}\t{data['count']}\t{mean_dz2:.6f}\t"
-                f"{mean_inv_depth:.6f}\t{rd_prop:.4f}\n")
+                f"{sample}\t{data['count']}\t{mean_dz2:.6f}\t{mean_inv_depth:.6f}\t"
+                f"{rd_prop:.4f}\t{null_var:.6f}\t{1/null_var:.0f}\n")
 
 def main():
     min_depth, max_depth = load_depth_threshold()
