@@ -122,7 +122,7 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
                         z_by_year_fh.write("\tNA,NA,0,0")                     
                         if dz_by_interval_fh:
                             if year_count > 0:
-                                dz_by_interval_fh.write("\tNA,NA@")
+                                dz_by_interval_fh.write("\tNA,NA")
                             year_count+=1
                         last_z = ["NA","NA"]
 
