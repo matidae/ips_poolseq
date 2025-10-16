@@ -59,7 +59,7 @@ def tsv_to_html_table(tsv_in, title):
     th, td {{ border: 1px solid #999; padding: 4px; text-align: right; }}
     th {{ background-color: #f2f2f2; cursor: pointer; }}
     th:hover {{ background-color: #e0e0e0; }}
-    h2 {{ font-family: sans-serif; }}
+    h3 {{ font-family: sans-serif; }}
   </style>
     <script>
     // Simple sortable table script
@@ -86,7 +86,7 @@ def tsv_to_html_table(tsv_in, title):
   </script>
 </head>
 <body>
-<h2>{title}</h2>
+<h3>{title}</h3>
 {table_content}
 </body>
 </html>"""
