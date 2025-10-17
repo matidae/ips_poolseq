@@ -47,30 +47,26 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
         dz_by_interval_out = f"{work_dir}/dz_interval.{pre}.tsv"
         
         with open(m_and_z_in, "r") as m_and_z_fh, \
-            open(z_by_year_out, "w") as z_by_year_fh:            
-
-            # Conditionally open dz file for writing
-            dz_by_interval_fh = None
-            if num_years > 1:
-                dz_by_interval_fh = open(dz_by_interval_out, "w")
-
-            # Write header (common fields for each sample)
-            z_by_year_fh.write("CHROM\tPOS\tREF\tALT")            
-            # Write header (sample-specific year field for Z values)
+            open(z_by_year_out, "w") as z_by_year_fh:
+            # Check if there are more than 1 year to compare            
+            if num_years == 1:
+                continue
+            dz_by_interval_fh = open(dz_by_interval_out, "w")
+                        
+            # Write header (sample-specific year field for z values)
+            z_by_year_fh.write("CHROM\tPOS\tREF\tALT")
             for sample in paired_samples_set:
                 z_by_year_fh.write(f"\t{sample}")
             z_by_year_fh.write("\n")
-            
-            # Write dz file header if applicable
-            if dz_by_interval_fh:
-                dz_by_interval_fh.write("CHROM\tPOS\tREF\tALT")
-                # Write header (sample-specific year_interval field for dZ values)
-                for i in range(len(paired_samples_year_list) - 1):                                    
-                    pre_year = paired_samples_year_list[i]
-                    pos_year = paired_samples_year_list[i+1]                
-                    dz_by_interval_fh.write(f"\t{pre}_{pre_year}-{pos_year}")            
-                dz_by_interval_fh.write("\n")
-            # End writing headers
+
+            # Write header (sample-specific year_interval field for dz values)
+            dz_by_interval_fh.write("CHROM\tPOS\tREF\tALT")
+            for i in range(len(paired_samples_year_list) - 1):                                    
+                pre_year = paired_samples_year_list[i]
+                pos_year = paired_samples_year_list[i+1]                
+                dz_by_interval_fh.write(f"\t{pre}_{pre_year}-{pos_year}")            
+            dz_by_interval_fh.write("\n")            
+
             # Start analyzing m and z file
             next(m_and_z_fh)
             for line in m_and_z_fh:                    
@@ -78,9 +74,7 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
                 row_start = "\t".join(cols[:4])
                 # Write in z_year.{pre}.tsv: chromo, coor, ref, alt ...
                 z_by_year_fh.write(row_start)
-                # Conditionally write if dz
-                if dz_by_interval_fh:
-                    dz_by_interval_fh.write(row_start)
+                dz_by_interval_fh.write(row_start)
                 #Set last value of z to NA
                 last_z = ["NA","NA"]                
                 year_count = 0
@@ -100,37 +94,33 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
 
                         # Write in z_year.{pre}.tsv ... z_mean, SE, depth_rep_b, depth_rep_b
                         if z_mean > zlow and z_mean < zhigh:
-                            z_by_year_fh.write(f"\t{z_mean:.4f},{std_error:.4f},{m_a},{m_b}")
+                            z_by_year_fh.write(f"\t{z_mean:.6f},{std_error:.6f},{m_a},{m_b}")
                         else:
                             z_by_year_fh.write("\tNA,NA,0,0")
 
                         # Write in dz_interval.{pre}.tsv ... z_mean, SE, depth_rep_b, depth_rep_b
-                        if dz_by_interval_fh:
-                            if year_count > 0:
-                                if last_z[0] != 'NA':
-                                    z_mean_interval = (z_mean + last_z[0])/2.0
-                                    if z_mean_interval > zlow and z_mean_interval < zhigh:
-                                        dz2 = z_mean - last_z[0]
-                                        evar = (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 + last_z[1]
-                                        dz_by_interval_fh.write(f"\t{dz2:.4f},{evar:.4f}")
-                                    else:
-                                        dz_by_interval_fh.write("\tNA,NA")
+                        if year_count > 0:
+                            if last_z[0] != 'NA':
+                                z_mean_interval = (z_mean + last_z[0])/2.0
+                                if z_mean_interval > zlow and z_mean_interval < zhigh:
+                                    dz2 = z_mean - last_z[0]
+                                    evar = (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0 + last_z[1]
+                                    dz_by_interval_fh.write(f"\t{dz2:.6f},{evar:.6f}")
                                 else:
                                     dz_by_interval_fh.write("\tNA,NA")
-                            else:                            
-                                year_count+=1
-                            last_z = [z_mean, (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0]
-                    else:
-                        z_by_year_fh.write("\tNA,NA,0,0")                     
-                        if dz_by_interval_fh:
-                            if year_count > 0:
+                            else:
                                 dz_by_interval_fh.write("\tNA,NA")
+                        else:                            
                             year_count+=1
+                        last_z = [z_mean, (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0]
+                    else:
+                        z_by_year_fh.write("\tNA,NA,0,0")                        
+                        if year_count > 0:
+                            dz_by_interval_fh.write("\tNA,NA")
+                        year_count+=1
                         last_z = ["NA","NA"]
-
-                z_by_year_fh.write("\n")
-                if dz_by_interval_fh:
-                    dz_by_interval_fh.write("\n")
+                z_by_year_fh.write("\n")                
+                dz_by_interval_fh.write("\n")
 
 def main():
     if not os.path.exists(work_dir):

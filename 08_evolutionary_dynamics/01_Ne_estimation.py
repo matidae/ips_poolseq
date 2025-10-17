@@ -25,6 +25,7 @@ work_dir = "../../results/08_evolutionary_dynamics"
 
 # Output files
 ne_out = f"{work_dir}/Ne_estimates.tsv" # Ne results file
+#dz_out = f"{work_dir}/dz_max.{prefix}.tsv" - dz between first and last year
 
 minMAF = 0.05
 z_low = 2.0*asin(sqrt(minMAF))
@@ -44,11 +45,11 @@ def get_samples_years(prefixes):
 
 def compute_dz_variance(prefix):    
     dzlist = []
-    mean_evar =0
-    mean_dz2 = 0    
+    sum_evar =0
+    sum_dz2 = 0    
     z_interval_in = f"{work_dir}/z_year.{prefix}.tsv"
-    dz_out = f"{work_dir}/dz_max.{prefix}.tsv"
-    with open(z_interval_in, 'r') as z_interval_fh, open(dz_out, "w") as dz_fh:
+    #dz_out = f"{work_dir}/dz_max.{prefix}.tsv"
+    with open(z_interval_in, 'r') as z_interval_fh:
         next(z_interval_fh)
         n_row = 0
         for row in z_interval_fh:
@@ -66,16 +67,14 @@ def compute_dz_variance(prefix):
                     dz = z_first - z_last                    
                     if n_row%2:
                         dz = -dz
-                    # Save dz values of each population
-                    dz_fh.write(f"{dz:.5f}\n")
                     # Get first and last year SE values and estimate variance
                     se_first = float(cols[4].split(",")[1])
                     se_last = float(cols[-1].split(",")[1])
                     evar = se_first**2 + se_last **2
-                    mean_evar += evar
-                    mean_dz2 += (dz**2)
+                    sum_evar += evar
+                    sum_dz2 += (dz**2)
                     dzlist.append([dz, evar])
-    return(dzlist, mean_dz2, mean_evar)
+    return(dzlist, sum_dz2, sum_evar)
 
 def compute_quantiles(dzlist):
     dz_values = np.array([dz for dz, _ in dzlist])
@@ -94,25 +93,26 @@ def main():
             "mean_dz2", "mean_evar", "IQR", "Ne_IQR", "Ne_dz2"]) + "\n")
         for key, value in samples.items():
             prefix = key 
-            dzlist, mean_dz2, mean_evar = compute_dz_variance(prefix)
+            dzlist, sum_dz2, sum_evar = compute_dz_variance(prefix)
 
             nx = len(dzlist)
             if nx > 0:                        
-                iqr = compute_quantiles(dzlist)                
+                iqr = compute_quantiles(dzlist)
+                print(iqr)         
                 start_year = value[0]
                 last_year = value[1]
                 t = int(value[1]) - int(value[0])                
-                mean_evar = mean_evar/float(nx) 
-                mean_dz2 = mean_dz2/float(nx)                
+                mean_evar = sum_evar/nx
+                mean_dz2 = sum_dz2/nx
                 # Estimate Ne
                 ne_iqr = t/(2* ((iqr/1.34896)**2.0 - mean_evar))
                 ne_dz2 = t/(2* (mean_dz2 - mean_evar))                
                 # Save Ne to table
                 ne_fh.write("\t".join(map(str,[prefix, start_year, last_year, t, nx,
-                f"{mean_dz2:.4f}", f"{mean_evar:.4f}", f"{iqr:.4f}", int(ne_iqr), int(ne_dz2)])) + "\n")     
+                f"{mean_dz2:.6f}", f"{mean_evar:.6f}", f"{iqr:.6f}", int(ne_iqr), int(ne_dz2)])) + "\n")     
                 # Make HTML page with Ne output
     tsv_to_html(ne_out, "Ne estimates")
 
 if __name__ == '__main__':
-    #main()
-    tsv_to_html("../../results/08_evolutionary_dynamics/selection_models.tsv", "Selection models")
+    main()
+    
