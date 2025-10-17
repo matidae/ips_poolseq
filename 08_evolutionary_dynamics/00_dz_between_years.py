@@ -10,6 +10,8 @@
 #   - dz_interval.{prefix}.tsv — diff in Z values in consecutive year intervals 
 #----------------------------------------------------------------------
 
+import sys
+sys.path.append("../utils")
 import os
 from math import sqrt, asin
 from utils import load_paired_samples, load_null_variance_recalc

@@ -3,16 +3,19 @@
 #----------------------------------------------------------------------
 # Estimates effective population size (Ne). Reads the z-transformed AF across years
 # Calculates the changes in AF as dz between first and last year of each population
-# It corrects for sampling error and estimates Ne using both IQR and mean-square 
+# It corrects for sampling error and estimates Ne using both IQR and mean-square of
+# the Fisher-Ford arcsine square root transformation of allele frequencies (z)
 #
 # Inputs:
-#   - z_year.{prefix}.tsv - z values per year per population
+#   - z_year.{prefix}.tsv - z values per year per population ()
 # Output:
 #   - Ne_estimates.tsv - Ne estimates for each population
 #----------------------------------------------------------------------
 
+import sys
+sys.path.append("../utils")
 from math import sqrt, asin
-from utils import load_paired_samples
+from utils import load_paired_samples, tsv_to_html
 import numpy as np
 
 work_dir = "../../results/08_evolutionary_dynamics"
@@ -95,8 +98,7 @@ def main():
 
             nx = len(dzlist)
             if nx > 0:                        
-                iqr = compute_quantiles(dzlist)
-                q25 = -iqr / 2
+                iqr = compute_quantiles(dzlist)                
                 start_year = value[0]
                 last_year = value[1]
                 t = int(value[1]) - int(value[0])                
@@ -105,9 +107,12 @@ def main():
                 # Estimate Ne
                 ne_iqr = t/(2* ((iqr/1.34896)**2.0 - mean_evar))
                 ne_dz2 = t/(2* (mean_dz2 - mean_evar))                
-                # Save Ne to table                
+                # Save Ne to table
                 ne_fh.write("\t".join(map(str,[prefix, start_year, last_year, t, nx,
-                f"{mean_dz2:.4f}", f"{mean_evar:.4f}", f"{iqr:.4f}", int(ne_iqr), int(ne_dz2)])) + "\n")            
+                f"{mean_dz2:.4f}", f"{mean_evar:.4f}", f"{iqr:.4f}", int(ne_iqr), int(ne_dz2)])) + "\n")     
+                # Make HTML page with Ne output
+    tsv_to_html(ne_out, "Ne estimates")
 
 if __name__ == '__main__':
-    main()
+    #main()
+    tsv_to_html("../../results/08_evolutionary_dynamics/selection_models.tsv", "Selection models")

@@ -5,13 +5,13 @@
 # using the Benjamini-Hochberg FDR correction.
 #
 # Inputs:
-#   - tests_{prefix}.tsv — evolutionary models tests results per SNP
+#   - tests_{prefix}.tsv - evolutionary models tests results per SNP
 #
 # Output:
-#   - tests_{prefix}_fdr.tsv — add to input file FDR results
+#   - tests_{prefix}_fdr.tsv - add to input file FDR results
 #----------------------------------------------------------------------
 
-import glob, os
+import glob
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
@@ -24,7 +24,7 @@ tests_in = sorted(glob.glob(f"{work_dir}/tests_*.tsv"))
 tests_fdr_out = [f.replace(".tsv", "_FDR.tsv") for f in tests_in]
 
 def compute_fdr(df, columns, alpha=0.05):
-    # Apply Benjamini–Hochberg FDR correction to selected p-value columns
+    # Apply Benjamini-Hochberg FDR correction to selected p-value columns
     for col in columns:        
         pvals_fdr = multipletests(df[col].values, method="fdr_bh", alpha=alpha)[1]
         df[f"{col}_FDR"] = pvals_fdr

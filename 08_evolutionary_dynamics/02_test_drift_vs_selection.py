@@ -12,6 +12,8 @@
 #   - tests_{prefix}.tsv — likelihoods, LRTs, and p-values per SNP
 #----------------------------------------------------------------------  
 
+import sys
+sys.path.append("../utils")
 from pathlib import Path
 import numpy as np
 from math import sqrt, asin, log
@@ -74,7 +76,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                         if z_mean > z_low and z_mean < z_high:
                             # Drift model (null hypothesis)
                             # Get the covariance matrix
-                            cov_matrix = build_covariance_matrix(n_z, years, var_drift, se)
+                            cov_matrix = build_covariance_matrix(years, var_drift, se)
                             # Inverse of covariance matrix
                             inv_cov_matrix = np.linalg.inv(cov_matrix)
                             # Transform z into a numpy array for linalg operations
@@ -128,7 +130,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                                            f"{LL2:.6f}", f"{LRT_fluctuating:.4e}", f"{pvalue_fluctuating:.4e}"]) + "\n")
 
 
-def build_covariance_matrix(n_z, years, var_drift, se):               
+def build_covariance_matrix(years, var_drift, se):               
     # Get the difference between each year to first year
     t = np.array(years) - years[0]
     # Compute covariance matrix as: cov[i, j] = var_drift * min(t[i], t[j])
