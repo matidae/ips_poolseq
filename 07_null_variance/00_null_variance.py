@@ -11,6 +11,8 @@
 #    (mean dz2 between reps, mean read depth var, prop dz2 explained by read depth, null variance)
 #-------------------------------------------------------------------------------
 
+import sys
+sys.path.append("../utils")
 import os
 from math import sqrt, asin, sin
 from utils import load_paired_samples

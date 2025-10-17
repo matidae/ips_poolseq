@@ -12,6 +12,8 @@
 #   - null_variance_summary.recalc.tsv — Estimated null variance per sample group
 #----------------------------------------------------------------------
 
+import sys
+sys.path.append("../utils") 
 from math import sqrt, asin
 from utils import load_paired_samples, load_depth_threshold
 
