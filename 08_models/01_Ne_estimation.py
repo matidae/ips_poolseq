@@ -106,7 +106,7 @@ def main():
                 mean_dz2 = sum_dz2/nx
                 # Estimate Ne
                 ne_iqr = t/(2* ((iqr/1.34896)**2.0 - mean_evar))
-                ne_dz2 = t/(2* (mean_dz2 - mean_evar))                
+                ne_dz2 = t/(2* (mean_dz2 - mean_evar))
                 # Save Ne to table
                 ne_fh.write("\t".join(map(str,[prefix, start_year, last_year, t, nx,
                 f"{mean_dz2:.6f}", f"{mean_evar:.6f}", f"{iqr:.6f}", int(ne_iqr), int(ne_dz2)])) + "\n")     
