@@ -1,0 +1,124 @@
+<html><head><meta charset="UTF-8">
+    <style>
+    table { border-collapse: collapse; width: 50%; font-family: sans-serif; }
+    th, td { border: 1px solid #999; padding: 4px; text-align: right; }
+    th { background-color: #f2f2f2; cursor: pointer; }
+    th:hover { background-color: #e0e0e0; }
+    h3 { font-family: sans-serif; }
+    img { display: block; margin: 20px auto; width: 50%; border: 1px solid #aaa; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+  </style>
+    <script>
+    // Simple sortable table script
+    document.addEventListener('DOMContentLoaded', () => {
+      const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+      const comparer = (idx, asc) => (a, b) => {
+        const v1 = getCellValue(asc ? a : b, idx);
+        const v2 = getCellValue(asc ? b : a, idx);
+        const n1 = parseFloat(v1.replace(/,/g, ''));
+        const n2 = parseFloat(v2.replace(/,/g, ''));
+        const bothNumeric = !isNaN(n1) && !isNaN(n2);
+        return bothNumeric ? n1 - n2 : v1.localeCompare(v2);
+      };
+
+      document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+        const table = th.closest('table');
+        const tbody = table.querySelector('tbody');
+        Array.from(tbody.querySelectorAll('tr'))
+          .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+          .forEach(tr => tbody.appendChild(tr));
+      })));
+    });
+  </script>
+</head>
+<body>
+<h3>Ne estimates</h3>
+<table>
+<thead><tr>
+<th>prefix</th>
+<th>start</th>
+<th>end</th>
+<th>t</th>
+<th>SNPs</th>
+<th>mean_dz2</th>
+<th>mean_evar</th>
+<th>IQR</th>
+<th>Ne_IQR</th>
+<th>Ne_dz2</th>
+</tr></thead><tbody>
+<tr>
+<td>NFIN_E</td>
+<td>2019</td>
+<td>2022</td>
+<td>3</td>
+<td>1365681</td>
+<td>0.0184</td>
+<td>0.0106</td>
+<td>0.1681</td>
+<td>306</td>
+<td>194</td>
+</tr>
+<tr>
+<td>NFIN_L</td>
+<td>2017</td>
+<td>2022</td>
+<td>5</td>
+<td>27813</td>
+<td>0.0647</td>
+<td>0.0105</td>
+<td>0.2923</td>
+<td>68</td>
+<td>46</td>
+</tr>
+<tr>
+<td>SFIN_E</td>
+<td>2015</td>
+<td>2024</td>
+<td>9</td>
+<td>352</td>
+<td>0.0419</td>
+<td>0.0116</td>
+<td>0.2405</td>
+<td>222</td>
+<td>148</td>
+</tr>
+<tr>
+<td>SFIN_L</td>
+<td>2015</td>
+<td>2024</td>
+<td>9</td>
+<td>2168114</td>
+<td>0.0101</td>
+<td>0.0078</td>
+<td>0.1268</td>
+<td>4496</td>
+<td>1990</td>
+</tr>
+<tr>
+<td>WFIN_E</td>
+<td>2015</td>
+<td>2024</td>
+<td>9</td>
+<td>69315</td>
+<td>0.0641</td>
+<td>0.0108</td>
+<td>0.2536</td>
+<td>183</td>
+<td>84</td>
+</tr>
+<tr>
+<td>WFIN_L</td>
+<td>2015</td>
+<td>2024</td>
+<td>9</td>
+<td>2097665</td>
+<td>0.0149</td>
+<td>0.0102</td>
+<td>0.1479</td>
+<td>2482</td>
+<td>962</td>
+</tr>
+</tbody></table>
+<img src='Ne_estimates_by_population.png' alt=''>
+</body>
+</html>
