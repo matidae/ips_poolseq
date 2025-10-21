@@ -2,6 +2,7 @@ import csv
 
 depths_dir = "../../results/05_SNPs_depths"
 stats_dir = "../../results/06_SNPs_stats"
+nullvar_dir = "../../results/07_null_variance"
 
 def parse_counts(ad_field):    
     ref, alt = map(int, ad_field.split(','))
@@ -25,15 +26,15 @@ def load_depth_threshold():
 
 def load_null_variance_recalc():
     null_var = {}
-    null_var_file = f"{stats_dir}/null_variance_summary.recalc.tsv"    
+    null_var_file = f"{nullvar_dir}/null_variance_summary.recalc.tsv"    
     with open(null_var_file, newline='') as null_var_fh:
         next(null_var_fh)
         null_var_read = csv.reader(null_var_fh, delimiter='\t')
         for row in null_var_read:
-            null_var[row[0]] = float(row[1])
+            null_var[row[0]] = float(row[5])
     return null_var
 
-def tsv_to_html_table(tsv_in, title):
+def tsv_to_html(tsv_in, title):
     # Open TSV to build HTML table
     with open(tsv_in, 'r', encoding='utf-8') as tsv_fh:
         rows = list(csv.reader(tsv_fh, delimiter='\t'))
@@ -93,3 +94,22 @@ def tsv_to_html_table(tsv_in, title):
     html_out =  tsv_in.replace("tsv", "html")
     with open(html_out, 'w', encoding='utf-8') as f:
         f.write(html_header)
+
+def figures_to_html(figure, plot_header, html_out):    
+    html = ["<html><head><meta charset='UTF-8'>",
+                          "<style>",
+        "body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }",
+        "h1 { text-align: center; }",
+        "h2 { margin-top: 40px; text-align: center; }",
+        "img { display: block; margin: 20px auto; width: 50%; border: 1px solid #aaa; box-shadow: 0 0 5px rgba(0,0,0,0.1); }",
+        "</style>",                  
+                  "</head><body>"]
+
+    for fig, head in zip(figure, plot_header):        
+        html.append(f"<h3>{head}</h3>")
+        html.append(f"<img src='{fig}' alt='{head}'>")
+        html.append("<br><br><br>")
+    html.append("</body></html>")
+
+    with open(html_out, "w", encoding="utf-8") as f:
+        f.write("\n".join(html))   
