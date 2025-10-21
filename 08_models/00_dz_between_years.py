@@ -16,7 +16,7 @@ import os
 from math import sqrt, asin
 from utils import load_paired_samples, load_null_variance_recalc
 
-work_dir = "../../results/08_evolutionary_dynamics"
+work_dir = "../../results/08_models"
 input_dir = "../../results/07_null_variance"
 
 # Input files
@@ -30,7 +30,7 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
     minMAF = 0.05
     zlow = 2.0*asin(sqrt(minMAF))
     zhigh= 2.0*asin(sqrt(1.0-minMAF))
-    min_depth = 80
+    min_depth = 20
 
     for pre in prefixes:
         paired_samples_set= {}

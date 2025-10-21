@@ -18,7 +18,7 @@ from math import sqrt, asin
 from utils import load_paired_samples, tsv_to_html
 import numpy as np
 
-work_dir = "../../results/08_evolutionary_dynamics"
+work_dir = "../../results/08_models"
 
 # Input files
 # z_year.{prefix}.tsv - z values per year (loaded dynamically)
@@ -45,7 +45,7 @@ def get_samples_years(prefixes):
 
 def compute_dz_variance(prefix):    
     dzlist = []
-    sum_evar =0
+    sum_evar = 0
     sum_dz2 = 0    
     z_interval_in = f"{work_dir}/z_year.{prefix}.tsv"
     #dz_out = f"{work_dir}/dz_max.{prefix}.tsv"
@@ -59,7 +59,7 @@ def compute_dz_variance(prefix):
             z_first =cols[4].split(",")[0]
             z_last = cols[len(cols)-1].split(",")[0]
 
-            if z_first != "NA"  and z_last != "NA":
+            if z_first != "NA" and z_last != "NA":
                 z_first = float(z_first)
                 z_last = float(z_last)
                 z_mean = (z_first + z_last)/2.0
@@ -97,8 +97,7 @@ def main():
 
             nx = len(dzlist)
             if nx > 0:                        
-                iqr = compute_quantiles(dzlist)
-                print(iqr)         
+                iqr = compute_quantiles(dzlist)                
                 start_year = value[0]
                 last_year = value[1]
                 t = int(value[1]) - int(value[0])                
