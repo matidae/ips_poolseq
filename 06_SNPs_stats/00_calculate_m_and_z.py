@@ -11,9 +11,11 @@
 #   - genic_m_and_z.tsv: tsv file with m and z values for each SNP where min_depth <= total_depth <= max_depth
 #   - genic_m_and_z.excluded.tsv: tsv file with m and z values that where previous condition does not apply
 #-------------------------------------------------------------------------------
+import sys
 import os
 from math import sqrt, asin
 from utils import parse_counts, load_depth_threshold
+sys.path.append("../utils")
 
 work_dir = "../../results/06_SNPs_stats"
 input_dir = "../../results/04_varcalls"
