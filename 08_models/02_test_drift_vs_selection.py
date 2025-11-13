@@ -158,8 +158,7 @@ def log_likelihood_selection(mu_params, z_array, cov_matrix, years):
 
 def main():
     paired_samples = load_paired_samples()    
-    #prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))    
-    prefixes = ["SFIN_L"]
+    prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))
     # Process for each prefix
     for pre in prefixes:
         n_years, ne = get_years_and_ne(pre, ne_in)
