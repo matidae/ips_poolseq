@@ -21,7 +21,7 @@ from scipy.stats import multivariate_normal, chi2
 from utils import load_paired_samples 
 
 
-work_dir = "../../results/08_evolutionary_dynamics"
+work_dir = "../../results/08_models"
 
 # Input files
 ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
@@ -71,7 +71,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             se.append(float(value.split(",")[1]))
                             years.append(header_years[idx])                  
                     n_z = len(z)                    
-                    if n_z >= n_years:
+                    if n_z >= n_years:                        
                         z_mean = sum(z)/n_z
                         if z_mean > z_low and z_mean < z_high:
                             # Drift model (null hypothesis)
@@ -158,15 +158,15 @@ def log_likelihood_selection(mu_params, z_array, cov_matrix, years):
 
 def main():
     paired_samples = load_paired_samples()    
-    prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))    
-
+    #prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))    
+    prefixes = ["SFIN_L"]
     # Process for each prefix
     for pre in prefixes:
         n_years, ne = get_years_and_ne(pre, ne_in)
         z_year_in = f"{work_dir}/z_year.{pre}.tsv"
         tests_out = f"{work_dir}/tests_{pre}.tsv"
         if ne is not None:
-            var_drift = 1.0 / (2.0 * ne) if ne > 0 else 1.0 / (2.0 * 1.0)
+            var_drift = 1.0 / (2.0 * ne) 
             z_path=Path(z_year_in)
             if z_path.is_file():
                 run_selection_models(z_year_in, n_years, var_drift, tests_out)
