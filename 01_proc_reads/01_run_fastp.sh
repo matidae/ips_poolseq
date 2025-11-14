@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
-#----------------------------------------------------------------------
-# Fastp - remove adapters, trim by quality and polyG end (no dedup)
-# Run: ./01_run_fastp.sh
-# In: original raw reads
-# Out: qc reads, json and html reports
-#----------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Runs fastp and outputs QC reports, remove adapters, trim by quality and 
+# removes polyG end (no dedup).
+# 
+# Input:
+#    - filelist: list of FASTQ raw reads 
+# Output: 
+#    - Fastp QC reads 
+#    - json and html reports
+#------------------------------------------------------------------------------
+
 
 #Bulk QC processing of datasets with fastp.
 while read -r prefix; do
