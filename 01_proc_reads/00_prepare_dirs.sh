@@ -1,22 +1,29 @@
 #!/usr/bin/env bash
 
 #----------------------------------------------------------------------
-# Setup directory structure and files with prefixes and paths
-# Run: ./00_prepare_dirs.sh
+# Generates files  with prefixes and paths to samples reads and creates
+# the directory structure for downstream analysis
+#
+# Output: 
+#    - prefixes: file with the prefixes of all samples 
+#    - filelist: list of all fastq files 
 #----------------------------------------------------------------------
 
-##Create a file with the list of all the prefixes that will be used
-for i in $(ls ./data/00_raw_reads/X204SC25022243*/01.RawData/*/*.fq.gz); do 
-    prefix=$(echo $i | cut -f5 -d'/')  
-    echo $prefix
-done | sort | uniq > ./data/01_proc_reads/prefixes
+reads_path="../../data/00_raw_reads/X204SC25022243*/01.RawData/*/*.fq.gz"
+out_path="./data/01_proc_reads"
+
+#Create a file with the list of all the prefixes that will be used
+for i in $reads_path; do 
+    prefix=$(basename "$(dirname "$i")")
+    printf "%s\n" "$prefix"    
+done | sort | uniq > "$out_path/prefixes"
 
 #Create a directory for each dataset
 while read -r prefix; do 
-    mkdir -p ./data/01_proc_reads/$prefix
-done < ./data/01_proc_reads/prefixes
+    mkdir -p "$out_path"/$prefix
+done < "$out_path/prefixes"
 
 #Create a list of all original files in the dataset
-for i in $(ls ./data/00_raw_reads/X204SC25022243*/01.RawData/*/*.fq.gz); do 
-    echo $i
-done > ./data/01_proc_reads/filelist
+for i in $reads_path; do 
+    printf "%s\n" "$i"
+done > "$out_path/filelist"
