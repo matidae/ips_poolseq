@@ -28,7 +28,10 @@ while read -r prefix; do
         -O ./data/01_proc_reads/$prefix/$out2 \
         -w 16 \
         --detect_adapter_for_pe \
+        --cut_tail \
+        --cut_tail_mean_quality 20 \
         --trim_poly_g \
+        --trim_poly_x \
         --length_required 50 \
         --qualified_quality_phred 20 \
         -j ./data/01_proc_reads/$prefix/$json \
