@@ -5,53 +5,51 @@
 # removes polyG end (no dedup).
 # 
 # Input:
-#    - filelist: list of FASTQ raw reads 
-# Output: 
-#    - Fastp QC reads 
-#    - json and html reports
+#   - filelist: list with FASTQ  reads files for processing
+#   - prefixes: list of sample prefixes
+# Output:
+#   - *.qc.fq       : trimmed FASTQ files
+#   - *.qc_report.json : fastp JSON report
+#   - *.qc_report.html : fastp HTML report
 #------------------------------------------------------------------------------
 
 
+filelist="../data/01_proc_reads/filelist"
+outdir="../data/01_proc_reads"
+
 #Bulk QC processing of datasets with fastp.
 while read -r prefix; do
-    files=($(grep $prefix ./data/01_proc_reads/filelist))
-    numfiles=$(grep -c $prefix ./data/01_proc_reads/filelist)    
-    
-    html=$(echo ${files[0]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.html/')
-    json=$(echo ${files[0]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.json/')
-    out1=$(echo ${files[0]} | cut -f6 -d'/' | sed 's/.fq/.qc.fq/')
-    out2=$(echo ${files[1]} | cut -f6 -d'/' | sed 's/.fq/.qc.fq/')
-    
-    fastp -i ${files[0]} \
-        -I ${files[1]} \
-        -o ./data/01_proc_reads/$prefix/$out1 \
-        -O ./data/01_proc_reads/$prefix/$out2 \
-        -w 16 \
-        --detect_adapter_for_pe \
-        --cut_tail \
-        --cut_tail_mean_quality 20 \
-        --trim_poly_g \
-        --trim_poly_x \
-        --length_required 50 \
-        --qualified_quality_phred 20 \
-        -j ./data/01_proc_reads/$prefix/$json \
-        -h ./data/01_proc_reads/$prefix/$html
-    
-    if [ "$numfiles" -eq 4 ]; then
-        html2=$(echo ${files[2]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.html/')
-        json2=$(echo ${files[2]} | cut -f6 -d'/' | sed 's/_..fq.gz/.qc_report.json/')
-        out3=$(echo ${files[2]} | cut -f6 -d'/' | sed 's/.fq/.qc.fq/')
-        out4=$(echo ${files[3]} | cut -f6 -d'/' | sed 's/.fq/.qc.fq/')
-        fastp -i ${files[2]} \
-            -I ${files[3]} \
-            -o ./data/01_proc_reads/$prefix/$out3 \
-            -O ./data/01_proc_reads/$prefix/$out4 \
+    files=($(grep "$prefix" "$filelist"))
+    n=${#files[@]}
+
+    for ((i=0; i<n; i+=2)); do
+        R1="${files[$i]}"
+        R2="${files[$i+1]}"
+
+        base1=$(basename "$R1")
+        base2=$(basename "$R2")
+
+        out1="${base1/.fq.gz/.qc.fq}"
+        out2="${base2/.fq.gz/.qc.fq}"
+
+        html="${base1/_..fq.gz/.qc_report.html}"
+        json="${base1/_..fq.gz/.qc_report.json}"
+
+        fastp \
+            -i "../$R1" \
+            -I "../$R2" \
+            -o "$outdir/$prefix/$out1" \
+            -O "$outdir/$prefix/$out2" \
             -w 16 \
             --detect_adapter_for_pe \
+            --cut_tail \
+            --cut_tail_mean_quality 20 \
             --trim_poly_g \
+            --trim_poly_x \
             --length_required 50 \
             --qualified_quality_phred 20 \
-            -j ./data/01_proc_reads/$prefix/$json2 \
-            -h ./data/01_proc_reads/$prefix/$html2
-    fi 
-done < ./data/01_proc_reads/prefixes
+            -j "$outdir/$prefix/$json" \
+            -h "$outdir/$prefix/$html"
+
+    done
+done < "$outdir/prefixes"
