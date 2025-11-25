@@ -16,7 +16,7 @@ import json
 import matplotlib.pyplot as plt
 
 in_dir = "../data/01_proc_reads"
-out_dir = "../results/01_proc_reads/"
+out_dir = "../results/01_proc_reads"
 
 ips_genome_size = 224977219
 
@@ -39,7 +39,7 @@ def plot_quality(quality_curves, filename, filter):
    plt.plot(pos, quality_curves, linestyle="-", color="darkblue", lw=1)
    plt.style.use("ggplot")
    plt.tight_layout()
-   plot_filename = out_dir + filter + "/" + filename.replace('.fq.gz','.qual.png')
+   plot_filename = f"{out_dir}/{filter}/" + filename.replace('.fq.gz','.qual.png')
    plt.savefig(plot_filename, dpi=300)
    plt.close()
 
@@ -58,7 +58,7 @@ def plot_base_content(content_curves, filename, filter):
    plt.legend(["A", "T", "G", "C"], loc="upper right")
    plt.style.use("ggplot")   
    plt.tight_layout()
-   plot_filename = out_dir + filter + "/" + filename.replace('.fq.gz','.base.png')
+   plot_filename = f"{out_dir}/{filter}/" + filename.replace('.fq.gz','.base.png')
    plt.savefig(plot_filename, dpi=300)
    plt.close()
 
@@ -105,13 +105,13 @@ def main ():
             filename = file.split('/')[-1].replace("qc_report.json", "fq.gz")
             quality_curves_after = fastp_out["read1_after_filtering"]["quality_curves"]["mean"]
             content_curves_after = fastp_out["read1_after_filtering"]["content_curves"]
-           # plot_quality(quality_curves_after, filename, "after")
-            #plot_base_content(content_curves_after, filename, "after")
+            plot_quality(quality_curves_after, filename, "after")
+            plot_base_content(content_curves_after, filename, "after")
 
             quality_curves_before = fastp_out["read1_before_filtering"]["quality_curves"]["mean"]
             content_curves_before = fastp_out["read1_before_filtering"]["content_curves"]
-            #plot_quality(quality_curves_before, filename, "before")
-            #plot_base_content(content_curves_before, filename, "before")
+            plot_quality(quality_curves_before, filename, "before")
+            plot_base_content(content_curves_before, filename, "before")
 
             qubit = sample_qubit[prefix_short]
             gc_content_before = fastp_out["summary"]["before_filtering"]["gc_content"]            
@@ -145,7 +145,6 @@ def main ():
     report_fh = open(report_out, 'w')
     report_fh.write(header + '\n')
     for k, v in data_sort:
-
         elems = [
             v[0],                                # idn
             round(v[1]/1e6, 1),                # reads_after (M)
