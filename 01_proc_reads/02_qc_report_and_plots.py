@@ -21,11 +21,11 @@ out_dir = "../results/01_proc_reads"
 
 ips_genome_size = 224977219
 
-# Input files
+# Input
 qubit_in = f"{in_dir}/sample_qubit"
 json_list = f"{in_dir}/*/*.json"
 
-# Output files
+# Output
 report_out = f"{out_dir}/all_poolseq_report.tsv"
 
 

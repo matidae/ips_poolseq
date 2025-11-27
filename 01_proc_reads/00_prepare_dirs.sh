@@ -9,24 +9,31 @@
 # Output: 
 #    - prefixes: file with the prefixes of all samples 
 #    - filelist: list of all fastq files 
-#    - $out_path/$prefix (directory created for each sample)
+#    - $out_dir/$prefix (directory created for each sample)
 #----------------------------------------------------------------------
 
 reads_path="../data/00_raw_reads"
-out_path="../data/01_proc_reads"
+out_dir="../data/01_proc_reads"
 
-#Create out directory if it doesn' t exist
-mkdir -p "$out_path"
+# Input
+# List of files from: find "$reads_path/" -name "*.fq.gz"
 
-#Create a file with a list of all the reads paths
-find "$reads_path/" -type f -name "*.fq.gz" > "$out_path/filelist"
+# Output
+prefixes="$out_dir/prefixes"
+filelist="$out_dir/filelist"
 
-prefixes=($(awk -F'/' '{print $(NF-1)}' "$out_path/filelist" | sort -Vu))
+# Create out directory if it doesn' t exist
+mkdir -p "$out_dir"
 
-#Create a file with the list of all the sample prefixes 
-printf "%s\n" "${prefixes[@]}" > "$out_path/prefixes"
+# Create a file with a list of all the reads paths
+find "$reads_path/" -type f -name "*.fq.gz" > "$filelist"
 
-#Create a directory to process the reads of each sample
+prefixes=($(awk -F'/' '{print $(NF-1)}' "$filelist" | sort -Vu))
+
+# Create a file with the list of all the sample prefixes 
+printf "%s\n" "${prefixes[@]}" > "$prefixes"
+
+# Create a directory to process the reads of each sample
 while read -r prefix; do 
-   mkdir -p "$out_path/$prefix"
-done < "$out_path/prefixes"
+   mkdir -p "$out_dir/$prefix"
+done < "$prefixes"

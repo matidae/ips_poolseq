@@ -5,19 +5,26 @@
 # removes polyG end (no dedup).
 # 
 # Input:
-#   - filelist: list with FASTQ  reads files for processing
+#   - filelist: list with FASTQ reads files for processing
 #   - prefixes: list of sample prefixes
+#   - FASTQ files for processing
 # Output:
-#   - *.qc.fq       : trimmed FASTQ files
+#   - *.qc.fq          : processed FASTQ files
 #   - *.qc_report.json : fastp JSON report
 #   - *.qc_report.html : fastp HTML report
 #------------------------------------------------------------------------------
 
+out_dir="../data/01_proc_reads"
 
-filelist="../data/01_proc_reads/filelist"
-outdir="../data/01_proc_reads"
+# Input
+prefixes="$out_dir/prefixes"
+filelist="$out_dir/filelist"
+# FASTQ files for processing : $prefix.fq.gz 
 
-#Bulk QC processing of datasets with fastp.
+# Output
+# fastp processed FASTQ files :$prefix.fq.qc.gz 
+
+# Bulk QC processing of datasets with fastp.
 while read -r prefix; do
     files=($(grep "$prefix" "$filelist"))
     n=${#files[@]}
@@ -38,8 +45,8 @@ while read -r prefix; do
         fastp \
             -i "../$R1" \
             -I "../$R2" \
-            -o "$outdir/$prefix/$out1" \
-            -O "$outdir/$prefix/$out2" \
+            -o "$out_dir/$prefix/$out1" \
+            -O "$out_dir/$prefix/$out2" \
             -w 16 \
             --detect_adapter_for_pe \
             --cut_tail \
@@ -48,8 +55,8 @@ while read -r prefix; do
             --trim_poly_x \
             --length_required 50 \
             --qualified_quality_phred 20 \
-            -j "$outdir/$prefix/$json" \
-            -h "$outdir/$prefix/$html"
+            -j "$out_dir/$prefix/$json" \
+            -h "$out_dir/$prefix/$html"
 
     done
-done < "$outdir/prefixes"
+done < "$prefixes"
