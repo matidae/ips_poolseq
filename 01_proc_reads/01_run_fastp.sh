@@ -22,7 +22,7 @@ filelist="$out_dir/filelist"
 # FASTQ files for processing : $prefix.fq.gz 
 
 # Output
-# fastp processed FASTQ files :$prefix.fq.qc.gz 
+# fastp processed FASTQ files : $prefix.fq.qc.gz 
 
 # Bulk QC processing of datasets with fastp.
 while read -r prefix; do

@@ -14,6 +14,7 @@ in_dir="../data/01_proc_reads"
 out_dir="../data/02_mappings"
 
 $threads=40
+
 # Input
 prefixes="$in_dir/prefixes"
 filelist="$in_dir/filelist"
