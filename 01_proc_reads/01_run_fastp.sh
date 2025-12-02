@@ -2,7 +2,7 @@
 
 #------------------------------------------------------------------------------
 # Runs fastp and outputs QC reports, remove adapters, trim by quality and 
-# removes polyG end (no dedup).
+# removes polyG end.
 # 
 # Input:
 #   - filelist: list with FASTQ reads files for processing
