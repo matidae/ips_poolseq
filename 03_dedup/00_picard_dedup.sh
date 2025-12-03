@@ -10,7 +10,9 @@
 #       - $out_dir/$prefix.dedup.sort.bam
 #       - $results_dir/metrics/$prefix.dup_metrics.txt
 #----------------------------------------------------------------------
+set -euo pipefail
 
+conda activate extra
 
 in_dir="../data/02_mappings"
 out_dir="../data/03_dedup"
@@ -22,27 +24,38 @@ parallel=10
 mkdir -p "$out_dir"
 mkdir -p "$results_dir/metrics"
 
-export out_dir results_dir threads
+dedup_optical() {
+    bam="$1"
+    prefix=$(basename "$bam" .sort.bam )
+    tmpdir="$out_dir/tmp_$prefix"
+    mkdir -p "$tmpdir"
 
-parallel -j $parallel '
-    bam="{}"
-    prefix=$(basename "$bam" .sort.bam );
-    # Mark duplicates with different flags (do not remove)
+    # Mark duplicates with different flags 
+    # DT:Z:LB (library duplicate) or DT:Z:SQ (sequencing duplicate)
     picard -Xmx16g MarkDuplicates \
-        I={} \
+        I="$bam" \
         O="$out_dir/$prefix.markdup.bam" \
-        M="$results_dir/metrics/$prefix.dedup_metrics.txt" \
+        M="$results_dir/metrics/$prefix.dup_metrics.txt" \
         ASSUME_SORT_ORDER=coordinate \
         OPTICAL_DUPLICATE_PIXEL_DISTANCE=2500 \
         VALIDATION_STRINGENCY=LENIENT \
         TAGGING_POLICY=All \
-        CREATE_INDEX=false ;        
+        TMP_DIR="$tmpdir" \
+        CREATE_INDEX=false ;
 
         # Remove optical duplicates (DT:Z:SQ)
-        samtools view -h "$out_dir/$prefix.markdup.bam" | grep -v "DT:Z:SQ" \
-        | samtools view -b -o "$out_dir/$prefix.dedup.sort.bam" -
+        samtools view -@ "$threads" -h -e '![DT] || [DT]!="SQ"' "$out_dir/$prefix.markdup.bam" \
+        | samtools view -@ "$threads" -b -o "$out_dir/$prefix.dedup.sort.bam" -
 
         # Create bam index
-        samtools index -@ $threads "$out_dir/$prefix.dedup.sort.bam"
-' ::: "$in_dir"/*.sort.bam
+        samtools index -@ "$threads" "$out_dir/$prefix.dedup.sort.bam"
 
+        # Remove tmp files
+        rm "$out_dir/$prefix.markdup.bam"
+        rm -r "$tmpdir"
+}
+
+export out_dir results_dir threads 
+export -f dedup_optical
+
+parallel --halt soon,fail=1 -j $parallel dedup_optical ::: "$in_dir"/*.sort.bam
