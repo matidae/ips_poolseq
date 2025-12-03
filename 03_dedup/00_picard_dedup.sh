@@ -12,8 +12,6 @@
 #----------------------------------------------------------------------
 set -euo pipefail
 
-conda activate extra
-
 in_dir="../data/02_mappings"
 out_dir="../data/03_dedup"
 results_dir="../results/03_dedup"   
@@ -44,7 +42,7 @@ dedup_optical() {
         CREATE_INDEX=false ;
 
         # Remove optical duplicates (DT:Z:SQ)
-        samtools view -@ "$threads" -h -e '![DT] || [DT]!="SQ"' "$out_dir/$prefix.markdup.bam" \
+        samtools view -@ "$threads" -h "$out_dir/$prefix.markdup.bam" | grep -v "DT:Z:SQ" \
         | samtools view -@ "$threads" -b -o "$out_dir/$prefix.dedup.sort.bam" -
 
         # Create bam index
