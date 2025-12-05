@@ -19,21 +19,21 @@ out_dir="../data/01_proc_reads"
 # List of files from: find "$reads_path/" -name "*.fq.gz"
 
 # Output
-prefixes="$out_dir/prefixes"
-filelist="$out_dir/filelist"
+out_prefixes="$out_dir/prefixes"
+out_readslist="$out_dir/filelist"
 
-# Create out directory if it doesn' t exist
+# Create out directory if it doesn't exist
 mkdir -p "$out_dir"
 
 # Create a file with a list of all the reads paths
-find "$reads_path/" -type f -name "*.fq.gz" > "$filelist"
+find "$reads_path/" -type f -name "*.fq.gz" | sort -V  > "$out_readslist"
 
-prefixes=($(awk -F'/' '{print $(NF-1)}' "$filelist" | sort -Vu))
+prefixes_array=($(awk -F'/' '{print $(NF-1)}' "$out_readslist" | sort -Vu))
 
 # Create a file with the list of all the sample prefixes 
-printf "%s\n" "${prefixes[@]}" > "$prefixes"
+printf "%s\n" "${prefixes_array[@]}" > "$out_prefixes"
 
 # Create a directory to process the reads of each sample
 while read -r prefix; do 
    mkdir -p "$out_dir/$prefix"
-done < "$prefixes"
+done < "$out_prefixes"
