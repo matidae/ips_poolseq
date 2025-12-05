@@ -16,6 +16,8 @@
 
 out_dir="../data/01_proc_reads"
 
+threads=16 #Max fastp can use
+
 # Input
 prefixes="$out_dir/prefixes"
 filelist="$out_dir/filelist"
@@ -36,18 +38,18 @@ while read -r prefix; do
         base1=$(basename "$R1")
         base2=$(basename "$R2")
 
-        out1="${base1/.fq.gz/.qc.fq}"
-        out2="${base2/.fq.gz/.qc.fq}"
+        out1="${base1/.fq.gz/.qc.fq.gz}"
+        out2="${base2/.fq.gz/.qc.fq.gz}"
 
         html="${base1/_..fq.gz/.qc_report.html}"
         json="${base1/_..fq.gz/.qc_report.json}"
 
         fastp \
-            -i "../$R1" \
-            -I "../$R2" \
+            -i "$R1" \
+            -I "$R2" \
             -o "$out_dir/$prefix/$out1" \
             -O "$out_dir/$prefix/$out2" \
-            -w 16 \
+            -w "$threads" \
             --detect_adapter_for_pe \
             --cut_tail \
             --cut_tail_mean_quality 20 \
