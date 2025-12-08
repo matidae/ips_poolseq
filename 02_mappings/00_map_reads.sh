@@ -10,14 +10,19 @@
 #   - alignments as sorted and merged BAM file: $prefix.sort.bam
 #------------------------------------------------------------------------------
 
+set -euo pipefail
+
+#Working dir
 in_dir="../data/01_proc_reads"
 out_dir="../data/02_mappings"
 
-$threads=40
+threads=40
 
 # Input
 prefixes="$in_dir/prefixes"
 filelist="$in_dir/filelist"
+
+ref_index="$out_dir/index/Ips_typograpgus_LG16corrected.final.bwa_index"
 
 mkdir -p "$out_dir/index"
 
@@ -46,7 +51,7 @@ while read -r prefix; do
         -t "$threads" \
         -R "@RG\tID:${prefix}\tSM:${prefix}" \
         -o "$sam" \
-        "$out_dir/index/Ips_typograpgus_LG16corrected.final.bwa_index" \
+        "$ref_index" \
         "$r1" "$r2" \
         2>> "$out_dir/$prefix.bwa.log"
         
