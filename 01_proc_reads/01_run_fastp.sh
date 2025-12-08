@@ -16,7 +16,12 @@
 
 out_dir="../data/01_proc_reads"
 
-threads=16 #Max fastp can use
+threads=10 #Max fastp can use
+jobs=4
+
+export out_dir
+export threads
+export LC_ALL=C  # Fix locale warnings
 
 # Input
 prefixes="$out_dir/prefixes"
@@ -27,38 +32,46 @@ filelist="$out_dir/filelist"
 # fastp processed FASTQ files : $prefix.fq.qc.gz 
 
 # Bulk QC processing of datasets with fastp.
+pairs=()
 while read -r prefix; do
     files=($(grep "$prefix" "$filelist"))
     n=${#files[@]}
 
     for ((i=0; i<n; i+=2)); do
-        R1="${files[$i]}"
-        R2="${files[$i+1]}"
-
-        base1=$(basename "$R1")
-        base2=$(basename "$R2")
-
-        out1="${base1/.fq.gz/.qc.fq.gz}"
-        out2="${base2/.fq.gz/.qc.fq.gz}"
-
-        html="${base1/_..fq.gz/.qc_report.html}"
-        json="${base1/_..fq.gz/.qc_report.json}"
-
-        fastp \
-            -i "$R1" \
-            -I "$R2" \
-            -o "$out_dir/$prefix/$out1" \
-            -O "$out_dir/$prefix/$out2" \
-            -w "$threads" \
-            --detect_adapter_for_pe \
-            --cut_tail \
-            --cut_tail_mean_quality 20 \
-            --trim_poly_g \
-            --trim_poly_x \
-            --length_required 50 \
-            --qualified_quality_phred 20 \
-            -j "$out_dir/$prefix/$json" \
-            -h "$out_dir/$prefix/$html"
-
+        # Store as triplet: prefix, R1, R2
+        pairs+=("$prefix|${files[i]}|${files[i+1]}")        
     done
 done < "$prefixes"
+
+fastp_run(){
+    IFS='|' read -r prefix R1 R2 <<< "$1"
+
+    base1=$(basename "$R1")
+    base2=$(basename "$R2")
+
+    out1="${base1/.fq.gz/.qc.fq.gz}"
+    out2="${base2/.fq.gz/.qc.fq.gz}"
+
+    html="${base1/_1.fq.gz/.qc_report.html}"
+    json="${base1/_1.fq.gz/.qc_report.json}"
+
+    fastp \
+        -i "$R1" \
+        -I "$R2" \
+        -o "$out_dir/$prefix/$out1" \
+        -O "$out_dir/$prefix/$out2" \
+        -w "$threads" \
+        --detect_adapter_for_pe \
+        --cut_tail \
+        --cut_tail_mean_quality 20 \
+        --trim_poly_g \
+        --trim_poly_x \
+        --length_required 50 \
+        --qualified_quality_phred 20 \
+        -j "$out_dir/$prefix/$json" \
+        -h "$out_dir/$prefix/$html"
+}
+
+export -f fastp_run
+
+parallel -j "$jobs" fastp_run ::: "${pairs[@]}"
