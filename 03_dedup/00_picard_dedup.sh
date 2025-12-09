@@ -17,7 +17,7 @@ out_dir="../data/03_dedup"
 results_dir="../results/03_dedup"   
 
 threads=4
-parallel=10
+jobs=10
 
 mkdir -p "$out_dir"
 mkdir -p "$results_dir/metrics"
@@ -56,4 +56,4 @@ dedup_optical() {
 export out_dir results_dir threads 
 export -f dedup_optical
 
-parallel --halt soon,fail=1 -j $parallel dedup_optical ::: "$in_dir"/*.sort.bam
+parallel -j $jobs dedup_optical ::: "$in_dir"/*.sort.bam
