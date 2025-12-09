@@ -22,7 +22,7 @@ out_samtools="../results/03_dedup/samtools_metrics"
 out_insert_size="../results/03_dedup/insertion_size_metrics"
 out_depth="../results/03_dedup/depth_metrics"
 
-parallel=10
+jobs=10
 threads=6
 
 mkdir -p "$out_samtools" "$out_insert_size" "$out_depth"
@@ -42,7 +42,7 @@ done
 eval "$(conda shell.bash hook)"
 conda activate bio
 find "$dedup_dir" -name "*.dedup.sort.bam" | \
-    parallel --halt soon,fail=1 -j 5 'picard CollectInsertSizeMetrics \
+    parallel -j $jobs 'picard CollectInsertSizeMetrics \
         I={} \        
         O='"$out_insert_size"'/{/.}.insertion_metrics.txt \
         H='"$out_insert_size"'/{/.}.insertion_metrics_histogram.pdf'
@@ -53,7 +53,7 @@ done
 
 # Calculate the exact mean from mosdepth per base output
 find "$out_depth" -name "*.mosdepth.per-base.bed.gz" | \
-    parallel -j $parallel 'prefix=$(basename {} .mosdepth.per-base.bed.gz); \
+    parallel -j $jobs 'prefix=$(basename {} .mosdepth.per-base.bed.gz); \
     depth=$(zcat {} | awk "{sum+=\$4; count++} END {printf \"%.1f\", sum/count}"); \
     echo -e "$prefix\t$depth"' > "$out_depth"/exact_mean_coverage
 
