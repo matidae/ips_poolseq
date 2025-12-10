@@ -16,17 +16,18 @@ set -euo pipefail
 in_dir="../data/01_proc_reads"
 out_dir="../data/02_mappings"
 
-threads=40
+threads=20
+jobs=3
 
 # Input
-prefixes="$in_dir/prefixes"
+prefixes="$in_dir/prefixes2"
 filelist="$in_dir/filelist"
 
 ref_index="$out_dir/index/Ips_typograpgus_LG16corrected.final.bwa_index"
-
 mkdir -p "$out_dir/index"
 
-while read -r prefix; do
+map_reads() {
+    prefix="$1"
     sorted_bams=()
     files=($(grep "/$prefix/" "$filelist"))
     numfiles=${#files[@]}
@@ -45,7 +46,7 @@ while read -r prefix; do
         sam="$out_dir/$prefix.$pair_id.sam"
         bam="$out_dir/$prefix.$pair_id.bam"
         sorted="$out_dir/$prefix.sort.$pair_id.bam"
-   
+
         #Run bwa for the first set of PE reads
         bwa-mem2 mem \
         -t "$threads" \
@@ -72,7 +73,7 @@ while read -r prefix; do
     if (( ${#sorted_bams[@]} > 1 )); then
         sambamba merge -q -t "$threads" "$merged_bams" "${sorted_bams[@]}"
     else
-        cp "${sorted_bams[0]}" "$merged_bams"
+        mv "${sorted_bams[0]}" "$merged_bams"
     fi
 
     # Index bam file
@@ -82,5 +83,10 @@ while read -r prefix; do
     for s in "${sorted_bams[@]}"; do
         rm "$s" "$s.bai"
     done      
+}
 
-done < "$prefixes"
+export -f map_reads
+export in_dir out_dir threads filelist ref_index
+
+# Run mappings in parallel
+parallel -j "$jobs" map_reads :::: "$prefixes"
