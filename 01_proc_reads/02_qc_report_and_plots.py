@@ -19,10 +19,11 @@ import matplotlib.pyplot as plt
 in_dir = "../data/01_proc_reads"
 out_dir = "../results/01_proc_reads"
 
+#Ips typographus genome size
 ips_genome_size = 224977219
 
 # Input
-qubit_in = f"{in_dir}/sample_qubit"
+qubit_in = "../data/reference/sample_qubit"
 json_list = f"{in_dir}/*/*.json"
 
 # Output
