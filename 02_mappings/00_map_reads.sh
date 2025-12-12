@@ -20,7 +20,7 @@ threads=20
 jobs=3
 
 # Input
-prefixes="$in_dir/prefixes2"
+prefixes="$in_dir/prefixes"
 filelist="$in_dir/filelist"
 
 ref_index="$out_dir/index/Ips_typograpgus_LG16corrected.final.bwa_index"
