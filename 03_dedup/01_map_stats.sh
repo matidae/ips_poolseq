@@ -12,6 +12,7 @@
 #   - summary_table.tsv 
 #----------------------------------------------------------------------
 
+set -euo pipefail
 
 dedup_dir="../data/03_dedup"
 mappings_dir="../data/02_mappings"
@@ -43,7 +44,7 @@ eval "$(conda shell.bash hook)"
 conda activate bio
 find "$dedup_dir" -name "*.dedup.sort.bam" | \
     parallel -j $jobs 'picard CollectInsertSizeMetrics \
-        I={} \        
+        I={} \
         O='"$out_insert_size"'/{/.}.insertion_metrics.txt \
         H='"$out_insert_size"'/{/.}.insertion_metrics_histogram.pdf'
 
@@ -57,20 +58,23 @@ find "$out_depth" -name "*.mosdepth.per-base.bed.gz" | \
     depth=$(zcat {} | awk "{sum+=\$4; count++} END {printf \"%.1f\", sum/count}"); \
     echo -e "$prefix\t$depth"' > "$out_depth"/exact_mean_coverage
 
+#List of samples
+samples=$(awk 'NR>1 {print $1}' "$proc_dir/all_poolseq_report.tsv")
+
 # Sort the data by prefix to keep order of the rows
-for i in $(cat "$proc_dir/all_poolseq_report.tsv" | grep -v Idn | cut -f1); do 
+for i in $samples; do 
     grep -w "$i" "$out_depth/exact_mean_coverage" | awk '{print $2}' ; 
 done > "$out_depth/exact_mean_coverage.sort"
 
 # Get a list of how many reads are mapping
-for i in $(cat "$proc_dir/all_poolseq_report.tsv" | grep -v Idn | cut -f1); do  
+for i in $samples; do 
     awk '{printf "%.1f\n" , $1/1e6}'  "$out_samtools/$i.samtools.before_dedup";
 done > "$out_samtools/mapped_reads_before_dedup"
 
 # Get a list of how many reads remain mapped after deduplication
-for i in $(cat "$proc_dir/all_poolseq_report.tsv" | grep -v Idn | cut -f1); do 
-    cat "$out_samtools/$i.samtools.flagstat" | grep "mapped.*%" | \
-    awk 'OFS="\t" {printf "%.1f\n", $1/1e6 }'; 
+for i in $samples; do 
+    grep "mapped.*%" "$out_samtools/$i.samtools.flagstat" | \
+    awk '{printf "%.1f\n", $1/1e6 }'; 
 done > "$out_samtools/mapped_reads_after_dedup"
 
 # Prepare the table with data from the previous report
