@@ -61,17 +61,18 @@ find "$out_depth" -name "*.mosdepth.per-base.bed.gz" | \
 samples=$(awk 'NR>1 {print $1}' "$proc_dir/all_poolseq_report.tsv")
 
 # Sort the data by prefix to keep order of the rows
-for i in $samples; do 
+#Using () subshell to avoid bash code in output 
+(for i in $samples; do 
     grep -w "$i" "$out_temp/exact_mean_coverage" | awk '{print $2}' ; 
-done > "$out_temp/exact_mean_coverage.sort"
+done > "$out_temp/exact_mean_coverage.sort")
 
 # Get a list of how many reads are mapping
-for i in $samples; do 
+(for i in $samples; do 
     awk '{printf "%.1f\n" , $1/1e6}'  "$out_samtools/$i.samtools.before_dedup";
-done > "$out_temp/mapped_reads_before_dedup"
+done > "$out_temp/mapped_reads_before_dedup")
 
 # Get a list of how many reads remain mapped after deduplication
-for i in $samples; do
+(for i in $samples; do
     # extract primary mapped reads
     mapped=$(grep "primary mapped" "$out_samtools/$i.samtools.flagstat" | awk '{print $1}')
     # extract primary duplicates
@@ -80,7 +81,7 @@ for i in $samples; do
     usable=$((mapped - dup))
     # print both in millions
     awk -v m="$mapped" -v u="$usable" 'BEGIN{printf "%.1f\t%.1f\n", m/1e6, u/1e6}'
-done > "$out_temp/mapped_reads_after_dedup"
+done > "$out_temp/mapped_reads_after_dedup")
 
 
 # Prepare the table with data from the previous report (Before, After, GC)
