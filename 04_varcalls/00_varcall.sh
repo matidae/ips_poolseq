@@ -59,5 +59,5 @@ bcftools concat -Oz -o "$work_dir/ips_merged.vcf.gz" $sorted_vcfs
 # Index the merged VCF
 tabix -p vcf "$work_dir/ips_merged.vcf.gz"
 
-mkdir "$work_dir/chunks"
-mv "$work_dir/region_*"  "$work_dir/chunks/"
+mkdir -p "$work_dir/chunks"
+mv "$work_dir"/region_*  "$work_dir/chunks/"
