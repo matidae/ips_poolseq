@@ -25,9 +25,9 @@ genome="../data/reference"
 exclude_file="$work_dir/exclude_samples.txt"
 #List of dedup sorted bam files for analysis (optional removal of ones listed in exclude_file)
 if [[ -s "$exclude_file" ]]; then
-    bam=$(find "$dedup_dir/" -name "*.dedup.sort.bam" | grep -v -f "$exclude_file" | sort | tr '\n' ' ')
+    bam=$(find "$dedup_dir/" -maxdepth 1 -name "*.dedup.sort.bam" | grep -v -f "$exclude_file" | sort | tr '\n' ' ')
 else
-    bam=$(find "$dedup_dir/" -name "*.dedup.sort.bam" | sort | tr '\n' ' ')
+    bam=$(find "$dedup_dir/" -maxdepth 1 -name "*.dedup.sort.bam" | sort | tr '\n' ' ')
 fi
 
 # Make windows of the genome in regions of 1M for parallel run of varcalling 
