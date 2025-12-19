@@ -9,7 +9,7 @@
 #   - missing_GT_stats.tsv: file with number and proportion of SNPs per sample with missing genotype
 #-------------------------------------------------------------------------------
 
-work_dir="../../results/04_varcalls"
+work_dir="../results/04_varcalls"
 
 total_snps=$(bcftools view "$work_dir/ips.biallelic_q20_m20.maf05.vcf.gz" | grep -v '^#' | wc -l)
 

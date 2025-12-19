@@ -11,7 +11,7 @@
 
 import gzip
 
-work_dir = "../../results/04_varcalls"
+work_dir = "../results/04_varcalls"
 min_MAF = 0.05
 
 # Input file
