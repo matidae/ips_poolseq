@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #------------------------------------------------------------------------------
-# Analyze filtering steps, plot filtered SNPs per sample
+# Count number and proportion of SNPs with missing genotype per sample
 #
 # Input:
 #   - ips_merged.vcf: vcf file for all samples

@@ -28,10 +28,10 @@ mkdir -p "$out_dir"
 # Create a file with a list of all the reads paths
 find "$reads_path/" -type f -name "*.fq.gz" | sort -V  > "$out_readslist"
 
-prefixes_array=($(awk -F'/' '{print $(NF-1)}' "$out_readslist" | sort -Vu))
+prefixes_array=($(awk -F'/' '{print $(NF-1)}' "$out_readslist" | sort -u))
 
 # Create a file with the list of all the sample prefixes 
-printf "%s\n" "${prefixes_array[@]}" > "$out_prefixes"
+printf "%s\n" "${prefixes_array[@]}" | sort -t_ -k1,1 -k2.1,2.1 -k3,3 -k2.2,2.2 > "$out_prefixes"
 
 # Create a directory to process the reads of each sample
 while read -r prefix; do 

@@ -30,18 +30,19 @@ mkdir -p "$out_samtools" "$out_insert_size" "$out_depth" "$out_temp"
 # Run multiple samtools alignment metrics tools
 eval "$(conda shell.bash hook)"
 conda activate extra
+
 for i in "$dedup_dir"/*.dedup.sort.bam ; do 
     prefix=$(basename "$i" .dedup.sort.bam );    
     samtools flagstat "$i" > "$out_samtools/$prefix.samtools.flagstat"
-    samtools view -c -F 4 "$mappings_dir/$prefix.sort.bam" > "$out_samtools/$prefix.samtools.before_dedup"
-    samtools view -q 20 -c "$i" > "$out_samtools/$prefix.samtools.q20"
-    mosdepth --by 500000 -t $threads  "$out_depth/$prefix.mosdepth" "$i"
+    samtools view -c -F 4 "$mappings_dir/$prefix.sort.bam" > "$out_samtools/$prefix.samtools.before_dedup"    
+    mosdepth --by 1000000 --no-per-base -t $threads  "$out_depth/$prefix" "$i"
 done
 
 # Run picard CollectInsertSizeMetrics to obtain the histogram plot
 eval "$(conda shell.bash hook)"
 conda activate bio
-find "$dedup_dir" -name "*.dedup.sort.bam" | \
+
+find "$dedup_dir" -maxdepth 1 -name "*.dedup.sort.bam" | \
     parallel -j $jobs 'picard CollectInsertSizeMetrics \
         I={} \
         O='"$out_insert_size"'/{/.}.insertion_metrics.txt \
@@ -51,11 +52,12 @@ find "$dedup_dir" -name "*.dedup.sort.bam" | \
     magick convert -density 300 "$i" -quality 100 "${i%.pdf}.png" ; 
 done
 
-# Calculate the exact mean from mosdepth per base output
-find "$out_depth" -name "*.mosdepth.per-base.bed.gz" | \
-    parallel -j $jobs 'prefix=$(basename {} .mosdepth.per-base.bed.gz); \
-    depth=$(zcat {} | awk "{sum+=\$4; count++} END {printf \"%.1f\", sum/count}"); \
-    echo -e "$prefix\t$depth"' > "$out_temp"/exact_mean_coverage
+# Extract the mean depth from mosdepth
+for i in $out_depth/*.summary.txt; do 
+    prefix=$(basename $i | sed 's/.mosdepth.mosdepth.summary.txt//'); 
+    depth=$(tail -n1 $i | cut -f4);
+    echo $depth; 
+done > "$out_temp/exact_mean_coverage"
 
 #List of samples
 samples=$(awk 'NR>1 {print $1}' "$proc_dir/all_poolseq_report.tsv")
@@ -84,12 +86,12 @@ done > "$out_temp/mapped_reads_before_dedup")
 done > "$out_temp/mapped_reads_after_dedup")
 
 
-# Prepare the table with data from the previous report (Before, After, GC)
-awk 'OFS="\t" {print $1, $8, $2, $6}'  "$proc_dir/all_poolseq_report.tsv" | \
+# Prepare the table with data from the previous report (Before, After, GC, Length)
+awk 'OFS="\t" {print $1, $8, $2, $6, $5}'  "$proc_dir/all_poolseq_report.tsv" | \
     grep -v Idn > "$out_temp/half_previous_table"
 
 # Write column names for summary table
-echo -e "Idn\tRaw_reads\tQC_reads\tGC\tMapped_reads\tDedup_optical\tDedup_all\tMean_depth" \
+echo -e "Idn\tRaw_reads\tQC_reads\tGC\tLength\tMapped_reads\tDedup_optical\tDedup_all\tMean_depth" \
     > "$out_dir/summary_table.tsv"
 
 # Output a summary table with all the data needed for the html report

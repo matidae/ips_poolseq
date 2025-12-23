@@ -11,10 +11,12 @@ Output:
     - ips_poolseq_report.html : html report with quality metrics for all samples
 """
 
-import os
+import os, sys
 import glob
 import json
 import matplotlib.pyplot as plt
+sys.path.append("./utils")
+from utils import prefix_order
 
 in_dir = "../data/01_proc_reads"
 out_dir = "../results/01_proc_reads"
@@ -94,14 +96,14 @@ def parse_json(json_files):
             quality_curves_after = fastp_out["read1_after_filtering"]["quality_curves"]["mean"]
             content_curves_after = fastp_out["read1_after_filtering"]["content_curves"]
             # Plots quality and base content per read after Fastp QC
-            plot_quality(quality_curves_after, filename, "after")
-            plot_base_content(content_curves_after, filename, "after")
+           # plot_quality(quality_curves_after, filename, "after")
+           # plot_base_content(content_curves_after, filename, "after")
 
             quality_curves_before = fastp_out["read1_before_filtering"]["quality_curves"]["mean"]
             content_curves_before = fastp_out["read1_before_filtering"]["content_curves"]
             # Plots quality and base content per read before Fastp QC
-            plot_quality(quality_curves_before, filename, "before")
-            plot_base_content(content_curves_before, filename, "before")
+            #plot_quality(quality_curves_before, filename, "before")
+            #plot_base_content(content_curves_before, filename, "before")
 
             qubit = sample_qubit[prefix_short]
             gc_content_before = fastp_out["summary"]["before_filtering"]["gc_content"]
@@ -132,7 +134,9 @@ def write_tsv_report(data):
     col_names = ["Idn", "After", "Gbp", "Cov", "Length", "GC", "Insert", "Dups", \
                 "Before",  "Lost", "LQual", "Short", "Qubit", "%Reads_lost", "GCbefore", "File"]
     header = "\t".join(col_names)
-    data_sort = sorted(data.items(), key=lambda x: x[1][0])
+
+    prefix_sort = prefix_order()
+    data_sort = sorted(data.items(), key=lambda x: prefix_sort[x[0]])
     data_sort_new=[]
 
     report_fh = open(report_out, 'w')
@@ -170,7 +174,7 @@ def write_html_report():
       <style>
           tr:nth-child(odd) { background-color: #ffffff; }
           tr:nth-child(even) { background-color: #f2f2f2; }
-          table { border-collapse: collapse; width: 100%; }
+          table { border-collapse: collapse; width: 95%; }
           th, td { border: 1px solid #ccc;  text-align: center; vertical-align: middle; padding: 0 8px; }
           th { background-color: #ddd; padding: 6px; border-color:#bbb}
           img { max-width: 200px; height: auto; }
@@ -178,8 +182,9 @@ def write_html_report():
           .top_header { background-color: #d3d3d3; padding: 6px; border-color:#bbb}
           .reads{font-family:mono; font-size:10px; text-align:left}
           .legend-box { padding: 2px 8px; border: 1px solid #ccc; display: inline-block; }
-
-        }
+          img:hover { transform: scale(2);
+                    z-index: 10; 
+                    position: relative;}
        </style>  
     <script>
     window.onload = function () {
@@ -230,9 +235,9 @@ def write_html_report():
     </head>
     <body>    
       <br>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h2 style="margin:0;">Fastp QC summary: before vs after filtering</h2>
-        <div style="font-size:11px; white-space:nowrap;">
+      <div style="align-items:center; margin-bottom:10px;">
+        <h2 style="margin:10;">Fastp QC summary: before vs after filtering</h2>
+        <div style="font-size:12x;">
           <span style="font-weight:bold;">Depth:</span>&nbsp;&nbsp;
           <span class="legend-box" style="background:#ff9999;"></span>&nbsp;&lt;100&nbsp;&nbsp;
           <span class="legend-box" style="background:#ffcc99"></span>&nbsp;100-199&nbsp;&nbsp;
