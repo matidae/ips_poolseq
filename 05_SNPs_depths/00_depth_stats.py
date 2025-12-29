@@ -11,15 +11,18 @@
 #   - [inter]genic_processed_depths.tsv: sum of alt+ref per SNP and sample 
 #-------------------------------------------------------------------------------
 
-import os
+import os, sys
 import pandas as pd
+sys.path.append("./utils")
 from utils import parse_counts
 
-work_dir = "../../results/04_varcalls"
-out_dir = "../../results/05_SNPs_depths"
+work_dir = "../results/04_varcalls"
+out_dir = "../results/05_SNPs_depths"
+
 # Input files
 genic_counts_in = f"{work_dir}/genic_readcounts.tsv" 
 intergenic_counts_in = f"{work_dir}/intergenic_readcounts.tsv" 
+
 # Output files
 genic_depth_stats_out = f"{out_dir}/genic_depth_stats.tsv"
 intergenic_depth_stats_out = f"{out_dir}/intergenic_depth_stats.tsv"

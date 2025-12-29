@@ -13,17 +13,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-work_dir = "../../results/05_SNPs_depths"
+work_dir = "../results/05_SNPs_depths"
 
 #Input files
 genic_depths_in = f"{work_dir}/genic_processed_depths.tsv"
 intergenic_depths_in = f"{work_dir}/intergenic_processed_depths.tsv"
 
-face_color = "#009688"
-median_color = "#795548"
+face_color = "#00CFBA"
+median_color = "#B23F16"
 plt.style.use('ggplot')
+top_ylim = 400
 
-def plot_depth_boxplots(genic_depths_in):
+def plot_depth_boxplots(genic_depths_in, top_ylim):
     years = list(range(2015, 2025))
     reps = ['a', 'b']
 
@@ -64,7 +65,7 @@ def plot_depth_boxplots(genic_depths_in):
             plt.axhline(y=y, color='gray', linestyle='--', linewidth=0.8)
 
         box = plt.boxplot(
-            boxplot_data, positions=x_pos, patch_artist=True,widths=0.6,
+            boxplot_data, positions=x_pos, patch_artist=True, widths=0.6,
             medianprops=dict(color=median_color), showfliers=False
         )        
         # Add median
@@ -72,18 +73,17 @@ def plot_depth_boxplots(genic_depths_in):
             y_data = median_line.get_ydata()
             median_value = y_data[0]
             if pd.notnull(median_value):
-            # x_pos[i] is the position of the box
-                plt.text(
-                    x_pos[i] -0.6, median_value, f"{int(round(median_value))}",  
-                    va="center", ha="left", fontsize=10
-                )
+            # x_pos[i] is the position of the box                
+                plt.text(x_pos[i] -0.17, median_value+5, f"{int(round(median_value))}",  
+                        va="center", ha="left", fontsize=10, color="black")
+                
         # Apply colors
         for patch in box['boxes']:
             patch.set(facecolor=face_color)        
         for median in box['medians']:
             median.set(color=median_color)
         
-        plt.ylim(-5, 400)
+        plt.ylim(-5, top_ylim)
         plt.xticks(ticks=x_pos, labels=col_labels, rotation=45, fontsize=12)
         plt.title(f"{group}")
         plt.ylabel("Depth")
@@ -115,10 +115,7 @@ def plot_total_depths(genic_depths_in, intergenic_depths_in):
         median_val = d.median()
         if pd.notna(median_val):
             median_val_int = int(round(median_val))
-            plt.text(
-                i+0.83, median_val, f"{median_val_int}",
-                ha='center', va='bottom', fontsize=10                
-            )
+            plt.text(i+1, median_val, f"{median_val_int}",ha='center', va='bottom', fontsize=10, color="black")
     plt.ylabel("TOTAL depth per SNP")
     plt.tight_layout()
     plt.savefig(f"{work_dir}/boxplots/total_depth_boxplots.png")
@@ -128,7 +125,7 @@ def main(genic_depths_in, intergenic_depths_in):
     boxplot_dir = f"{work_dir}/boxplots"
     if not os.path.exists(boxplot_dir):
         os.makedirs(boxplot_dir)
-    plot_depth_boxplots(genic_depths_in)
+    plot_depth_boxplots(genic_depths_in, top_ylim)
     plot_total_depths(genic_depths_in, intergenic_depths_in)
 
 if __name__ == "__main__":
