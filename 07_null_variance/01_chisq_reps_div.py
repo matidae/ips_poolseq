@@ -13,14 +13,14 @@
 #   - snpdev.m_and_z.tsv: SNP-level coverage, comparisons, chi-square stat, and p-value
 #----------------------------------------------------------------------
 import sys
-sys.path.append("../utils") 
+sys.path.append("./utils") 
 from math import sqrt, pi
 from scipy.stats import chi2
 from utils import load_paired_samples
 import pandas as pd 
 
-work_dir = "../../results/07_null_variance"
-input_dir = "../../results/06_SNPs_stats"
+work_dir = "../results/07_null_variance"
+input_dir = "../results/06_SNPs_stats"
 
 # Input files
 m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"

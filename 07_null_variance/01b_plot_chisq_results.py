@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 import numpy as np
 
-work_dir = "../../results/07_null_variance"
-plot_dir = "../../results/07_null_variance/plots"
+work_dir = "../results/07_null_variance"
+plot_dir = "../results/07_null_variance/plots"
 
 # Input files
 input_file = f"{work_dir}/snpdev_m_and_z.tsv"
