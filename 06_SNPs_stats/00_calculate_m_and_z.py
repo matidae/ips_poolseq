@@ -14,11 +14,11 @@
 import sys
 import os
 from math import sqrt, asin
+sys.path.append("./utils")
 from utils import parse_counts, load_depth_threshold
-sys.path.append("../utils")
 
-work_dir = "../../results/06_SNPs_stats"
-input_dir = "../../results/04_varcalls"
+work_dir = "../results/06_SNPs_stats"
+input_dir = "../results/04_varcalls"
 
 # Input files
 depth_stats_in = f"{input_dir}/genic_depth_stats.tsv"
