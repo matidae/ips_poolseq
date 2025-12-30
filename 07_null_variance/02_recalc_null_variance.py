@@ -13,15 +13,15 @@
 #----------------------------------------------------------------------
 
 import sys
-sys.path.append("../utils") 
+sys.path.append("./utils") 
 from math import sqrt, asin
 from utils import load_paired_samples, load_depth_threshold
 
-work_dir = "../../results/07_null_variance"
-input_dir = "../../results/06_SNPs_stats"
+work_dir = "../results/07_null_variance"
+input_dir = "../results/06_SNPs_stats"
 
 # Input files
-m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"           # Genic m and z data input
+m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"          # Genic m and z data input
 null_var_in = f"{work_dir}/null_variance_summary.tsv"  # Null variance data input
 snpdev_in = f"{work_dir}/snpdev_m_and_z.tsv"           # SNP deviation input file
 
@@ -97,10 +97,10 @@ def calculate_null_variance(null_var_recalc_out, stats):
             # Prop. of variance explained by read depth
             rd_prop = mean_inv_depth/mean_dz2
             #Ne of diploid genomes
-            ne = 1/null_var
+            ne = 2/null_var
             null_var_recalc_fh.write(
                 f"{sample}\t{data['count']}\t{mean_dz2:.6f}\t{mean_inv_depth:.6f}\t"
-                f"{rd_prop:.4f}\t{null_var:.6f}\t{1/null_var:.0f}\n")
+                f"{rd_prop:.4f}\t{null_var:.6f}\t{ne:.0f}\n")
 
 def main():
     min_depth, max_depth = load_depth_threshold()

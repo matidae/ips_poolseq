@@ -4,7 +4,7 @@
 # Calculates null variance from transformed allele frequencies (z-scores) in paired samples (reps).
 # Filters out low-quality SNPs, removes outliers and low depth SNPs.
 #
-# Input: tables of m,z values calculated by ./04_calculate_m_and_z.py
+# Input: tables of m,z values calculated by ./06_SNPs_stats/00_calculate_m_and_z.py
 # Output: 
 #   - dz2_by_pbin.tsv : histogram of mean reps dz2 changes by allele frequencies bins
 #   - null_variance_summary.tsv : summary statistics per sample 
@@ -12,13 +12,13 @@
 #-------------------------------------------------------------------------------
 
 import sys
-sys.path.append("../utils")
+sys.path.append("./utils")
 import os
 from math import sqrt, asin, sin
 from utils import load_paired_samples
 
-work_dir = "../../results/07_null_variance"
-input_dir = "../../results/06_SNPs_stats"
+work_dir = "../results/07_null_variance"
+input_dir = "../results/06_SNPs_stats"
 
 # Input files
 m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"
@@ -40,11 +40,11 @@ def calculate_null_variance(samples_reps, m_and_z_in):
 
     with open(m_and_z_in, "r") as m_and_z_fh:
         next(m_and_z_fh)
-        for line in m_and_z_fh:            
+        for line in m_and_z_fh:
             cols = line.strip().split('\t')
             for sample_name, (idx_a, idx_b) in samples_reps.items():
                 m_z_a = cols[idx_a].split(",")
-                m_z_b = cols[idx_b].split(",")                
+                m_z_b = cols[idx_b].split(",")
                 if 'NA' in m_z_a or 'NA' in m_z_b:
                     continue
                 # Load variables m (depth) and z (transformed AF)
@@ -53,10 +53,10 @@ def calculate_null_variance(samples_reps, m_and_z_in):
                  # Compute mean z-value of the two replicates
                 z_mean = (z_a + z_b) / 2.0
                 # Skip low coverage pairs
-                if m_a < min_read_depth or m_b < min_read_depth:                    
-                    continue               
+                if m_a < min_read_depth or m_b < min_read_depth:
+                    continue
                 # Skip pairs outside the threshold
-                if not (zlow < z_mean < zhigh):                    
+                if not (zlow < z_mean < zhigh):
                     continue
                 
                 # Increment count of valid data points
@@ -79,11 +79,11 @@ def calculate_null_variance(samples_reps, m_and_z_in):
 
 def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
     with open(dz2_bin_out, 'w') as dz2_bin_fh, open(summary_out, 'w') as summary_fh:
-        summary_fh.write("Sample\tCount\tDZ2_mean\tDepth_var\tDepth_prop_var\tNull_var\tn_genomes\n")
-        for sample_name in samples_reps:            
+        summary_fh.write("Sample\tCount\tDZ2_mean\tDepth_var\tDepth_prop_var\tNull_var\n")
+        for sample_name in samples_reps:
             n = int(stats[sample_name][0])
             # Calculate mean of squared difference of z (dz2_ mean)
-            dz2_mean = stats[sample_name][1] / n            
+            dz2_mean = stats[sample_name][1] / n 
             # Calculate mean read depth variance (sum of inverse read counts)
             readdepth_var = stats[sample_name][2] / n
             # Proportion of total variance explained by read depth variation
