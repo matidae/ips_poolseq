@@ -19,13 +19,15 @@ proc_dir="../results/01_proc_reads"
 out_dir="../results/03_dedup"
 out_samtools="../results/03_dedup/samtools_metrics"
 out_insert_size="../results/03_dedup/insertion_size_metrics"
-out_depth="../results/03_dedup/depth_metrics"
+out_depth_mapping="../results/03_dedup/depth_mappings" # Depth of mappings
+out_depth_dedup="../results/03_dedup/depth_metrics" # Depth after deduplication
+out_depth_opt="../results/03_dedup/depth_metrics_alt"   # Depth after optical deduplication only
 out_temp="../results/03_dedup/temp"
 
 jobs=10
 threads=6
 
-mkdir -p "$out_samtools" "$out_insert_size" "$out_depth" "$out_temp"
+mkdir -p "$out_samtools" "$out_insert_size" "$out_depth_mapping" "$out_depth_dedup" "$out_depth_opt" "$out_temp"
 
 # Run multiple samtools alignment metrics tools
 eval "$(conda shell.bash hook)"
@@ -34,9 +36,20 @@ conda activate extra
 for i in "$dedup_dir"/*.dedup.sort.bam ; do 
     prefix=$(basename "$i" .dedup.sort.bam );    
     samtools flagstat "$i" > "$out_samtools/$prefix.samtools.flagstat"
-    samtools view -c -F 4 "$mappings_dir/$prefix.sort.bam" > "$out_samtools/$prefix.samtools.before_dedup"    
-    mosdepth --by 1000000 --no-per-base -t $threads  "$out_depth/$prefix" "$i"
+    samtools view -c -F 4 "$mappings_dir/$prefix.sort.bam" > "$out_samtools/$prefix.samtools.before_dedup"
 done
+
+
+# Calculate depth metrics with mosdepth for all mappings and deduplicated bams
+ls "$dedup_dir"/*.sort.bam | parallel -j "$jobs" \
+  "mosdepth --by 5000000 -t $threads --no-per-base '"$out_depth_dedup"'/{/.} {}"
+    
+ls "$dedup_dir"/*.sort.bam | parallel -j "$jobs" \
+  "mosdepth --by 5000000 -F 0 -t $threads --no-per-base '"$out_depth_opt"'/{/.} {}"
+
+ls "$mappings_dir"/*.sort.bam | parallel -j "$jobs" \
+  "mosdepth --by 5000000 -t $threads --no-per-base '"$out_depth_mapping"'/{/.} {}"
+
 
 # Run picard CollectInsertSizeMetrics to obtain the histogram plot
 eval "$(conda shell.bash hook)"
@@ -52,21 +65,24 @@ find "$dedup_dir" -maxdepth 1 -name "*.dedup.sort.bam" | \
     magick convert -density 300 "$i" -quality 100 "${i%.pdf}.png" ; 
 done
 
-# Extract the mean depth from mosdepth
-for i in $out_depth/*.summary.txt; do 
-    prefix=$(basename $i | sed 's/.mosdepth.mosdepth.summary.txt//'); 
-    depth=$(tail -n1 $i | cut -f4);
-    echo $depth; 
-done > "$out_temp/exact_mean_coverage"
-
-#List of samples
+# List of samples
 samples=$(awk 'NR>1 {print $1}' "$proc_dir/all_poolseq_report.tsv")
+# Using () subshell to avoid bash code in output
+# Extract the mean depth from mosdepth (first mapping, no deduplication)
+(for i in $samples; do
+    tail -n1 $out_depth_mapping/$i.sort.mosdepth.summary.txt | cut -f4
+done > "$out_temp/exact_mean_coverage_nodedup")
 
-# Sort the data by prefix to keep order of the rows
-#Using () subshell to avoid bash code in output 
-(for i in $samples; do 
-    grep -w "$i" "$out_temp/exact_mean_coverage" | awk '{print $2}' ; 
-done > "$out_temp/exact_mean_coverage.sort")
+# Extract the mean depth from mosdepth (all deduplication)
+(for i in $samples; do
+    tail -n1 $out_depth_dedup/$i.dedup.sort.mosdepth.summary.txt | cut -f4
+done > "$out_temp/exact_mean_coverage_dedup")
+
+# Extract the mean depth from mosdepth (optical only deduplication)
+(for i in $samples; do
+    tail -n1 $out_depth_opt/$i.dedup.sort.mosdepth.summary.txt | cut -f4
+done > "$out_temp/exact_mean_coverage_dedup_alt")
+
 
 # Get a list of how many reads are mapping
 (for i in $samples; do 
@@ -91,13 +107,15 @@ awk 'OFS="\t" {print $1, $8, $2, $6, $5}'  "$proc_dir/all_poolseq_report.tsv" | 
     grep -v Idn > "$out_temp/half_previous_table"
 
 # Write column names for summary table
-echo -e "Idn\tRaw_reads\tQC_reads\tGC\tLength\tMapped_reads\tDedup_optical\tDedup_all\tMean_depth" \
-    > "$out_dir/summary_table.tsv"
+echo -e "Idn\tRaw_reads\tQC_reads\tGC\tLength\tMapped_reads\tDedup_optical\tDedup_all\tMean_depth_dedup\
+    \tMean_depth_dedup_alt\tMean_depth_nodedup" > "$out_dir/summary_table.tsv"
 
 # Output a summary table with all the data needed for the html report
 paste "$out_temp/half_previous_table" \
     "$out_temp/mapped_reads_before_dedup" \
     "$out_temp/mapped_reads_after_dedup"  \
-    "$out_temp/exact_mean_coverage.sort" \
+    "$out_temp/exact_mean_coverage_dedup" \
+    "$out_temp/exact_mean_coverage_dedup_alt" \
+    "$out_temp/exact_mean_coverage_nodedup" \
     >> "$out_dir/summary_table.tsv"
 
