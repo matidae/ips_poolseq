@@ -13,12 +13,12 @@
 #----------------------------------------------------------------------
 
 import sys
-sys.path.append("../utils")
+sys.path.append("./utils")
 from math import sqrt, asin
 from utils import load_paired_samples, tsv_to_html
 import numpy as np
 
-work_dir = "../../results/08_models"
+work_dir = "../results/08_models"
 
 # Input files
 # z_year.{prefix}.tsv - z values per year (loaded dynamically)
@@ -36,8 +36,8 @@ def get_samples_years(prefixes):
     for pre in prefixes:
         with open(f"{work_dir}/z_year.{pre}.tsv") as pre_fh:
             header = pre_fh.readline().strip().split("\t")
-            ncols = len(header)            
-            if ncols > 5:                
+            ncols = len(header)
+            if ncols > 5:
                 start_year = header[4].split("_")[-1]
                 last_year = header[-1].strip().split("_")[-1]
                 prefixes_ne[pre] = [start_year, last_year]    

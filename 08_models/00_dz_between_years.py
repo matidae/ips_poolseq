@@ -11,13 +11,13 @@
 #----------------------------------------------------------------------
 
 import sys
-sys.path.append("../utils")
+sys.path.append("./utils")
 import os
 from math import sqrt, asin
 from utils import load_paired_samples, load_null_variance_recalc
 
-work_dir = "../../results/08_models"
-input_dir = "../../results/07_null_variance"
+work_dir = "../results/08_models"
+input_dir = "../results/07_null_variance"
 
 # Input files
 m_and_z_in = f"{input_dir}/genic_m_and_z.filter.tsv"     # Genic m and z data input
@@ -114,12 +114,12 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
                             year_count+=1
                         last_z = [z_mean, (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0]
                     else:
-                        z_by_year_fh.write("\tNA,NA,0,0")                        
+                        z_by_year_fh.write("\tNA,NA,0,0")
                         if year_count > 0:
                             dz_by_interval_fh.write("\tNA,NA")
                         year_count+=1
                         last_z = ["NA","NA"]
-                z_by_year_fh.write("\n")                
+                z_by_year_fh.write("\n")
                 dz_by_interval_fh.write("\n")
 
 def main():
