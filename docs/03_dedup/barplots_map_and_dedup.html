@@ -9,6 +9,7 @@
       font-family: Arial, sans-serif;
       padding: 20px;
       scroll-behavior: smooth;
+      padding-bottom: 80px;
     }
 
    
@@ -24,6 +25,22 @@
       height: auto;
       border: 1px solid #ddd;
     }
+ .zoomable:hover {
+  transform: scale(1.8);
+  transition: transform 0.3s ease;
+  z-index: 10;
+  position: relative;  
+}
+.zoom_center:hover{
+  transform-origin: center center;
+}
+.zoom_right:hover{
+  transform-origin: center right;
+}
+.zoom_left:hover{
+  transform-origin: center left;
+}
+
   </style>
 </head>
 <body>
@@ -32,28 +49,28 @@
 
 <h3>FIN E samples</h3>
 <div class="fig-row">
-  <img src="./barplots/barplot_NFIN_E_depths.png">
-  <img src="./barplots/barplot_WFIN_E_depths.png">
-  <img src="./barplots/barplot_SFIN_E_depths.png">
+  <img src="./barplots/barplot_NFIN_E_depths.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WFIN_E_depths.png" class="zoomable zoom_center">
+  <img src="./barplots/barplot_SFIN_E_depths.png" class="zoomable zoom_right">
 </div>
 
 <h3>FIN L samples</h3>
 <div class="fig-row">
-  <img src="./barplots/barplot_NFIN_L_depths.png">
-  <img src="./barplots/barplot_WFIN_L_depths.png">
-  <img src="./barplots/barplot_SFIN_L_depths.png">
+  <img src="./barplots/barplot_NFIN_L_depths.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WFIN_L_depths.png" class="zoomable zoom_center">
+  <img src="./barplots/barplot_SFIN_L_depths.png" class="zoomable zoom_right">
 </div>
 
 <h3>AUS E samples</h3>
 <div class="fig-row">
-  <img src="./barplots/barplot_LAAU_E_depths.png">
-  <img src="./barplots/barplot_WOAU_E_depths.png">
+  <img src="./barplots/barplot_LAAU_E_depths.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WOAU_E_depths.png" class="zoomable zoom_center">
 </div>
 
 <h3>AUS L samples</h3>
 <div class="fig-row">
-  <img src="./barplots/barplot_LAAU_L_depths.png">
-  <img src="./barplots/barplot_WOAU_L_depths.png">
+  <img src="./barplots/barplot_LAAU_L_depths.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WOAU_L_depths.png" class="zoomable zoom_center">
 </div>
 
 </body>
