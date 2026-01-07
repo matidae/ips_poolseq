@@ -12,11 +12,19 @@
       padding-bottom: 80px;
     }
 
-  .fig-row img {
-    max-width: 600px;
-    height: auto;
-    border: 1px solid #ddd;
-  }
+   
+    .fig-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .fig-row img {
+      max-width: 600px;
+      height: auto;
+      border: 1px solid #ddd;
+    }
  .zoomable:hover {
   transform: scale(1.8);
   transition: transform 0.3s ease;
