@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapping depth before and after deduplication</title>
+  <link rel="icon" type="image/png" href="../favicon_sbb.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      scroll-behavior: smooth;
+      padding-bottom: 80px;
+    }
+
+   
+    .fig-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .fig-row img {
+      max-width: 600px;
+      height: auto;
+      border: 1px solid #ddd;
+    }
+ .zoomable:hover {
+  transform: scale(1.8);
+  transition: transform 0.3s ease;
+  z-index: 10;
+  position: relative;  
+}
+.zoom_center:hover{
+  transform-origin: center center;
+}
+.zoom_right:hover{
+  transform-origin: center right;
+}
+.zoom_left:hover{
+  transform-origin: center left;
+}
+
+  </style>
+</head>
+<body>
+
+<h2>Mapping depth before and after deduplication</h2>
+
+<h3>FIN samples</h3>
+<div class="fig-row">
+  <img src="./barplots/barplot_NFIN_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WFIN_depths_100.png" class="zoomable zoom_center">
+  <img src="./barplots/barplot_SFIN_depths_100.png" class="zoomable zoom_right">
+</div>
+
+
+<h3>AU samples</h3>
+<div class="fig-row">
+  <img src="./barplots/barplot_LAAU_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WOAU_depths_100.png" class="zoomable zoom_center">
+</div>
+
+
+</body>
+</html>
