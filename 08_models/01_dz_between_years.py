@@ -84,9 +84,9 @@ def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
                     rep_a = cols[paired_samples[sample][0]].split(",")
                     m_a = int(rep_a[0])
                     rep_b = cols[paired_samples[sample][1]].split(",")
-                    m_b = int(rep_b[0])                    
+                    m_b = int(rep_b[0])
                     if m_a >= min_depth and m_b >= min_depth:
-                        z_a = float(rep_a[1])                    
+                        z_a = float(rep_a[1])
                         z_b = float(rep_b[1])
                         z_mean=(z_a + z_b)/2.0
                         var = (null_var[sample] + 1.0/float(m_a) + 1.0/float(m_b))/4.0
