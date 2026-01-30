@@ -8,13 +8,14 @@ Input:
     - ../results/03_dedup/summary_table.tsv
 
 Output:
-    - ../results/03_dedup/barplots/{Region}{Country}_{Time}.png
+    - ../results/03_dedup/barplots/{Region}{Country}_depths.png
 """
 
 
 import matplotlib.pyplot as plt
 import pandas as pd
-import os, sys
+import os
+from matplotlib.patches import Patch
 
 out_dir="../results/03_dedup"
 out_barplots = out_dir + "/barplots"
@@ -37,8 +38,7 @@ def load_data():
     df[["RegionCountry", "SeasonRep", "Year"]] = df["Idn"].str.split("_", expand=True)
     df["Region"] = df["RegionCountry"].str[0]
     df["Country"] = df["RegionCountry"].str[1:]
-    df["Season"] = df["SeasonRep"].str[0]  # E or L
-    df["RegionCountrySeason"] = df["RegionCountry"] + "_" + df["Season"]
+    df["Season"] = df["SeasonRep"].str[0]  # E or L    
     # Extract Rep (last char)
     df["Rep"] = df["SeasonRep"].str[-1]
     df["Plot_ID"] = df["RegionCountry"] + "_" + df["Year"].astype(str)
@@ -46,80 +46,134 @@ def load_data():
     return df
 
 def coverage_barplots(df):
+    import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+
+    # Melt coverage values for plotting
     df_melted = pd.melt(
         df,
-        id_vars=["Year", "Rep", "RegionCountrySeason"],
+        id_vars=["Year", "Season", "Rep", "RegionCountry"],
         value_vars=["raw_reads", "qc_reads", "dedup_optical", "dedup_all", "nodedup"],
         var_name="CoverageType",
         value_name="Coverage"
-        )
+    )
 
-    region_countries = df["RegionCountrySeason"].unique()
+    region_countries = df["RegionCountry"].unique()
     all_years = sorted(df["Year"].unique())
-    all_reps = sorted(df["Rep"].unique())    
-    all_coverage_types=["raw_reads", "qc_reads", "dedup_optical", "dedup_all", "nodedup"]
+    all_reps = sorted(df["Rep"].unique())
+    all_seasons = ["E", "L"]
+    all_coverage_types = ["raw_reads", "qc_reads", "dedup_optical", "dedup_all", "nodedup"]
 
     for rc in region_countries:
         fig, ax = plt.subplots(figsize=(12, 5))
-        subset = df_melted[df_melted["RegionCountrySeason"] == rc]
+        subset = df_melted[df_melted["RegionCountry"] == rc]
 
-        # Create full index to include missing year/rep/coverage combinations
+        # Complete combinations to include missing year/season/rep/coverage
         full_index = pd.MultiIndex.from_product(
-            [all_years, all_reps, all_coverage_types],
-            names=["Year", "Rep", "CoverageType"]
+            [all_years, all_seasons, all_reps, all_coverage_types],
+            names=["Year", "Season", "Rep", "CoverageType"]
         )
         full_df = pd.DataFrame(index=full_index).reset_index()
-        full_df["RegionCountrySeason"] = rc
+        full_df["RegionCountry"] = rc
 
         merged = pd.merge(
             full_df, subset,
-            on=["RegionCountrySeason", "Year", "Rep", "CoverageType"],
+            on=["RegionCountry", "Year", "Season", "Rep", "CoverageType"],
             how="left"
         )
         merged["Coverage"] = merged["Coverage"].fillna(0)
 
         # Pivot for plotting
         pivot = merged.pivot_table(
-            index=["Year", "Rep"],
+            index=["Year", "Season", "Rep"],
             columns="CoverageType",
             values="Coverage"
         ).reset_index()
-        pivot = pivot.sort_values(["Year", "Rep"])
+        pivot = pivot.sort_values(["Year", "Season", "Rep"])
 
-        labels = pivot["Year"].astype(str) + "_" + pivot["Rep"]
-        x = range(len(pivot))
-        width = 0.7
+        # Compute clustered x positions
+        x_positions = []
+        label_positions = []
+        label_texts = []
+        current_x = 0
+        cluster_offset = 0.25  # distance between replicates
+        group_gap = 0.5        # gap between Season/Year
 
-        ax.set_facecolor('#E9E9E9') 
-        # Add horizontal reference lines
-        for threshold in range(50, 750, 50):
-            if threshold % 100 == 0:
-                # Thick line every 100
-                ax.axhline(threshold, color='grey', linestyle='--', linewidth=0.5, alpha=0.8, zorder=0)
+        grouped = pivot.groupby(["Year", "Season"])
+        for (year, season), group in grouped:
+            reps = len(group)
+            # positions for each replicate
+            positions = [current_x + i*cluster_offset for i in range(reps)]
+            x_positions.extend(positions)
+            # position for label (end at last replicate)
+            label_positions.append(positions[-1])
+            # only add label if any coverage > 0
+            if group[["raw_reads","qc_reads","nodedup","dedup_optical","dedup_all"]].sum().sum() > 0:
+                label_texts.append(f"{rc}_{season}_{year}")
             else:
-                # Thin line every 50
-                ax.axhline(threshold, color='grey', linestyle='--', linewidth=0.4, alpha=0.6, zorder=0)
+                label_texts.append(" ")
+            current_x += reps*cluster_offset + group_gap
 
-        ax.bar([i for i in x], pivot["raw_reads"], width=width, label="Raw reads (est.)", color="sienna")
-        ax.bar([i for i in x], pivot["qc_reads"], width=width, label="QC reads (est.)", color="chocolate")
-        ax.bar([i for i in x], pivot["nodedup"], width=width, label="Mapped reads", color="goldenrod")
-        ax.bar([i for i in x], pivot["dedup_optical"], width=width, label="Optical dedup.", color="khaki")
-        ax.bar([i for i in x], pivot["dedup_all"], width=width, label="Full dedup.", color="olive")
+        width = 0.2
+
+        # Background and reference lines
+        ax.set_facecolor('#E9E9E9')
+        for threshold in range(50, 750, 50):
+            lw = 0.5 if threshold % 100 == 0 else 0.4
+            alpha = 0.8 if threshold % 100 == 0 else 0.6
+            ax.axhline(threshold, color='grey', linestyle='--', linewidth=lw, alpha=alpha, zorder=0)
+
+        # Red line at 150
+        ax.axhline(100, color='red', linestyle='--', linewidth=1, zorder=1)
+
+        # Plot bars
+        bar_dict = {}
+        bar_dict["raw_reads"] = ax.bar(x_positions, pivot["raw_reads"], width=width, color="sienna")
+        bar_dict["qc_reads"] = ax.bar(x_positions, pivot["qc_reads"], width=width, color="chocolate")
+        bar_dict["nodedup"] = ax.bar(x_positions, pivot["nodedup"], width=width, color="goldenrod")
+        bar_dict["dedup_optical"] = ax.bar(x_positions, pivot["dedup_optical"], width=width, color="khaki")
+        bar_dict["dedup_all"] = ax.bar(x_positions, pivot["dedup_all"], width=width, color="olive")
+
+        # Add optical dedup values as text inside bars
+        for x, val in zip(x_positions, pivot["dedup_all"]):
+            if val > 0:  # only label if coverage > 0
+                ax.text(x, val/2, f"{val:.0f}", ha="center", va="center", fontsize=6, rotation=90,  weight="bold", color="white")
+
+
+        # Conditional alpha per Season group
+        group_alpha = pivot.groupby(["Year","Season"])["dedup_all"].transform(lambda x: (x < 100).any())
+        n = len(pivot)
+        for i, patch in enumerate(ax.patches):
+            rep_idx = i % n
+            if group_alpha.iloc[rep_idx]:
+                patch.set_alpha(0.3)
+
+        # Legend: fully opaque
+        legend_handles = [
+            Patch(facecolor="sienna", label="Sequenced reads (est.)", alpha=1.0),
+            Patch(facecolor="chocolate", label="QC-filtered reads (est.)", alpha=1.0),
+            Patch(facecolor="goldenrod", label="Aligned reads", alpha=1.0),
+            Patch(facecolor="khaki", label="Optical duplicates removed", alpha=1.0),
+            Patch(facecolor="olive", label="All duplicates removed", alpha=1.0)
+        ]
+        ax.legend(handles=legend_handles)
+
+        # X-axis labels
+        ax.set_xticks(label_positions)
+        ax.set_xticklabels(label_texts, rotation=45, ha="right", fontsize=7)
 
         region = rc[0]
         country = rc[1:]
         ax.set_title(f"{rc} depths")
         ax.set_ylabel("Depth")
-        ax.set_xticks(x)
-        ax.set_xticklabels(labels, rotation=45, ha="right")
         ax.set_ylim(0, 750)
-        ax.legend()
         for spine in ax.spines.values():
-          spine.set_visible(False)
+            spine.set_visible(False)
 
         plt.tight_layout()
-        plt.savefig(f"{out_barplots}/barplot_{region}{country}_depths.png", dpi=300)        
+        plt.savefig(f"{out_barplots}/barplot_{region}{country}_depths_100.png", dpi=300)
         plt.close()
+
 
 
 def main():
