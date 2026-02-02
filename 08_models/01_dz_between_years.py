@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 #----------------------------------------------------------------------
-# Calculates the values of z for each year and the difference (dz) between consecutive years
-#
+# Calculates the values of z for each year and the difference (dz) between consecutive year intervals
+# It calculate dz values for same season samples across consecutive years
+# 
 # Inputs:
 #   - genic_m_and_z.filter.tsv: filtered allele frequencies and counts per SNP
 # Output:
@@ -24,7 +25,7 @@ m_and_z_in = f"{input_dir}/genic_m_and_z.filter.tsv"     # Genic m and z data in
 
 # Output files
 #z_by_year_out = f"{work_dir}/z_year.{prefix}.tsv"       # z values per year
-#dz_by_year_out = f"{work_dir}/z_interval.{prefix}.tsv"  # ziff in z values in consecutive intervals 
+#dz_by_year_out = f"{work_dir}/z_interval.{prefix}.tsv"  # z diff in z values in consecutive year intervals 
 
 def calculate_z_dz(prefixes, paired_samples, null_var, m_and_z_in):
     minMAF = 0.05
