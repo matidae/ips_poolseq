@@ -13,15 +13,15 @@
 #----------------------------------------------------------------------  
 
 import sys
-sys.path.append("../utils")
+sys.path.append("./utils")
 from pathlib import Path
 import numpy as np
-from math import sqrt, asin, log
+from math import sqrt, asin
 from scipy.stats import multivariate_normal, chi2
 from utils import load_paired_samples 
 
 
-work_dir = "../../results/08_models"
+work_dir = "../results/08_models"
 
 # Input files
 ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
@@ -92,7 +92,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             total_years = years[-1] - years[0]
                             coef_start = 1.0 - (years - years[0]) / total_years
                             coef_end   = (years - years[0]) / total_years
-                            X = np.column_stack((coef_start, coef_end)) #(n, 2) matrix                           
+                            X = np.column_stack((coef_start, coef_end)) #(n, 2) matrix
                             
                             # Multiply X transposed by inv_cov_matrix to get the weighted transpose ( X^T * C^-1 )
                             Xt_weighted = X.T @ inv_cov_matrix   #(2, n) matrix
@@ -101,14 +101,14 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             normal_matrix = Xt_weighted @ X             #(2, 2) matrix
                                
                             # Compute the weighted response vector: (X^T C^-1 z)
-                            weighted_response = Xt_weighted @ z_array   #(2, ) matrix                            
+                            weighted_response = Xt_weighted @ z_array   #(2, ) matrix
 
                             # Solve for bhat: coefficients (mu_start, mu_end) of the linear model
                             # Equivalent to: bhat = (X^T C^-1 X)^(-1) * (X^T C^-1 z)
                             # bhat = np.linalg.inv(normal_matrix) @ weighted_response
                             bhat = np.linalg.solve(normal_matrix, weighted_response)
                             
-                            LL1 = log_likelihood_selection(bhat, z_array, cov_matrix, years)                            
+                            LL1 = log_likelihood_selection(bhat, z_array, cov_matrix, years)
 
                             # Likelihood ratio test (LRT) for selection
                             LRT_selection = 2.0 * (LL1 - LL0)
@@ -130,7 +130,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                                            f"{LL2:.6f}", f"{LRT_fluctuating:.4e}", f"{pvalue_fluctuating:.4e}"]) + "\n")
 
 
-def build_covariance_matrix(years, var_drift, se):               
+def build_covariance_matrix(years, var_drift, se):
     # Get the difference between each year to first year
     t = np.array(years) - years[0]
     # Compute covariance matrix as: cov[i, j] = var_drift * min(t[i], t[j])
@@ -164,6 +164,7 @@ def main():
         n_years, ne = get_years_and_ne(pre, ne_in)
         z_year_in = f"{work_dir}/z_year.{pre}.tsv"
         tests_out = f"{work_dir}/tests_{pre}.tsv"
+        ne = 10000  # Ne fixed from prior estimates with GONE
         if ne is not None:
             var_drift = 1.0 / (2.0 * ne) 
             z_path=Path(z_year_in)
