@@ -15,7 +15,7 @@ import glob
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
-work_dir = "../../results/08_evolutionary_dynamics"
+work_dir = "../results/08_models"
 
 # Input files
 tests_in = sorted(glob.glob(f"{work_dir}/tests_*.tsv"))
