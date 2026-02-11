@@ -77,14 +77,17 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             # Drift model (null hypothesis)
                             # Get the covariance matrix
                             cov_matrix = build_covariance_matrix(years, var_drift, se)
-                            # Inverse of covariance matrix
-                            inv_cov_matrix = np.linalg.inv(cov_matrix)
                             # Transform z into a numpy array for linalg operations
                             z_array = np.array(z)
+                            # Inverse of covariance matrix
+                            ##inv_cov_matrix = np.linalg.inv(cov_matrix)
                             # Create vector of ones representing the null model of drift
                             null_vector = np.ones(len(z))
+                            inv_cov_z = np.linalg.solve(cov_matrix, z_array) ##
+                            inv_cov_ones = np.linalg.solve(cov_matrix, null_vector)##
+                            mu0 = (null_vector @ inv_cov_z) / (null_vector @ inv_cov_ones) ##
                             # Maximum likelihood estimate for the null hypothesis (drift model)
-                            mu0 = (null_vector @ inv_cov_matrix @ z_array) / (null_vector @ inv_cov_matrix @ null_vector)
+                            ##mu0 = (null_vector @ inv_cov_matrix @ z_array) / (null_vector @ inv_cov_matrix @ null_vector)
                             LL0 = log_likelihood_null(mu0, z_array, cov_matrix)                            
 
                             # Design matrix X for linear model (columns: coefficients for mu_start and mu_end)
@@ -95,7 +98,8 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             X = np.column_stack((coef_start, coef_end)) #(n, 2) matrix
                             
                             # Multiply X transposed by inv_cov_matrix to get the weighted transpose ( X^T * C^-1 )
-                            Xt_weighted = X.T @ inv_cov_matrix   #(2, n) matrix
+                            ##Xt_weighted = X.T @ inv_cov_matrix   #(2, n) matrix
+                            Xt_weighted = np.linalg.solve(cov_matrix, X).T ##
                             
                             # Compute the "normal equation" matrix: (X^T C^-1 X)
                             normal_matrix = Xt_weighted @ X             #(2, 2) matrix
