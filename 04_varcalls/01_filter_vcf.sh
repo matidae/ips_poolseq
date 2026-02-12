@@ -36,7 +36,8 @@ bcftools view "$work_dir/ips.biallelic_q20_m20.maf05.vcf.gz" -e 'GT="./."' \
 
 # Make a bed file of genes to extract genic and intergenic SNPs
 if [[ ! -f "$reference/$bed" ]]; then
-  awk 'OFS="\t"{ if ($3=="gene") print $1, $4-1, $5 }' "$reference/$gff" > "$reference/$bed"
+  awk '$3=="gene"' "$reference/$gff" | cut -f1 -d';' | cut -f1,4,5,9 | sed 's/ID=//' | \
+   awk 'OFS="\t" {print $1, $2-1, $3, $4}' > "$reference/$bed"
 fi
 
 # Intersect gene coordinates with VCF file to distinguish genic and intergenic SNPs
