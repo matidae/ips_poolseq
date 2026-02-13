@@ -1,8 +1,8 @@
 import csv
 
-depths_dir = "../../results/05_SNPs_depths"
-stats_dir = "../../results/06_SNPs_stats"
-nullvar_dir = "../../results/07_null_variance"
+depths_dir = "../results/05_SNPs_depths"
+stats_dir = "../results/06_SNPs_stats"
+nullvar_dir = "../results/07_null_variance"
 
 def parse_counts(ad_field):    
     ref, alt = map(int, ad_field.split(','))
@@ -97,13 +97,13 @@ def tsv_to_html(tsv_in, title):
 
 def figures_to_html(figure, plot_header, html_out):    
     html = ["<html><head><meta charset='UTF-8'>",
-                          "<style>",
+        "<style>",
         "body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }",
         "h1 { text-align: center; }",
         "h2 { margin-top: 40px; text-align: center; }",
         "img { display: block; margin: 20px auto; width: 50%; border: 1px solid #aaa; box-shadow: 0 0 5px rgba(0,0,0,0.1); }",
-        "</style>",                  
-                  "</head><body>"]
+        "</style>", 
+        "</head><body>"]
 
     for fig, head in zip(figure, plot_header):        
         html.append(f"<h3>{head}</h3>")
@@ -113,3 +113,13 @@ def figures_to_html(figure, plot_header, html_out):
 
     with open(html_out, "w", encoding="utf-8") as f:
         f.write("\n".join(html))   
+
+
+def prefix_order(order_file = "../data/01_proc_reads/prefixes"):
+    order = {}
+    with open(order_file) as fh:
+        for i, line in enumerate(fh):
+            prefix = line.strip()
+            if prefix:
+                order[prefix] = i
+    return order
