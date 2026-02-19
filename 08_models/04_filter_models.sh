@@ -70,13 +70,14 @@ out_dir_filter="../results/08_models/filter"
 out_dir_gene="../results/08_models/snp_to_gene"
 files_to_analyze=$(ls "$out_dir_filter"/tests_*_FDR_fluctuating.tsv | egrep "SFIN|WFIN")
 
-#Intersect SNPs to gene coordinates and select one SNP per gene (the one with lowest p-value) to avoid linkage effects.
+#Intersect SNPs to gene coordinates and select one SNP per gene to avoid linkage effects.
 for f in $files_to_analyze; do
     base=$(basename "$f" .tsv)
     awk 'NR==1{next} {print $1, $2-1, $2, $0}' OFS="\t" "$f" > "$out_dir_gene/${base}.bed"
     bedtools intersect -a "$out_dir_gene/${base}.bed" -b "$bed_file" -wa -wb | \
      awk 'BEGIN{OFS="\t"} {print $24, $4, $5, $6, $7, $19, $20}' | \
-     awk 'BEGIN{OFS="\t"} !seen[$2,$3,$4]++ {print $0}' > "$out_dir_gene/${base}_annotated.tsv"
-     sort -k1,1 -k7,7g "$out_dir_gene/${base}_annotated.tsv" | sort -u -k1,1 > "$out_dir_gene/${base}_annotated.thinned.tsv"
+     awk 'BEGIN{OFS="\t"} !seen[$2,$3,$4]++ {print $0}' > "$out_dir_gene/${base}.annotated.tsv"
+     #Sort by gene and p-value, then keep only one SNP per gene (the one with lowest p-value)
+     sort -k1,1 -k7,7g "$out_dir_gene/${base}.annotated.tsv" | awk 'BEGIN{OFS="\t"} !seen[$1]++' > "$out_dir_gene/${base}.thinned.tsv"
 done
  

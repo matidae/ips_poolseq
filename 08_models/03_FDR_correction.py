@@ -8,7 +8,7 @@
 #   - tests_{prefix}.tsv - evolutionary models tests results per SNP
 #
 # Output:
-#   - tests_{prefix}_fdr.tsv - add to input file FDR results
+#   - tests_{prefix}_FDR.tsv - add to input file FDR results
 #----------------------------------------------------------------------
 
 import glob
