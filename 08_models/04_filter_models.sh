@@ -68,7 +68,7 @@ done
 
 out_dir_filter="../results/08_models/filter"
 out_dir_gene="../results/08_models/snp_to_gene"
-files_to_analyze=$(ls "$out_dir_filter"/tests_*_FDR_fluctuating.tsv | egrep "SFIN|WFIN")
+files_to_analyze=$(ls "$out_dir_filter"/tests_*.tsv | egrep "SFIN|WFIN" | egrep "directional|fluctuating|drift" )
 
 #Intersect SNPs to gene coordinates and select one SNP per gene to avoid linkage effects.
 for f in $files_to_analyze; do
@@ -77,7 +77,20 @@ for f in $files_to_analyze; do
     bedtools intersect -a "$out_dir_gene/${base}.bed" -b "$bed_file" -wa -wb | \
      awk 'BEGIN{OFS="\t"} {print $24, $4, $5, $6, $7, $19, $20}' | \
      awk 'BEGIN{OFS="\t"} !seen[$2,$3,$4]++ {print $0}' > "$out_dir_gene/${base}.annotated.tsv"
-     #Sort by gene and p-value, then keep only one SNP per gene (the one with lowest p-value)
-     sort -k1,1 -k7,7g "$out_dir_gene/${base}.annotated.tsv" | awk 'BEGIN{OFS="\t"} !seen[$1]++' > "$out_dir_gene/${base}.thinned.tsv"
+    
+    # Select one SNP per gene
+    if [[ "$base" == *fluctuating* ]]; then
+        # Lowest fluctuating p-value (column 7)
+        sort -k1,1 -k7,7g "$out_dir_gene/${base}.annotated.tsv" | \
+            awk 'BEGIN{OFS="\t"} !seen[$1]++' > "$out_dir_gene/${base}.thinned.tsv"
+    elif [[ "$base" == *directional* ]]; then
+        # Lowest directional p-value (column 6)
+        sort -k1,1 -k6,6g "$out_dir_gene/${base}.annotated.tsv" | \
+            awk 'BEGIN{OFS="\t"} !seen[$1]++' > "$out_dir_gene/${base}.thinned.tsv"
+    elif [[ "$base" == *drift* ]]; then
+        # Highest p-values for both tests (most confidently neutral)
+        sort -k1,1 -k6,6gr -k7,7gr "$out_dir_gene/${base}.annotated.tsv" | \
+            awk 'BEGIN{OFS="\t"} !seen[$1]++' > "$out_dir_gene/${base}.thinned.tsv"
+    fi
 done
  
