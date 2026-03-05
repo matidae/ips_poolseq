@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="../favicon_sbb.png">
+    <title>Analysis of fluctuating SNPs for WFIN</title>
+    <style>
+        body {
+            font-family: -apple-system, Arial, sans-serif;
+            font-size: 13px;
+            color: #222;
+            background: #fff;
+            padding: 32px;
+        }
+        h1 { font-size: 1.3rem; font-weight: 600; margin-bottom: 4px; }
+        h2 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+        h3 { font-size: 0.9rem; font-weight: 600; color: #555; margin-bottom: 8px; }
+        .page-subtitle { color: #333; font-size: 0.95rem; margin-bottom: 32px; line-height:1.3}
+        .plot-section { margin-bottom: 24px; }
+        .description {
+            color: #555;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            max-width: 100%;
+        }
+        .plot-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        img { width: 80%; display: block; }
+        hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+    </style>
+</head>
+<body>
+    <h1>Analysis of fluctuating SNPs for WFIN samples</h1>
+    <p class="page-subtitle"> Allele frequency change at fluctuating SNPs (FDR &lt; 0.05) quantified as z (Fisher-Ford transformation)<br>
+      <em>z = 2·arcsin(√p) <br> dz = z<sub>t</sub> − z<sub>t−1</sub></em><br>
+      
+    <hr>
+    
+        <div class="plot-section">
+            <h2>Mean dz per interval</h2>
+            <p class="description">- Mean change in z per temporal interval (dz) across all fluctuating SNPs (~13,000 after thinning to one SNP per gene at FDR &lt; 0.05). (Kelly figure 2C). <br>- Allele frequencies are polarized, so that the dz refers always to the minor allele (Kelly, Methods D).<br>- Orange bars (up intervals) indicate intervals where the mean minor allele frequency increased; blue bars (down intervals) where it decreased. <br>- The up/down classification is derived from the sign of the mean dz across all fluctuating SNPs in that interval. <br>- * indicate that the mean is significantly different from zero by one-sample t-test (p-value &lt; 0.05). </p>
+            <div class="plot-row">
+                
+            <div>
+                <h3>WFIN_E</h3>
+                <img src="deltaZ/WFIN_E_01_mean_dz_per_interval.png" alt="WFIN_E Mean dz per interval">
+            </div>
+            <div>
+                <h3>WFIN_L</h3>
+                <img src="deltaZ/WFIN_L_01_mean_dz_per_interval.png" alt="WFIN_L Mean dz per interval">
+            </div>
+            </div>
+        </div>
+        <hr>
+        <div class="plot-section">
+            <h2>dz distribution per interval</h2>
+            <p class="description">- Distribution of per-SNP dz values across all thinned fluctuating SNPs for each temporal interval. (not in paper)<br>- The white line shows the median and the thick bar the interquartile range.<br></p>
+            <div class="plot-row">
+                
+            <div>
+                <h3>WFIN_E</h3>
+                <img src="deltaZ/WFIN_E_03_dz_distribution_per_interval.png" alt="WFIN_E dz distribution per interval">
+            </div>
+            <div>
+                <h3>WFIN_L</h3>
+                <img src="deltaZ/WFIN_L_03_dz_distribution_per_interval.png" alt="WFIN_L dz distribution per interval">
+            </div>
+            </div>
+        </div>
+        <hr>
+        <div class="plot-section">
+            <h2>Correlation heatmap between intervals</h2>
+            <p class="description">- Pearson correlations between per-SNP dz values across all pairs of temporal intervals (Kelly figure 2B).<br> - Correlations between non-adjacent intervals, adjacent intervals are excluded (NA) because the shared timepoint parameter induces a statistical dependency between their estimates. (Kelly p. 509).<br>- Same-type interval pairs (up-up or down-down) are expected to show positive correlations, and opposite-type pairs (up-down) negative correlations. Non-adjacent intervals should exhibit no correlation under drift.<br>- ns cells indicate non-significant correlations (p &gt;= 0.05).</p>
+            <div class="plot-row">
+                
+            <div>
+                <h3>WFIN_E</h3>
+                <img src="deltaZ/WFIN_E_02_correlation_heatmap.png" alt="WFIN_E Correlation heatmap between intervals">
+            </div>
+            <div>
+                <h3>WFIN_L</h3>
+                <img src="deltaZ/WFIN_L_02_correlation_heatmap.png" alt="WFIN_L Correlation heatmap between intervals">
+            </div>
+            </div>
+        </div>
+        <hr>
+        <div class="plot-section">
+            <h2>dz scatter plots between interval pairs</h2>
+            <p class="description">- Pairwise scatter plots of per-SNP dz values between an up-up and up-down intervals with the strongest correlations (Kelly figure 2A).<br>- Each point is one fluctuating SNP. The regression line and Pearson r are shown.<br>- Under drift all pairwise correlations should be near zero.<br></p>
+            <div class="plot-row">
+                
+            <div>
+                <h3>WFIN_E</h3>
+                <img src="deltaZ/WFIN_E_07_dz_scatterplots.png" alt="WFIN_E dz scatter plots between interval pairs">
+            </div>
+            <div>
+                <h3>WFIN_L</h3>
+                <img src="deltaZ/WFIN_L_07_dz_scatterplots.png" alt="WFIN_L dz scatter plots between interval pairs">
+            </div>
+            </div>
+        </div>
+        <hr>
+        <div class="plot-section">
+            <h2>dz trajectory plot - highlight top SNPs in phase and out of phase</h2>
+            <p class="description">- dz deltaZ across all temporal intervals for all thinned fluctuating SNPs (grey lines). <br>- The top 10 SNPs by sync score (Cg score in Kelly's) are highlighted in orange  and the bottom 10 in blue (more out of phase). <br>- The sync score is computed per SNP as the sum of signed dz contributions: if a SNP dz in a time interval has the same sign as the genome-wide mean dz for that time interval, it contributes positively; if opposite, negatively  (Kelly p. 510). <br>- A high sync score indicates consistent in-phase oscillation with the genome-wide trend; a low score indicates out-of-phase oscillation. </p>
+            <div class="plot-row">
+                
+            <div>
+                <h3>WFIN_E</h3>
+                <img src="deltaZ/WFIN_E_08_spaghetti.png" alt="WFIN_E dz trajectory plot - highlight top SNPs in phase and out of phase">
+            </div>
+            <div>
+                <h3>WFIN_L</h3>
+                <img src="deltaZ/WFIN_L_08_spaghetti.png" alt="WFIN_L dz trajectory plot - highlight top SNPs in phase and out of phase">
+            </div>
+            </div>
+        </div>
+        <hr>
+</body>
+</html>

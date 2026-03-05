@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enrichment of SNPs categories in inversions and collinear regions of the genome</title>
+    <link rel="icon" type="image/png" href="../favicon_sbb.png">
+    <style>
+        body {
+            font-family: -apple-system, Arial, sans-serif;
+            font-size: 13px;
+            color: #222;
+            background: #fff;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            line-height:1.4;
+        }
+
+        .section-header {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #222;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 6px;
+            margin-bottom: 24px;
+            margin-top: 28px;
+        }
+
+        .table-section {
+            margin-bottom: 40px;
+        }
+
+        .table-section h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.92rem;
+            margin-bottom: 12px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        thead tr:first-child th {
+            background: #f2f2f2;
+            font-weight: 600;
+            font-size: 12px;
+            padding: 8px 14px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        thead tr:first-child th:first-child {
+            text-align: left;
+            width: 120px;
+        }
+
+        thead tr.subheader th {
+            background: #fafafa;
+            color: #888;
+            font-size: 11px;
+            font-weight: 400;
+            padding: 4px 14px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        tbody td {
+            padding: 8px 14px;
+            text-align: center;
+            border: 1px solid #eee;
+            font-variant-numeric: tabular-nums;
+        }
+
+        td.cat-label {
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid #eee;
+        }
+
+        .note {
+            color: #999;
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 8px 0 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enrichment of SNPs categories in inversions and collinear regions of the genome</h1>
+    <p class="page-subtitle">
+    Proportion of SNPs in each category located within annotated genomic inversions 
+    vs. collinear regions <br>  
+    Tables show the number of SNPs (n) and the percentage of SNPs in each selection 
+    category that fall within inversions (%inv). FDR &lt; 0.05 for selecting top SNPs.
+    </p>
+
+    <div class='section-header'>Full SNP set</div>
+    
+    <div class='table-section'>
+        <h2>All SNPs</h2>
+        <p class='subtitle'>All SNPs passing FDR threshold per selection category.</p>
+        <table>
+            <thead>
+                <tr><th>Category</th><th>SFIN_E</th><th>SFIN_L</th><th>WFIN_E</th><th>WFIN_L</th></tr>
+                <tr class='subheader'><th></th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th></tr>
+            </thead>
+            <tbody><tr><td class='cat-label' style='color:#7A7A7A;'>drift</td><td>2,026,696 &nbsp;|&nbsp; 34.6%</td><td>1,976,708 &nbsp;|&nbsp; 34.7%</td><td>1,835,440 &nbsp;|&nbsp; 33.9%</td><td>1,920,595 &nbsp;|&nbsp; 33.9%</td></tr><tr><td class='cat-label' style='color:#3A7DBF;'>directional</td><td>2,881 &nbsp;|&nbsp; 33.1%</td><td>7,046 &nbsp;|&nbsp; 47.7%</td><td>55,119 &nbsp;|&nbsp; 40.6%</td><td>37,063 &nbsp;|&nbsp; 40.0%</td></tr><tr><td class='cat-label' style='color:#E07B39;'>fluctuating</td><td>183,155 &nbsp;|&nbsp; 32.2%</td><td>200,499 &nbsp;|&nbsp; 31.1%</td><td>145,663 &nbsp;|&nbsp; 38.3%</td><td>154,366 &nbsp;|&nbsp; 38.7%</td></tr><tr><td class='cat-label' style='color:#6A0DAD;'>mixed</td><td>49,943 &nbsp;|&nbsp; 28.0%</td><td>56,247 &nbsp;|&nbsp; 32.3%</td><td>264,719 &nbsp;|&nbsp; 32.9%</td><td>208,510 &nbsp;|&nbsp; 32.4%</td></tr></tbody>
+        </table>
+    </div>
+    
+    <hr>
+    
+    <div class='table-section'>
+        <h2>Top 10% SNPs</h2>
+        <p class='subtitle'>Top 10% most significant SNPs per category sorted by p-value.</p>
+        <table>
+            <thead>
+                <tr><th>Category</th><th>SFIN_E</th><th>SFIN_L</th><th>WFIN_E</th><th>WFIN_L</th></tr>
+                <tr class='subheader'><th></th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th></tr>
+            </thead>
+            <tbody><tr><td class='cat-label' style='color:#7A7A7A;'>drift</td><td>186,671 &nbsp;|&nbsp; 17.2%</td><td>181,924 &nbsp;|&nbsp; 17.3%</td><td>168,929 &nbsp;|&nbsp; 17.6%</td><td>176,711 &nbsp;|&nbsp; 17.7%</td></tr><tr><td class='cat-label' style='color:#3A7DBF;'>directional</td><td>266 &nbsp;|&nbsp; 21.4%</td><td>599 &nbsp;|&nbsp; 16.0%</td><td>5,190 &nbsp;|&nbsp; 16.9%</td><td>3,331 &nbsp;|&nbsp; 19.6%</td></tr><tr><td class='cat-label' style='color:#E07B39;'>fluctuating</td><td>16,998 &nbsp;|&nbsp; 17.7%</td><td>18,717 &nbsp;|&nbsp; 17.6%</td><td>13,212 &nbsp;|&nbsp; 18.2%</td><td>14,363 &nbsp;|&nbsp; 16.9%</td></tr><tr><td class='cat-label' style='color:#6A0DAD;'>mixed</td><td>4,678 &nbsp;|&nbsp; 19.8%</td><td>5,253 &nbsp;|&nbsp; 18.8%</td><td>24,803 &nbsp;|&nbsp; 17.9%</td><td>19,531 &nbsp;|&nbsp; 18.0%</td></tr></tbody>
+        </table>
+    </div>
+    
+
+    <div class='section-header'> Gene-thinned SNP set</div>
+    
+    <div class='table-section'>
+        <h2>All thinned SNPs</h2>
+        <p class='subtitle'>All gene-thinned SNPs (one SNP per gene) per selection category.</p>
+        <table>
+            <thead>
+                <tr><th>Category</th><th>SFIN_E</th><th>SFIN_L</th><th>WFIN_E</th><th>WFIN_L</th></tr>
+                <tr class='subheader'><th></th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th></tr>
+            </thead>
+            <tbody><tr><td class='cat-label' style='color:#7A7A7A;'>drift</td><td>19,793 &nbsp;|&nbsp; 33.0%</td><td>19,734 &nbsp;|&nbsp; 33.1%</td><td>19,537 &nbsp;|&nbsp; 33.3%</td><td>19,654 &nbsp;|&nbsp; 33.1%</td></tr><tr><td class='cat-label' style='color:#3A7DBF;'>directional</td><td>1,803 &nbsp;|&nbsp; 33.4%</td><td>2,997 &nbsp;|&nbsp; 39.7%</td><td>9,404 &nbsp;|&nbsp; 35.5%</td><td>8,208 &nbsp;|&nbsp; 36.9%</td></tr><tr><td class='cat-label' style='color:#E07B39;'>fluctuating</td><td>13,224 &nbsp;|&nbsp; 33.2%</td><td>13,558 &nbsp;|&nbsp; 32.3%</td><td>13,078 &nbsp;|&nbsp; 34.9%</td><td>12,935 &nbsp;|&nbsp; 35.1%</td></tr><tr><td class='cat-label' style='color:#6A0DAD;'>mixed</td><td>7,764 &nbsp;|&nbsp; 29.5%</td><td>8,450 &nbsp;|&nbsp; 31.8%</td><td>14,151 &nbsp;|&nbsp; 33.3%</td><td>12,938 &nbsp;|&nbsp; 32.4%</td></tr></tbody>
+        </table>
+    </div>
+    
+    <hr>
+    
+    <div class='table-section'>
+        <h2>Top 10% thinned SNPs</h2>
+        <p class='subtitle'>Top 10% most significant gene-thinned SNPs per category sorted by p-value.</p>
+        <table>
+            <thead>
+                <tr><th>Category</th><th>SFIN_E</th><th>SFIN_L</th><th>WFIN_E</th><th>WFIN_L</th></tr>
+                <tr class='subheader'><th></th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th><th>n &nbsp;|&nbsp; %inv</th></tr>
+            </thead>
+            <tbody><tr><td class='cat-label' style='color:#7A7A7A;'>drift</td><td>1,988 &nbsp;|&nbsp; 32.5%</td><td>1,987 &nbsp;|&nbsp; 34.7%</td><td>1,929 &nbsp;|&nbsp; 30.7%</td><td>1,973 &nbsp;|&nbsp; 31.0%</td></tr><tr><td class='cat-label' style='color:#3A7DBF;'>directional</td><td>177 &nbsp;|&nbsp; 27.7%</td><td>297 &nbsp;|&nbsp; 37.7%</td><td>929 &nbsp;|&nbsp; 36.4%</td><td>808 &nbsp;|&nbsp; 36.4%</td></tr><tr><td class='cat-label' style='color:#E07B39;'>fluctuating</td><td>1,288 &nbsp;|&nbsp; 23.6%</td><td>1,351 &nbsp;|&nbsp; 26.6%</td><td>1,256 &nbsp;|&nbsp; 28.9%</td><td>1,264 &nbsp;|&nbsp; 35.5%</td></tr><tr><td class='cat-label' style='color:#6A0DAD;'>mixed</td><td>727 &nbsp;|&nbsp; 19.7%</td><td>786 &nbsp;|&nbsp; 20.2%</td><td>1,318 &nbsp;|&nbsp; 20.0%</td><td>1,203 &nbsp;|&nbsp; 24.9%</td></tr></tbody>
+        </table>
+    </div>
+    
+</body>
+</html>
