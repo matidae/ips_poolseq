@@ -5,7 +5,7 @@
 # (fluctuating, directional, mixed, drift).
 #
 # Inputs:
-#   - {thinned_dir}/tests.{prefix}.FDR_{category}.thinned.tsv
+#   - {thinned_dir}/tests.{prefix}.FDR.{category}.thinned.tsv
 #   - {work_dir}/z_year.{prefix}.tsv
 #
 # Output:
@@ -146,10 +146,10 @@ def plot_one(prefix, snps_dict, trajectories_dict, years, all_years,
     plt.close()
 
 def generate_html(prefixes, out_dir):
-    desc_AF = "Raw allele frequency trajectories of SNPs per selection category."
+    desc_AF = "Raw allele frequency trajectories (p) across all years for SNPs per selection category (ranked by FDR-adjusted p-value)."
 
-    desc_DELTA = "Allele frequency change relative to the initial timepoint. \
-        Removes the effect of initial allele frequency making trajectories directly comparable."
+    desc_DELTA = "Allele frequency change relative to the initial timepoint, (Δp = p<sub>t</sub> − p<sub>0</sub>). \
+        Removes the effect of initial allele frequency making trajectories directly comparable (ranked by FDR-adjusted p-value)."
     
     table_html = f"""
     <table>
@@ -170,8 +170,8 @@ def generate_html(prefixes, out_dir):
     </table>
     <p class="description2">
         FDR p-value: 0.05 -
-        LRT1: LRT directional vs drift -
-        LRT2: LRT saturated vs drift        
+        LRT1: directional vs drift -
+        LRT2: saturated vs drift
     </p>
     """
     
@@ -248,19 +248,11 @@ def generate_html(prefixes, out_dir):
 
     img {{
         width: 90%;
-        display: block;
-        cursor: zoom-in;
+        display: block;        
         transition: transform 0.2s ease;
         transform-origin: top left;
         position: relative;
         z-index: 1;
-    }}
-
-    img:hover {{
-        transform: scale(1.15);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        z-index: 999;
-        cursor: zoom-out;
     }}
 
     hr {{ border: none; border-top: 1px solid #eee; margin: 32px 0; }}
@@ -275,14 +267,14 @@ def generate_html(prefixes, out_dir):
     {table_html}
     <br>
     <p class="description">
-        Allele frequency trajectories per selection category - top 10 SNPs by p-value are highlighted and the  next 1000 in grey.       
+        Allele frequency trajectories per selection category - top 10 SNPs by p-value are highlighted and the  next 1000 are in grey.       
     </p>       
     {header_row}
     {sections}
 </body>
 </html>"""
 
-    out_file = os.path.join(out_dir, "trajectories_report.html")
+    out_file = os.path.join(out_dir, "SNPs_trajectories.html")
     with open(out_file, "w") as f:
         f.write(html)
 
