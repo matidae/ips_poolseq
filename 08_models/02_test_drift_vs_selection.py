@@ -6,10 +6,10 @@
 # Calculates  likelihood ratios (LRT) and p-values 
 #
 # Inputs:
-#   - z_year.{prefix}.tsv — z-scores per SNP and per year
+#   - z_year.{prefix}.tsv: z-scores per SNP and per year
 #
 # Output:
-#   - tests_{prefix}.tsv — likelihoods, LRTs, and p-values per SNP
+#   - tests.{prefix}.tsv: likelihoods, LRTs, and p-values per SNP
 #----------------------------------------------------------------------  
 
 import sys
@@ -28,7 +28,7 @@ ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
 #z_year_in = f"{work_dir}/z_year.{prefix}.tsv"   # z values per year
 
 # Output files
-#tests_out = f"{work_dir}/tests_{prefix}.tsv" # Output file with mu, LRT, p-values for each SNP
+#tests_out = f"{work_dir}/tests.{prefix}.tsv" # Output file with mu, LRT, p-values for each SNP
 
 
 minMAF = 0.05
@@ -69,9 +69,9 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                         if not "NA" in value.split(",")[0]:
                             z.append(float(value.split(",")[0]))
                             se.append(float(value.split(",")[1]))
-                            years.append(header_years[idx])                  
-                    n_z = len(z)                    
-                    if n_z >= n_years:                        
+                            years.append(header_years[idx])
+                    n_z = len(z)
+                    if n_z >= n_years:
                         z_mean = sum(z)/n_z
                         if z_mean > z_low and z_mean < z_high:
                             # Drift model (null hypothesis)
@@ -88,7 +88,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             mu0 = (null_vector @ inv_cov_z) / (null_vector @ inv_cov_ones) ##
                             # Maximum likelihood estimate for the null hypothesis (drift model)
                             ##mu0 = (null_vector @ inv_cov_matrix @ z_array) / (null_vector @ inv_cov_matrix @ null_vector)
-                            LL0 = log_likelihood_null(mu0, z_array, cov_matrix)                            
+                            LL0 = log_likelihood_null(mu0, z_array, cov_matrix)  
 
                             # Design matrix X for linear model (columns: coefficients for mu_start and mu_end)
                             years = np.array(years)
@@ -115,23 +115,23 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             LL1 = log_likelihood_selection(bhat, z_array, cov_matrix, years)
 
                             # Likelihood ratio test (LRT) for selection
-                            LRT_selection = 2.0 * (LL1 - LL0)
-                            pvalue_selection = 1.0 - chi2.cdf(LRT_selection, df=1)
+                            LRT1_selection = 2.0 * (LL1 - LL0)
+                            pvalue_selection = 1.0 - chi2.cdf(LRT1_selection, df=1)
 
                             # Fluctuating (alternative) model: mean vector = observed z
                             # In multivariate normal terms, this is the "perfect fit" log-likelihood.
                             LL2 = multivariate_normal.logpdf(z_array, z_array, cov_matrix)
                             # Likelihood ratio test against null
-                            LRT_fluctuating = 2.0 * (LL2 - LL0)
+                            LRT2_fluctuating = 2.0 * (LL2 - LL0)
                             #Calculate df as number of extra parameters in fluctuating model compared to null model
                             df = len(z_array) - 1
-                            pvalue_fluctuating = 1.0 - chi2.cdf(LRT_fluctuating, df=df)
-
+                            pvalue_fluctuating = 1.0 - chi2.cdf(LRT2_fluctuating, df=df)
+                            
                             tests_fh.write(
                                 "\t".join([*cols[:4], str(n_z), f"{mu0:.6f}", f"{LL0:.6f}", 
                                            f"{bhat[0]:.6f}", f"{bhat[1]:.6f}", 
-                                           f"{LL1:.6f}", f"{LRT_selection:.4e}", f"{pvalue_selection:.4e}", 
-                                           f"{LL2:.6f}", f"{LRT_fluctuating:.4e}", f"{pvalue_fluctuating:.4e}"]) + "\n")
+                                           f"{LL1:.6f}", f"{LRT1_selection:.4e}", f"{pvalue_selection:.4e}", 
+                                           f"{LL2:.6f}", f"{LRT2_fluctuating:.4e}", f"{pvalue_fluctuating:.4e}"]) + "\n")
 
 
 def build_covariance_matrix(years, var_drift, se):
@@ -167,7 +167,7 @@ def main():
     for pre in prefixes:
         n_years, ne = get_years_and_ne(pre, ne_in)
         z_year_in = f"{work_dir}/z_year.{pre}.tsv"
-        tests_out = f"{work_dir}/tests_{pre}.tsv"
+        tests_out = f"{work_dir}/tests.{pre}.tsv"
         ne = 10000  # Ne fixed from prior estimates with GONE
         if ne is not None:
             var_drift = 1.0 / (2.0 * ne) 
