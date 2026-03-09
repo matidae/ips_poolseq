@@ -14,7 +14,7 @@
 import os
 import matplotlib.pyplot as plt
 
-work_dir = "../../results/08_evolutionary_dynamics"
+work_dir = "../results/08_models"
 plot_dir = f"{work_dir}/plots"
 
 color= "#009688"
