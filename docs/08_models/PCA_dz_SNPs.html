@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="../favicon_sbb.png">
+    <meta charset="UTF-8">
+    <title>PCA of Fluctuating SNPs</title>
+    <style>
+    body {
+        font-family: sans-serif;
+        font-size: 14px;
+        color: #222;
+        padding: 24px;
+    }
+
+    h1 { margin-bottom: 4px; }
+    h2 { margin: 24px 0 12px; }
+    h3 { margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+
+    .description {
+        color: #555;
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    .description2 {
+        color: #555;
+        font-size: 0.8rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    img {
+        width: 60%;
+        display: block;
+        transition: transform 0.2s ease;
+        transform-origin: top left;
+        position: relative;
+        z-index: 1;
+    }
+
+
+    hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+    table { border-collapse: collapse; margin-bottom: 12px; }
+    th, td { padding: 6px 16px; text-align: left; border: 1px solid #eee; font-size: 12px; }
+    th { background: #f5f5f5; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <h1>PCA of thinned fluctuating SNPs</h1>
+
+    <p class="description">
+        PCA of thinned fluctuating SNPs for each population using dz (between consecutive
+        annual intervals), after minor-allele polarization. <br>SNPs are colored by
+        sync score sign (<span style="color:#E07B39;font-weight:600;">orange</span>) for SNPs in
+        phase (sync &gt; 0) and (<span style="color:#3A7DBF;font-weight:600;">blue</span>) for
+        SNPs in opposite phase (sync &lt; 0). <br>Transparency of dots is  scaled by sync score magnitude.
+    </p>
+
+    <img src="pca_all_populations.png" alt="PCA all populations">
+
+</body>
+</html>
