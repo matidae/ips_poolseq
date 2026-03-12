@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="../favicon_sbb.png">
+    <meta charset="UTF-8">
+    <title>SNPs allele frequency trajectory plots</title>
+    <style>
+    body {
+        font-family: sans-serif;
+        font-size: 14px;
+        color: #222;
+        padding: 24px;
+    }
+
+    h1 { margin-bottom: 4px; }
+    h2 { margin: 24px 0 12px; }
+    h3 { margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+
+    .description {
+        color: #555;
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+        .description2 {
+        color: #555;
+        font-size: 0.8rem;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+
+    .plot-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+
+    img {
+        width: 90%;
+        display: block;        
+        transition: transform 0.2s ease;
+        transform-origin: top left;
+        position: relative;
+        z-index: 1;
+    }
+
+    hr { border: none; border-top: 1px solid #eee; margin: 32px 0; }
+    table { border-collapse: collapse; margin-bottom: 12px; }
+    th, td { padding: 6px 16px; text-align: left; border: 1px solid #eee; font-size: 12px; }
+    th { background: #f5f5f5; font-weight: 600; }
+</style>
+</head>
+<body>
+    <h1>SNPs z-transformed allele frequency trajectories</h1>
+    <br>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>LRT1</th>
+                <th>LRT2</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td style="color:#7A7A7A; font-weight:600;">Drift</td><td>ns</td><td>ns</td><td>No departure from drift</td></tr>
+            <tr><td style="color:#3A7DBF; font-weight:600;">Directional</td><td>sig</td><td>ns</td><td>Linear trend, no oscillation</td></tr>
+            <tr><td style="color:#E07B39; font-weight:600;">Fluctuating</td><td>ns</td><td>sig</td><td>Oscillation, no net directional trend</td></tr>
+            <tr><td style="color:#6A0DAD; font-weight:600;">Mixed</td><td>sig</td><td>sig</td><td>Directional trend + oscillation</td></tr>
+        </tbody>
+    </table>
+    <p class="description2">
+        FDR p-value: 0.05 -
+        LRT1: directional vs drift -
+        LRT2: saturated vs drift
+    </p>
+    
+    <br>
+    <p class="description">
+        z-transformed allele frequency trajectories per selection category - top 10 SNPs by p-value are highlighted and the next 1000 are in grey.
+    </p>       
+    
+    
+        <div class="prefix-section">
+            <h2>SFIN_E</h2>
+            <div class="plot-row">
+                <div class="img-wrapper">
+                    <img src="SFIN_E_trajectories_delta_Z.png" alt="SFIN_E delta">
+                </div>
+                <div class="img-wrapper">
+                    <img src="SFIN_E_trajectories_Z.png" alt="SFIN_E AF">
+                </div>
+            </div>
+        </div>
+        <hr>
+        
+        <div class="prefix-section">
+            <h2>SFIN_L</h2>
+            <div class="plot-row">
+                <div class="img-wrapper">
+                    <img src="SFIN_L_trajectories_delta_Z.png" alt="SFIN_L delta">
+                </div>
+                <div class="img-wrapper">
+                    <img src="SFIN_L_trajectories_Z.png" alt="SFIN_L AF">
+                </div>
+            </div>
+        </div>
+        <hr>
+        
+        <div class="prefix-section">
+            <h2>WFIN_E</h2>
+            <div class="plot-row">
+                <div class="img-wrapper">
+                    <img src="WFIN_E_trajectories_delta_Z.png" alt="WFIN_E delta">
+                </div>
+                <div class="img-wrapper">
+                    <img src="WFIN_E_trajectories_Z.png" alt="WFIN_E AF">
+                </div>
+            </div>
+        </div>
+        <hr>
+        
+        <div class="prefix-section">
+            <h2>WFIN_L</h2>
+            <div class="plot-row">
+                <div class="img-wrapper">
+                    <img src="WFIN_L_trajectories_delta_Z.png" alt="WFIN_L delta">
+                </div>
+                <div class="img-wrapper">
+                    <img src="WFIN_L_trajectories_Z.png" alt="WFIN_L AF">
+                </div>
+            </div>
+        </div>
+        <hr>
+        
+</body>
+</html>
