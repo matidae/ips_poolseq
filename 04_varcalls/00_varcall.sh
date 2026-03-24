@@ -22,7 +22,7 @@ jobs=40
 #Directory with genome and gene bed files
 genome="../data/reference"
 #List of samples to exclude from varcalling
-exclude_file="$work_dir/exclude_samples.txt"
+exclude_file="$genome/exclude_samples.txt"
 
 #List of dedup sorted bam files for analysis (optional removal of ones listed in exclude_file)
 if [[ -s "$exclude_file" ]]; then
@@ -39,7 +39,7 @@ bedtools makewindows -g "$genome/Ips_typograpgus_LG16corrected.final.fasta.fai" 
 parallel -j $jobs --halt soon,fail=1 "
     region={};
     chunk=\$(echo \$region | sed 's/[:-]/_/g');
-    bcftools mpileup -Ou -I -a FORMAT/AD --max-depth 5000 -q 20 -Q 20 \
+    bcftools mpileup -Ou -I -a FORMAT/AD --max-depth 1000 -q 20 -Q 20 \
         -r \$region \
         -f \"$genome/Ips_typograpgus_LG16corrected.final.fasta\" \
         $bam |
@@ -52,11 +52,12 @@ for i in "$work_dir"/*.vcf; do
     tabix -p vcf "$i.gz"
 done
 
+
 # Sort files numerically based on the region number before concatenation
-sorted_vcfs=$(ls "$work_dir"/region_*.vcf.gz | sort -V)
+ls "$work_dir"/region_*.vcf.gz | sort -V > "$work_dir/vcf_list.txt"
 
 # Concatenate the sorted VCF files
-bcftools concat -Oz -o "$work_dir/ips_merged.vcf.gz" "$sorted_vcfs"
+bcftools concat -f "$work_dir/vcf_list.txt"  -Oz -o "$work_dir/ips_merged.vcf.gz"
 
 # Index the merged VCF
 tabix -p vcf "$work_dir/ips_merged.vcf.gz"

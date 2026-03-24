@@ -14,9 +14,9 @@
 #   - intergenic_readcounts.tsv : read counts of filtered SNPs from intergenic regions
 #-------------------------------------------------------------------------------
 
+set -euo pipefail
 eval "$(conda shell.bash hook)"
 conda activate extra
-set -euo pipefail
 
 work_dir="../results/04_varcalls"
 reference="../data/reference"
