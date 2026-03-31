@@ -15,9 +15,9 @@ work_dir = "../results/04_varcalls"
 min_MAF = 0.05
 
 # Input file
-vcf_filter_in = f"{work_dir}/ips.biallelic_q20_m20.vcf.gz"
+vcf_filter_in = f"{work_dir}/ips.biallelic_q40_m40.vcf.gz"
 # Output file
-vcf_m05_out = f"{work_dir}/ips.biallelic_q20_m20.maf05.vcf.gz"
+vcf_m05_out = f"{work_dir}/ips.biallelic_q40_m40.maf05.vcf.gz"
 
 def calc_ref_freq(ad_field):
     ref, alt = map(int, ad_field.split(','))
