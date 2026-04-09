@@ -2,7 +2,7 @@
 
 #-------------------------------------------------------------------------------
 # Filter the VCF file by : snps, biallelic, MQ>=40 and QUAL>=40 known genotype 
-# and MAF>=0.5 && <=0.95
+# and MAF>=0.05 && <=0.95
 # Intersect VCF with genic regions 
 # Extract AD fields from each VCF file
 #
@@ -29,17 +29,29 @@ bcftools view "$work_dir/ips_merged.vcf.gz" -m2 -M2 -v snps -e 'INFO/MQ<40 || QU
 python3 ./04_varcalls/01aux_filter_MAF.py
 
 #Exclude SNPs with missing genotype GT ./.
-bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" -e 'GT="./."' \
+bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" -e 'GT="./." || GT="."' \
 -Oz -o "$work_dir/ips.biallelic_q40_m40.maf05.gt.vcf.gz"
 
 # Intersect gene coordinates with VCF file to distinguish genic SNPs
-# Create header of vcf file since bedtools omits it
-bcftools view -h "$work_dir/ips.biallelic_q40_m40.maf05.gt.vcf.gz" > "$work_dir/genic_variants.vcf"
+# Prepare bed file for intersection
+if [[ ! -f "$reference/$bed.gz" ]]; then
+    bgzip "$reference/$bed"
+    tabix -p bed "$reference/$bed.gz"
+fi
 
-#Extract genic SNPs
-bedtools intersect -a "$work_dir/ips.biallelic_q40_m40.maf05.gt.vcf.gz" -b "$reference/$bed" -u >> "$work_dir/genic_variants.vcf"
-bgzip -f "$work_dir/genic_variants.vcf"
+# After MAF filter, index the VCF file before intersection
+tabix -p vcf "$work_dir/ips.biallelic_q40_m40.maf05.gt.vcf.gz"
 
+# Intersect VCF with genic regions and filter for genic SNPs
+bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.gt.vcf.gz" \
+    -R "$reference/$bed.gz" -Oz -o "$work_dir/genic_variants.vcf.gz"
+
+# Index the genic VCF
+tabix -p vcf "$work_dir/genic_variants.vcf.gz"
+
+# Create header for read counts table
+bcftools view -h "$work_dir/genic_variants.vcf.gz" | tail -n1 | cut -f-2,4,5,10- \
+  > "$work_dir/genic_readcounts.tsv"
 
 # Get table of read counts for genic SNPs
 bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t[%AD\t]\n' "$work_dir/genic_variants.vcf.gz" | \
