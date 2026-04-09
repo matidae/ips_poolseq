@@ -16,13 +16,18 @@ conda activate extra
 
 work_dir="../results/04_varcalls"
 dedup_dir="../data/03_dedup"
-jobs=40
+jobs=20
 
 #Input
-#Directory with genome and gene bed files
-genome="../data/reference"
+#Genome file for varcalling
+genome="../data/reference/Ips_typographus_LG16corrected.final.LG.fasta"
 #List of samples to exclude from varcalling
-exclude_file="$genome/exclude_samples.txt"
+exclude_file="../data/reference/exclude_samples.txt"
+
+#Index the reference genome if not already indexed
+if [[ ! -f "$genome.fai" ]]; then
+    samtools faidx "$genome"
+fi
 
 #List of dedup sorted bam files for analysis (optional removal of ones listed in exclude_file)
 if [[ -s "$exclude_file" ]]; then
@@ -31,20 +36,20 @@ else
     bam=$(find "$dedup_dir/" -maxdepth 1 -name "*.dedup.sort.bam" | sort | tr '\n' ' ')
 fi
 
-# Make windows of the genome in regions of 1M for parallel run of varcalling 
-bedtools makewindows -g "$genome/Ips_typograpgus_LG16corrected.final.fasta.fai" -w 1000000 \
-    | awk '{print $1":"$2+1"-"$3}' > "$work_dir/regions_1M.txt"
+# Make windows of the genome in regions of 5M for parallel run of varcalling 
+bedtools makewindows -g "$genome.fai" -w 5000000 \
+    | awk '{print $1":"$2+1"-"$3}' > "$work_dir/regions_5M.txt"
 
-#Run bcftools mpileup and call in parallel taking genome chunks defined in regions_1M
+#Run bcftools mpileup and call in parallel taking genome chunks defined in regions_5M
 parallel -j $jobs --halt soon,fail=1 "
     region={};
     chunk=\$(echo \$region | sed 's/[:-]/_/g');
-    bcftools mpileup -Ou -I -a FORMAT/AD --max-depth 1000 -q 20 -Q 20 \
+    bcftools mpileup -Ou -I -a FORMAT/AD --max-depth 1000 -q 40 -Q 30 \
         -r \$region \
-        -f \"$genome/Ips_typograpgus_LG16corrected.final.fasta\" \
+        -f \"$genome\" \
         $bam |
     bcftools call -vmO v -o \"$work_dir/region_{#}_\${chunk}.vcf\"
-" < "$work_dir/regions_1M.txt"
+" < "$work_dir/regions_5M.txt"
 
 # Compress and index each VCF file
 for i in "$work_dir"/*.vcf; do
@@ -62,5 +67,7 @@ bcftools concat -f "$work_dir/vcf_list.txt"  -Oz -o "$work_dir/ips_merged.vcf.gz
 # Index the merged VCF
 tabix -p vcf "$work_dir/ips_merged.vcf.gz"
 
-mkdir -p "$work_dir/chunks"
-mv "$work_dir"/region_*  "$work_dir/chunks/"
+# Validate before moving  chunks
+bcftools stats "$work_dir/ips_merged.vcf.gz" > "$work_dir/ips_merged.stats.txt" \
+    && mkdir -p "$work_dir/chunks" \
+    && mv "$work_dir"/region_* "$work_dir/chunks/"
