@@ -11,9 +11,9 @@
 
 work_dir="../results/04_varcalls"
 
-total_snps=$(bcftools view "$work_dir/ips.biallelic_q20_m20.maf05.vcf.gz" | grep -v '^#' | wc -l)
+total_snps=$(bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" | grep -v '^#' | wc -l)
 
-bcftools view "$work_dir/ips.biallelic_q20_m20.maf05.vcf.gz" | bcftools query -f '[%SAMPLE\t%GT\n]' \
+bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" | bcftools query -f '[%SAMPLE\t%GT\n]' \
 | awk '$2 == "./."' | cut -f1 | sort | uniq -c | awk '{print $1"\t"$2}' | sort -k2 \
 > "$work_dir/missing_GT.tsv"
 

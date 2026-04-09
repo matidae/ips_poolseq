@@ -31,18 +31,15 @@ def process_vcf(vcf_filter_in, vcf_m05_out, min_MAF):
         for line in vcf_filter_fh:
             if line.startswith("#"):
                     vcf_m05_fh.write(line)
-                    continue                                  
-
-            fields = line.strip().split('\t')            
+                    continue 
+            fields = line.strip().split('\t')
             samples = fields[9:]
-
             p = []
             for sample in samples:
-                ad_field = sample.split(":")[2]                
+                ad_field = sample.split(":")[2]
                 freq = calc_ref_freq(ad_field)
                 if freq is not None:
                     p.append(freq)
-
             if not p:
                 continue
 
