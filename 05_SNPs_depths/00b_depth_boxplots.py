@@ -3,7 +3,7 @@
 #----------------------------------------------------------------------
 # Makes boxplots grouped by country, region and season.
 # Input: 
-#   - [inter]genic_processed_depths.tsv : table with depths (ref + alt) per SNP, per sample
+#   - genic_processed_depths.tsv : table with depths (ref + alt) per SNP, per sample
 # Output: 
 #   - boxplots of genic SNPs per region_time, and for total SNPs
 #----------------------------------------------------------------------
@@ -17,7 +17,6 @@ work_dir = "../results/05_SNPs_depths"
 
 #Input files
 genic_depths_in = f"{work_dir}/genic_processed_depths.tsv"
-intergenic_depths_in = f"{work_dir}/intergenic_processed_depths.tsv"
 
 face_color = "#00CFBA"
 median_color = "#B23F16"
@@ -91,11 +90,10 @@ def plot_depth_boxplots(genic_depths_in, top_ylim):
         plt.savefig(f"{work_dir}/boxplots/{group}_depth_boxplots.png")
         plt.close()
 
-def plot_total_depths(genic_depths_in, intergenic_depths_in):
-    genic = pd.read_csv(genic_depths_in, sep="\t")
-    intergenic = pd.read_csv(intergenic_depths_in, sep="\t")
-    data = [genic["TOTAL"], intergenic["TOTAL"]]
-    labels = ["Genic", "Intergenic"]
+def plot_total_depths(genic_depths_in):
+    genic = pd.read_csv(genic_depths_in, sep="\t")    
+    data = [genic["TOTAL"]]
+    labels = ["Genic"]
     plt.figure(figsize=(8, 6))
     plt.style.use('ggplot')
 
@@ -108,7 +106,7 @@ def plot_total_depths(genic_depths_in, intergenic_depths_in):
         
     # Set colors for medians
     for median_line in bplot['medians']:
-        median_line.set_color(median_color)        
+        median_line.set_color(median_color)
 
     # Add median value labels
     for i, d in enumerate(data):
@@ -121,12 +119,12 @@ def plot_total_depths(genic_depths_in, intergenic_depths_in):
     plt.savefig(f"{work_dir}/boxplots/total_depth_boxplots.png")
     plt.close()
 
-def main(genic_depths_in, intergenic_depths_in):
+def main(genic_depths_in):
     boxplot_dir = f"{work_dir}/boxplots"
     if not os.path.exists(boxplot_dir):
         os.makedirs(boxplot_dir)
     plot_depth_boxplots(genic_depths_in, top_ylim)
-    plot_total_depths(genic_depths_in, intergenic_depths_in)
+    plot_total_depths(genic_depths_in)
 
 if __name__ == "__main__":
-    main(genic_depths_in, intergenic_depths_in)
+    main(genic_depths_in)
