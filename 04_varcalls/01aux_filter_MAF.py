@@ -10,9 +10,11 @@
 #-------------------------------------------------------------------------------
 
 import gzip
+import sys
+sys.path.append("./utils")
+from utils import  MIN_MAF
 
 work_dir = "../results/04_varcalls"
-min_MAF = 0.05
 
 # Input file
 vcf_filter_in = f"{work_dir}/ips.biallelic_q40_m40.vcf.gz"
@@ -26,7 +28,7 @@ def calc_ref_freq(ad_field):
         return None
     return ref / total
 
-def process_vcf(vcf_filter_in, vcf_m05_out, min_MAF):
+def process_vcf(vcf_filter_in, vcf_m05_out, MIN_MAF):
     with gzip.open(vcf_filter_in, 'rt') as vcf_filter_fh, gzip.open(vcf_m05_out, "wt") as vcf_m05_fh:
         for line in vcf_filter_fh:
             if line.startswith("#"):
@@ -43,11 +45,11 @@ def process_vcf(vcf_filter_in, vcf_m05_out, min_MAF):
             if not p:
                 continue
 
-            if min(p) <= (1 - min_MAF) and max(p) >= min_MAF:
+            if min(p) <= (1 - MIN_MAF) and max(p) >= MIN_MAF:
                 vcf_m05_fh.write(line)
 
 def main():
-    process_vcf(vcf_filter_in, vcf_m05_out, min_MAF)
+    process_vcf(vcf_filter_in, vcf_m05_out, MIN_MAF)
 
 if __name__ == "__main__":
     main()
