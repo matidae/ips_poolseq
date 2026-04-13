@@ -22,9 +22,8 @@ not_paired_out = f"{work_dir}/samples_no_replicates.tsv"
 
 
 # Generate the file paired_samples.txt
-def paired_samples(m_and_z_in, paired_out, norep):
-    sample_dict = {}
-    xpositions = {} # maps sample to column idx of replicates
+def paired_samples(m_and_z_in, paired_out, not_paired_out):
+    sample_dict = {}    
     # Open genic_m_and_z to get the header
     with open(m_and_z_in, "r") as m_and_z_fh, open(paired_out, "w") as paired_fh, \
         open(not_paired_out, "w") as not_paired_fh:
@@ -43,11 +42,9 @@ def paired_samples(m_and_z_in, paired_out, norep):
             if "a" in reps and "b" in reps:
                 name = f"{location}_{season}_{year}"
                 paired_fh.write(f"{name}\t{reps['a']}\t{reps['b']}\n")
-                xpositions[name] = [int(reps['a']), int(reps['b'])]
             else:
                 # Write non paired samples to file
                 not_paired_fh.write(f"{location}_{season}_{year}: {reps}\n")
-    return xpositions
 
 def main():
     paired_samples(m_and_z_in, paired_out, not_paired_out)

@@ -45,6 +45,7 @@ def main():
     m_and_z_fh, open(m_and_z_excluded_out, 'w') as m_and_z_excluded_fh:
         header = next(readcounts_fh)
         m_and_z_fh.write(header)
+        m_and_z_excluded_fh.write(header) 
         for line in readcounts_fh:        
             cols = line.strip().split('\t')        
             # Parse sample read counts
