@@ -14,8 +14,8 @@
 
 import sys
 sys.path.append("./utils") 
-from math import sqrt, asin
-from utils import load_paired_samples, load_depth_threshold
+from utils import load_paired_samples, load_depth_threshold, \
+    MIN_READ_DEPTH, Z_LOW, Z_HIGH, PVAL_CHI
 
 work_dir = "../results/07_null_variance"
 input_dir = "../results/06_SNPs_stats"
@@ -29,25 +29,16 @@ snpdev_in = f"{work_dir}/snpdev_m_and_z.tsv"           # SNP deviation input fil
 snp_filter_out = f"{work_dir}/genic_m_and_z.filter.tsv"      # Filtered SNP data output
 null_var_recalc_out = f"{work_dir}/null_variance_summary.recalc.tsv"  # Recalculated null variance output
 
-#Variables
-min_depth_rep = 100 # minimum depth in each replicate
-minMAF = 0.05
-zlow = 2.0*asin(sqrt(minMAF))
-zhigh= 2.0*asin(sqrt(1.0-minMAF))
-
-#dev2 = 3.0 #filter for genotype data
-
 # Filter SNPs by p-value from Chi-square test. Discard those with p-value<0.01
 def filter_SNPs(snpdev_in, min_depth, max_depth):
-    valid_SNPs = set()
-    pval_min = 0.01
+    valid_SNPs = set()    
     with open(snpdev_in, "r") as snpdev_fh:
         next(snpdev_fh)
         for line in snpdev_fh:
             cols = line.strip().split('\t')
             pval = float(cols[5])
             depth = int(cols[2])
-            if  pval >= pval_min and depth >= min_depth and depth <= max_depth: 
+            if  pval >= PVAL_CHI and depth >= min_depth and depth <= max_depth: 
                 #and abs(float(cols[8])) <= dev2 for genotype data
                 valid_SNPs.add(f"{cols[0]}_{cols[1]}")    
     return valid_SNPs
@@ -67,12 +58,12 @@ def process_snps(m_and_z_in, snp_filter_out, valid_snps, paired_samples, stats):
                 m1, z1 = cols[idx_a].split(',')
                 m2, z2 = cols[idx_b].split(',')
                 m1, m2 = int(m1), int(m2)
-                if m1 < min_depth_rep or m2 < min_depth_rep:
+                if m1 < MIN_READ_DEPTH or m2 < MIN_READ_DEPTH:
                     continue
 
                 z1, z2 = float(z1), float(z2)
                 z_mean = (z1 + z2) / 2.0
-                if not (zlow < z_mean < zhigh):
+                if not (Z_LOW <= z_mean <= Z_HIGH):
                     continue
 
                 dz2 = (z1 - z2) ** 2
@@ -93,11 +84,11 @@ def calculate_null_variance(null_var_recalc_out, stats):
             mean_dz2 = data['sum_dz2'] / data['count']
             mean_inv_depth = data['sum_inv_depth'] / data['count']
             # Estimate null variance
-            null_var = mean_dz2 - mean_inv_depth
+            null_var = max(0.0, mean_dz2 - mean_inv_depth)
             # Prop. of variance explained by read depth
             rd_prop = mean_inv_depth/mean_dz2
             #Ne of diploid genomes
-            ne = 2/null_var
+            ne = 2/null_var if null_var != 0 else float('inf')
             null_var_recalc_fh.write(
                 f"{sample}\t{data['count']}\t{mean_dz2:.6f}\t{mean_inv_depth:.6f}\t"
                 f"{rd_prop:.4f}\t{null_var:.6f}\t{ne:.0f}\n")

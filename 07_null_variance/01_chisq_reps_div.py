@@ -16,7 +16,7 @@ import sys
 sys.path.append("./utils") 
 from math import sqrt, pi
 from scipy.stats import chi2
-from utils import load_paired_samples
+from utils import load_paired_samples, MIN_READ_DEPTH
 import pandas as pd 
 
 work_dir = "../results/07_null_variance"
@@ -29,13 +29,9 @@ null_var_in = f"{work_dir}/null_variance_summary.tsv"
 snpdev_out = f"{work_dir}/snpdev_m_and_z.tsv"
 cov_bin_out = f"{work_dir}/snp_depth_div_bin.tsv"
 
-# Parameters
-#mincalls = 20  # Minimum number of SNPs per bulk
-min_depth = 50 # Lowest count to include a sample
-
 def load_null_variance(null_var_in):    
-    df = pd.read_csv(null_var_in, sep='\t')
-    null_var = dict(zip(df.iloc[:, 0], df.iloc[:, 5]))    
+    df = pd.read_csv(null_var_in, sep='\t')    
+    null_var = {k: max(0.0, float(v)) for k, v in zip(df['Sample'], df['Null_var']) if v != 'NA'}
     return null_var
 
 def aggregate_SNPs_by_coverage_bin(coverage_bin_stats, dcat, p_value):
@@ -45,11 +41,11 @@ def aggregate_SNPs_by_coverage_bin(coverage_bin_stats, dcat, p_value):
     if p_value < 0.01:
         coverage_bin_stats[dcat][1] += 1    
 
-def write_SNP_stats(snpdev_out, cols_mz, m_total, snpstats, p_value, is_valid):
-    if is_valid:        
-        snpdev_out.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t{snpstats[1]:.4f}\t{p_value:.6f}\n")
+def write_SNP_stats(snpdev_fh, cols_mz, m_total, snpstats, p_value, is_valid):    
+    if is_valid:
+        snpdev_fh.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t{snpstats[1]:.4f}\t{p_value:.6f}\n")
     else:
-        snpdev_out.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t-99\t1.0\n")       
+        snpdev_fh.write(f"{cols_mz[0]}\t{cols_mz[1]}\t{m_total}\t{snpstats[0]}\t-99\t1.0\n")       
 
 def main():
     null_var = load_null_variance(null_var_in)
@@ -67,6 +63,8 @@ def main():
 
             # Iterate over each group of replicates
             for sample in paired_samples:
+                if sample not in null_var:
+                    continue
                 rep_a = cols[paired_samples[sample][0]].split(",")
                 m_a = int(rep_a[0])
                 rep_b = cols[paired_samples[sample][1]].split(",")
@@ -75,7 +73,7 @@ def main():
                 m_total += (m_a + m_b)
 
                 #If both replicate pass minimum read depth threshold, then calculate replicate variance
-                if m_a >= min_depth and m_b >= min_depth:
+                if m_a >= MIN_READ_DEPTH and m_b >= MIN_READ_DEPTH:
                     z_a = float(rep_a[1])
                     z_b = float(rep_b[1])
                     if (z_a + z_b) > 0 and (z_a + z_b) < 2 * pi: #sum of z values should be between 0 and 2 Pi
