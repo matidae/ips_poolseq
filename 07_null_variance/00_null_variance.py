@@ -15,7 +15,7 @@ import sys
 sys.path.append("./utils")
 import os
 from math import sqrt, asin, sin
-from utils import load_paired_samples
+from utils import load_paired_samples, MIN_READ_DEPTH, MIN_MAF
 
 work_dir = "../results/07_null_variance"
 input_dir = "../results/06_SNPs_stats"
@@ -27,13 +27,10 @@ m_and_z_in = f"{input_dir}/genic_m_and_z.tsv"
 dz2_bin_out=f"{work_dir}/dz2_by_pbin.tsv"
 summary_out = f"{work_dir}/null_variance_summary.tsv"
 
-def calculate_null_variance(samples_reps, m_and_z_in):
-    min_read_depth = 100 # Minimum read depth
-    min_MAF = 0.05 # Minimum minor allele frequency
-    
+def calculate_null_variance(samples_reps, m_and_z_in):    
     # Transformed AF boundaries
-    zlow = 2.0 * asin(sqrt(min_MAF)) 
-    zhigh = 2.0 * asin(sqrt(1.0 - min_MAF))
+    zlow = 2.0 * asin(sqrt(MIN_MAF)) 
+    zhigh = 2.0 * asin(sqrt(1.0 - MIN_MAF))
 
     stats = {sample: [0, 0.0, 0.0] for sample in samples_reps} # Statistics for samples
     changedist = [[0, 0.0] for _ in range(51)] # Bins for dz2 changes by AF.
@@ -53,10 +50,10 @@ def calculate_null_variance(samples_reps, m_and_z_in):
                  # Compute mean z-value of the two replicates
                 z_mean = (z_a + z_b) / 2.0
                 # Skip low coverage pairs
-                if m_a < min_read_depth or m_b < min_read_depth:
+                if m_a < MIN_READ_DEPTH or m_b < MIN_READ_DEPTH:
                     continue
                 # Skip pairs outside the threshold
-                if not (zlow < z_mean < zhigh):
+                if not (zlow <= z_mean <= zhigh):
                     continue
                 
                 # Increment count of valid data points
@@ -82,6 +79,9 @@ def write_output(stats, changedist, samples_reps, dz2_bin_out, summary_out):
         summary_fh.write("Sample\tCount\tDZ2_mean\tDepth_var\tDepth_prop_var\tNull_var\n")
         for sample_name in samples_reps:
             n = int(stats[sample_name][0])
+            if n == 0:
+                summary_fh.write(f"{sample_name}\t0\tNA\tNA\tNA\tNA\n")
+                continue
             # Calculate mean of squared difference of z (dz2_ mean)
             dz2_mean = stats[sample_name][1] / n 
             # Calculate mean read depth variance (sum of inverse read counts)
