@@ -11,11 +11,15 @@ Output:
     - ../results/03_dedup/barplots/{Region}{Country}_depths.png
 """
 
-
+import os
+import sys
 import matplotlib.pyplot as plt
 import pandas as pd
-import os
 from matplotlib.patches import Patch
+sys.path.append("./utils")
+from plot_style import apply_style, C
+
+apply_style()
 
 out_dir="../results/03_dedup"
 out_barplots = out_dir + "/barplots"
@@ -96,7 +100,8 @@ def coverage_barplots(df):
         label_positions = []
         label_texts = []
         current_x = 0
-        cluster_offset = 0.25  # distance between replicates
+        width = 0.3
+        cluster_offset = 0.35  # distance between replicates
         group_gap = 0.5        # gap between Season/Year
 
         grouped = pivot.groupby(["Year", "Season"])
@@ -114,25 +119,24 @@ def coverage_barplots(df):
                 label_texts.append(" ")
             current_x += reps*cluster_offset + group_gap
 
-        width = 0.2
 
         # Background and reference lines
-        ax.set_facecolor('#E9E9E9')
+        ax.set_facecolor(C["grey_bg"])
         for threshold in range(50, 750, 50):
             lw = 0.5 if threshold % 100 == 0 else 0.4
             alpha = 0.8 if threshold % 100 == 0 else 0.6
             ax.axhline(threshold, color='grey', linestyle='--', linewidth=lw, alpha=alpha, zorder=0)
 
         # Red line at 150
-        ax.axhline(100, color='red', linestyle='--', linewidth=1, zorder=1)
+        ax.axhline(100, color=C["rust"], linestyle='--', linewidth=1, zorder=1)
 
         # Plot bars
         bar_dict = {}
-        bar_dict["raw_reads"] = ax.bar(x_positions, pivot["raw_reads"], width=width, color="sienna")
-        bar_dict["qc_reads"] = ax.bar(x_positions, pivot["qc_reads"], width=width, color="chocolate")
-        bar_dict["nodedup"] = ax.bar(x_positions, pivot["nodedup"], width=width, color="goldenrod")
-        bar_dict["dedup_optical"] = ax.bar(x_positions, pivot["dedup_optical"], width=width, color="khaki")
-        bar_dict["dedup_all"] = ax.bar(x_positions, pivot["dedup_all"], width=width, color="olive")
+        bar_dict["raw_reads"] = ax.bar(x_positions, pivot["raw_reads"],     width=width, color=C["pipe"][0])
+        bar_dict["qc_reads"] = ax.bar(x_positions, pivot["qc_reads"],      width=width, color=C["pipe"][1])
+        bar_dict["nodedup"] = ax.bar(x_positions, pivot["nodedup"],       width=width, color=C["pipe"][2])
+        bar_dict["dedup_optical"] = ax.bar(x_positions, pivot["dedup_optical"], width=width, color=C["pipe"][3])
+        bar_dict["dedup_all"] = ax.bar(x_positions, pivot["dedup_all"],     width=width, color=C["pipe"][4])
 
         # Add optical dedup values as text inside bars
         for x, val in zip(x_positions, pivot["dedup_all"]):
@@ -150,11 +154,11 @@ def coverage_barplots(df):
 
         # Legend: fully opaque
         legend_handles = [
-            Patch(facecolor="sienna", label="Sequenced reads (est.)", alpha=1.0),
-            Patch(facecolor="chocolate", label="QC-filtered reads (est.)", alpha=1.0),
-            Patch(facecolor="goldenrod", label="Aligned reads", alpha=1.0),
-            Patch(facecolor="khaki", label="Optical duplicates removed", alpha=1.0),
-            Patch(facecolor="olive", label="All duplicates removed", alpha=1.0)
+            Patch(facecolor=C["pipe"][0], label="Sequenced reads (est.)", alpha=1.0),
+            Patch(facecolor=C["pipe"][1], label="QC-filtered reads (est.)", alpha=1.0),
+            Patch(facecolor=C["pipe"][2], label="Aligned reads", alpha=1.0),
+            Patch(facecolor=C["pipe"][3], label="Optical duplicates removed", alpha=1.0),
+            Patch(facecolor=C["pipe"][4], label="All duplicates removed", alpha=1.0)
         ]
         ax.legend(handles=legend_handles)
 
@@ -171,7 +175,7 @@ def coverage_barplots(df):
             spine.set_visible(False)
 
         plt.tight_layout()
-        plt.savefig(f"{out_barplots}/barplot_{region}{country}_depths_100.png", dpi=300)
+        plt.savefig(f"{out_barplots}/barplot_{region}{country}_depths_100.png")
         plt.close()
 
 

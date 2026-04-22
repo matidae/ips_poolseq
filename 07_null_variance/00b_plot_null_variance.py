@@ -12,18 +12,21 @@
 #----------------------------------------------------------------------
 
 import os
+import sys
 import matplotlib.pyplot as plt
 import pandas as pd
+sys.path.append("./utils")
+from plot_style import apply_style, C
 
-work_dir = "../../results/07_null_variance"
-plot_dir = "../../results/07_null_variance/plots"
+
+work_dir = "../results/07_null_variance"
+plot_dir = "../results/07_null_variance/plots"
 
 #Input files
 null_var_in = f"{work_dir}/null_variance_summary.tsv"
 dz2_bin_in=f"{work_dir}/dz2_by_pbin.tsv"
 
-color= "#009688"
-plt.style.use("ggplot")
+apply_style()
 
 # Barplot of null variance estimates per sample
 def plot_null_variance_bar(nv_file):
@@ -39,7 +42,7 @@ def plot_null_variance_bar(nv_file):
     nv["group_season"] = nv["group"] + "_" + nv["season"]
     # Prepare lists for plot data including gaps
     samples_with_gaps = []
-    null_vars_with_gaps = []        
+    null_vars_with_gaps = []
     prev_gs = None
     for idx, row in nv.iterrows():
         current_gs = row["group_season"]
@@ -47,46 +50,45 @@ def plot_null_variance_bar(nv_file):
         # Insert gap if group_season changed (and it's not the first entry)
         if prev_gs is not None and current_gs != prev_gs:
             samples_with_gaps.append("")    # empty label for gap
-            null_vars_with_gaps.append(0)   # zero-height bar as gap                    
+            null_vars_with_gaps.append(0)   # zero-height bar as gap
         samples_with_gaps.append(row["Sample"])
-        null_vars_with_gaps.append(row["Null_var"])        
+        null_vars_with_gaps.append(row["Null_var"])
         
         prev_gs = current_gs
-    plt.figure(figsize=(14, 6))    
-    plt.bar(range(len(samples_with_gaps)), null_vars_with_gaps, color=color)
-    plt.xticks(ticks=range(len(samples_with_gaps)), labels=samples_with_gaps, rotation=90)
-    plt.ylabel("Null variance estimate")
-    plt.tight_layout()
-    plt.savefig(f"{plot_dir}/00b_nv_per_sample.png")
-    plt.close()
+    fig, ax = plt.subplots(figsize=(14, 6))
+    ax.bar(range(len(samples_with_gaps)), null_vars_with_gaps, color=C["teal"])
+    ax.set_xticks(range(len(samples_with_gaps)))
+    ax.set_xticklabels(samples_with_gaps, rotation=90)
+    ax.set_ylabel("Null variance estimate")
+    fig.tight_layout()
+    fig.savefig(f"{plot_dir}/00b_nv_per_sample.png")
+    plt.close(fig)
 
-# Plot replicate dz averge and SNP counts  per allele frequency bin
+# Plot replicate dz average and SNP counts per allele frequency bin
 def plot_dz_diff_by_freq(freq_file):
     df = pd.read_csv(freq_file, sep="\t")
-    plt.figure(figsize=(8, 5))    
-    plt.plot(df["pbin"], df["avg_abs_diff"], marker='o', color=color)
-    plt.xlabel("Allele frequency bin")
-    plt.ylabel("Average absolute difference between replicates")    
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig(f"{plot_dir}/00b_avg_zdiff_per_bin.png")
-    plt.close()
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(df["pbin"], df["avg_abs_diff"], marker='o', color=C["teal"])
+    ax.set_xlabel("Allele frequency bin")
+    ax.set_ylabel("Average absolute difference between replicates")
+    fig.tight_layout()
+    fig.savefig(f"{plot_dir}/00b_avg_zdiff_per_bin.png")
+    plt.close(fig)
 
-    plt.figure(figsize=(8, 5))
-    plt.bar(df["pbin"], df["count"], color=color)
-    plt.xlabel("Allele frequency bin")
-    plt.ylabel("Number of SNPs")
-    plt.grid(axis='y')
-    plt.tight_layout()
-    plt.savefig(f"{plot_dir}/00b_snp_counts_per_bin.png")
-    plt.close()
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.bar(df["pbin"], df["count"], color=C["teal"])
+    ax.set_xlabel("Allele frequency bin")
+    ax.set_ylabel("Number of SNPs")
+    fig.tight_layout()
+    fig.savefig(f"{plot_dir}/00b_snp_counts_per_bin.png")
+    plt.close(fig)
 
 def more_plots(null_var_in):
     df = pd.read_csv(null_var_in, sep="\t")    
     fig, ax = plt.subplots(figsize=(7, 6))
     # Scatter plot
     ax.scatter(
-        df["Depth_var"], df["DZ2_mean"], color=color, s=20)
+        df["Depth_var"], df["DZ2_mean"], color=C["teal"], s=20)
     # Label dots where DZ2_mean > 0.025
     offset = 0.0003
     for i, (_, row) in enumerate(df[df["DZ2_mean"] > 0.0255].iterrows()):
@@ -102,9 +104,9 @@ def more_plots(null_var_in):
         min(ax.get_xlim()[0], ax.get_ylim()[0]),
         max(ax.get_xlim()[1], ax.get_ylim()[1])
     ]
-    ax.plot(lims, lims, 'k--', alpha=0.5)    
+    ax.plot(lims, lims, color=C["ref_line"], linestyle="--", alpha=0.7)
     plt.tight_layout()
-    fig.savefig(f"{plot_dir}/00b_dz2_vs_depth_var.png", dpi=300)
+    fig.savefig(f"{plot_dir}/00b_dz2_vs_depth_var.png")
     plt.close()
 
 def main():
