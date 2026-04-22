@@ -16,25 +16,18 @@ import sys
 sys.path.append("./utils")
 from pathlib import Path
 import numpy as np
-from math import sqrt, asin
 from scipy.stats import multivariate_normal, chi2
-from utils import load_paired_samples 
+from utils import load_paired_samples, Z_LOW, Z_HIGH 
 
 
 work_dir = "../results/08_models"
 
 # Input files
-ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
+#(not used) ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
 #z_year_in = f"{work_dir}/z_year.{prefix}.tsv"   # z values per year
 
 # Output files
 #tests_out = f"{work_dir}/tests.{prefix}.tsv" # Output file with mu, LRT, p-values for each SNP
-
-
-minMAF = 0.05
-z_low = 2.0 * asin(sqrt(minMAF))
-z_high = 2.0 * asin(sqrt(1.0 - minMAF))
-
 
 def get_years_and_ne(prefix, ne_in):
     with open(ne_in) as ne_fh:
@@ -48,7 +41,7 @@ def get_years_and_ne(prefix, ne_in):
     return None, None
 
 
-def run_selection_models(z_year_in, n_years, var_drift, tests_out):    
+def run_selection_models(z_year_in, var_drift, tests_out):
     with open(tests_out, "w") as tests_fh:
         tests_fh.write("\t".join([
            "CHROM", "POS", "REF", "ALT", "n_years","mu_null", "LL0", "mu_start", "mu_end", "LL1", 
@@ -57,6 +50,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
             cols = z_year_fh.readline().strip().split("\t")
             if len(cols) > 5:
                 header = cols[4:]  # All years columns
+                n_years = len(header)
                 header_years = [int(h.split("_")[-1]) for h in header]
                 
                 for row in z_year_fh:
@@ -71,9 +65,9 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             se.append(float(value.split(",")[1]))
                             years.append(header_years[idx])
                     n_z = len(z)
-                    if n_z >= n_years:
+                    if n_z == n_years:
                         z_mean = sum(z)/n_z
-                        if z_mean > z_low and z_mean < z_high:
+                        if z_mean >= Z_LOW and z_mean <= Z_HIGH:
                             # Drift model (null hypothesis)
                             # Get the covariance matrix
                             cov_matrix = build_covariance_matrix(years, var_drift, se)
@@ -91,7 +85,7 @@ def run_selection_models(z_year_in, n_years, var_drift, tests_out):
                             LL0 = log_likelihood_null(mu0, z_array, cov_matrix)  
 
                             # Design matrix X for linear model (columns: coefficients for mu_start and mu_end)
-                            years = np.array(years)
+                            years = np.array(years) # convert to numpy array for matrix operations
                             total_years = years[-1] - years[0]
                             coef_start = 1.0 - (years - years[0]) / total_years
                             coef_end   = (years - years[0]) / total_years
@@ -159,13 +153,12 @@ def log_likelihood_selection(mu_params, z_array, cov_matrix, years):
     prob_density = multivariate_normal.logpdf(z_array, mean=mu_vector, cov=cov_matrix)
     return prob_density
     
-
 def main():
     paired_samples = load_paired_samples()    
-    prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))
+    prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))   
     # Process for each prefix
     for pre in prefixes:
-        n_years, ne = get_years_and_ne(pre, ne_in)
+        #ne = get_years_and_ne(pre, ne_in)
         z_year_in = f"{work_dir}/z_year.{pre}.tsv"
         tests_out = f"{work_dir}/tests.{pre}.tsv"
         ne = 10000  # Ne fixed from prior estimates with GONE
@@ -173,7 +166,7 @@ def main():
             var_drift = 1.0 / (2.0 * ne) 
             z_path=Path(z_year_in)
             if z_path.is_file():
-                run_selection_models(z_year_in, n_years, var_drift, tests_out)
+                run_selection_models(z_year_in, var_drift, tests_out)
 
 
 if __name__ == "__main__":
