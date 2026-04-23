@@ -17,24 +17,25 @@
 #----------------------------------------------------------------------
 
 import os
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
+sys.path.append("./utils")
+from plot_style import apply_style, C
 
-work_dir = "../../results/07_null_variance/plots"
+work_dir = "../results/07_null_variance/plots"
 
 # Input files
-nullvar_in = "../../results/07_null_variance/null_variance_summary.tsv"
-depths_in = "../../results/05_SNPs_depths/genic_depth_stats.tsv"
-qubit_in = "../../results/01_proc_reads/sample_qubit"
+nullvar_in = "../results/07_null_variance/null_variance_summary.tsv"
+depths_in = "../results/05_SNPs_depths/genic_depth_stats.tsv"
+qubit_in = "../data/reference/sample_qubit"
 
-
-color= "#009688"
-plt.style.use("ggplot")
+apply_style()
 
 def plot_nullvar_nSNPs(df_nullvar, out_file):
     plt.figure(figsize=(8,6))
     plt.scatter(df_nullvar['nSNPs'], df_nullvar['nullvar'],
-                           alpha=0.7, color=color)
+                           alpha=0.7, color=C["teal"])
     labels = df_nullvar['sample']    
 
     for i, label in enumerate(labels):
@@ -51,7 +52,7 @@ def plot_nullvar_nSNPs(df_nullvar, out_file):
 def plot_ne_genomes_nSNPs(df_nullvar,  out_file):
     plt.figure(figsize=(8,6))
     plt.scatter(df_nullvar['nSNPs'], df_nullvar['ne_diploid'],
-                           alpha=0.7, color=color)
+                           alpha=0.7, color=C["teal"])
     labels = df_nullvar['sample']    
 
     for i, label in enumerate(labels):
@@ -68,10 +69,10 @@ def plot_ne_genomes_nSNPs(df_nullvar,  out_file):
 def plot_depths_nSNPs(df_nullvar, out_file):
     plt.figure(figsize=(8,6))
     plt.scatter(df_nullvar['nSNPs'], df_nullvar['depth'],
-                           alpha=0.7, color=color)
+                           alpha=0.7, color=C["teal"])
     labels = df_nullvar['sample']    
     for i, label in enumerate(labels):
-        plt.text(df_nullvar['nSNPs'][i], df_nullvar['depth'][i], label, fontsize=6)        
+        plt.text(df_nullvar['nSNPs'][i], df_nullvar['depth'][i], label, fontsize=6)
     
     plt.ylabel('depth')
     plt.xlabel('number of SNPS')
@@ -83,7 +84,7 @@ def plot_depths_nSNPs(df_nullvar, out_file):
 def plot_ne_genomes_depths(df_nullvar,  out_file):
     plt.figure(figsize=(8,6))
     plt.scatter(df_nullvar['ne_diploid'], df_nullvar['depth'],
-                           alpha=0.7, color=color)
+                           alpha=0.7, color=C["teal"])
     labels = df_nullvar['sample']    
 
     for i, label in enumerate(labels):
@@ -102,7 +103,7 @@ def plot_depths_qubit(df_qubit, out_file, rep):
 
     plt.figure(figsize=(8,6))    
     plt.scatter(df_qubit_rep['qubit'], df_qubit_rep['depth'],
-                           alpha=0.7, color=color)
+                           alpha=0.7, color=C["teal"])
     labels = df_qubit_rep['sample_rep']
     for i, label in enumerate(labels):
         plt.text(df_qubit_rep['qubit'][i], df_qubit_rep['depth'][i], label, fontsize=6)
@@ -110,7 +111,7 @@ def plot_depths_qubit(df_qubit, out_file, rep):
     plt.ylabel('depth')
     plt.xlabel('qubit')
     plt.tight_layout()
-    plt.savefig(out_file)    
+    plt.savefig(out_file)
     plt.close()
 
 
