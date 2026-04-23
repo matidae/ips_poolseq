@@ -1,8 +1,15 @@
 import csv
+from math import sqrt, asin
 
 depths_dir = "../results/05_SNPs_depths"
 stats_dir = "../results/06_SNPs_stats"
 nullvar_dir = "../results/07_null_variance"
+
+MIN_READ_DEPTH = 100
+MIN_MAF = 0.05
+Z_LOW = 2.0*asin(sqrt(MIN_MAF))
+Z_HIGH= 2.0*asin(sqrt(1.0-MIN_MAF))
+PVAL_CHI = 0.01
 
 def parse_counts(ad_field):    
     ref, alt = map(int, ad_field.split(','))
