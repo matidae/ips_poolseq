@@ -13,12 +13,13 @@
 #   - ../results/08_models/s1_filter/tests_summary.tsv: Summary table with counts and percentages
 #   - ../results/08_models/s2_thinning/tests.{prefix}.[drift|directional|fluctuating|mixed].thinned.tsv 
 #----------------------------------------------------------------------
+set -euo pipefail
 
 work_dir="../results/08_models"
 out_dir_filter="../results/08_models/s1_filter"
 out_dir_gene="../results/08_models/s2_thinning"
 
-bed_file="../data/reference/Ips_typograpgus_LG16corrected.liftoff.genes.bed"
+bed_file="../data/reference/Ips_typographus_LG16corrected.liftoff.genes.LGs.noTEs.bed"
 summary_file="$out_dir_filter/tests_summary.tsv"
 
 mkdir -p "$out_dir_filter"
@@ -41,7 +42,7 @@ done
 echo -e "prefix\ttotal\tdrift\tdirec\tfluct\tmixed\t%drift\t%direct\t%fluct\t%mixed" > "$summary_file"
 
 # Loop over all *_FDR.tsv files
-for f in "$work_dir"/tests*.FDR.tsv; do
+for f in "$work_dir"/tests.*.FDR.tsv; do
     sample=$(basename "$f" .tsv)  # sample name without extension
 
     # Count total SNPs (subtract 1 for header)
@@ -68,10 +69,10 @@ for f in "$work_dir"/tests*.FDR.tsv; do
 done
 
 
-files_to_analyze=$(ls "$out_dir_filter"/tests.*.tsv | egrep "SFIN|WFIN" )
+files_to_analyze=$(find "$out_dir_filter" -name "tests.*.tsv" | grep -E "SFIN|WFIN" || true)
 
 #Intersect SNPs to gene coordinates and select one SNP per gene to avoid linkage effects.
-for f in $files_to_analyze; do
+while IFS= read -r f; do
     base=$(basename "$f" .tsv)
     awk 'NR==1{next} {print $1, $2-1, $2, $0}' OFS="\t" "$f" > "$out_dir_gene/${base}.bed"
     bedtools intersect -a "$out_dir_gene/${base}.bed" -b "$bed_file" -wa -wb | \
@@ -96,5 +97,6 @@ for f in $files_to_analyze; do
         sort -k1,1 -k6,6g -k7,7g "$out_dir_gene/${base}.annotated.tsv" | \
             awk 'BEGIN{OFS="\t"} !seen[$1]++' > "$out_dir_gene/${base}.thinned.tsv"
     fi
-done
+done <<< "$files_to_analyze"
+
  
