@@ -14,8 +14,7 @@
 
 import sys
 sys.path.append("./utils")
-from math import sqrt, asin
-from utils import load_paired_samples, tsv_to_html
+from utils import load_paired_samples, tsv_to_html, Z_LOW, Z_HIGH
 import numpy as np
 
 work_dir = "../results/08_models"
@@ -26,10 +25,6 @@ work_dir = "../results/08_models"
 # Output files
 ne_out = f"{work_dir}/Ne_estimates.tsv" # Ne results file
 #dz_out = f"{work_dir}/dz_max.{prefix}.tsv" - dz between first and last year
-
-minMAF = 0.05
-z_low = 2.0*asin(sqrt(minMAF))
-z_high= 2.0*asin(sqrt(1.0-minMAF))
 
 def get_samples_years(prefixes):    
     prefixes_ne = {}
@@ -43,7 +38,7 @@ def get_samples_years(prefixes):
                 prefixes_ne[pre] = [start_year, last_year]    
     return(prefixes_ne)
 
-def compute_dz_variance(prefix):    
+def compute_dz_variance(prefix):
     dzlist = []
     sum_evar = 0
     sum_dz2 = 0    
@@ -63,8 +58,8 @@ def compute_dz_variance(prefix):
                 z_first = float(z_first)
                 z_last = float(z_last)
                 z_mean = (z_first + z_last)/2.0
-                if z_mean > z_low and z_mean < z_high:
-                    dz = z_first - z_last                    
+                if z_mean >= Z_LOW and z_mean <= Z_HIGH:
+                    dz = z_first - z_last
                     if n_row%2:
                         dz = -dz
                     # Get first and last year SE values and estimate variance
@@ -96,11 +91,11 @@ def main():
             dzlist, sum_dz2, sum_evar = compute_dz_variance(prefix)
 
             nx = len(dzlist)
-            if nx > 0:                        
-                iqr = compute_quantiles(dzlist)                
+            if nx > 0:
+                iqr = compute_quantiles(dzlist)
                 start_year = value[0]
                 last_year = value[1]
-                t = int(value[1]) - int(value[0])                
+                t = int(value[1]) - int(value[0])
                 mean_evar = sum_evar/nx
                 mean_dz2 = sum_dz2/nx
                 # Estimate Ne

@@ -22,15 +22,15 @@ tests_in = sorted(
     glob.glob(f"{work_dir}/tests.SFIN*.tsv") +
     glob.glob(f"{work_dir}/tests.WFIN*.tsv")
 )
-
+tests_in = [f for f in tests_in if "FDR" not in f]
 
 # Output files
 tests_fdr_out = [f.replace(".tsv", ".FDR.tsv") for f in tests_in]
 
-def compute_fdr(df, columns, alpha=0.05):
+def compute_fdr(df, columns):
     # Apply Benjamini-Hochberg FDR correction to selected p-value columns
     for col in columns:
-        pvals_fdr = multipletests(df[col].values, method="fdr_bh", alpha=alpha)[1]
+        pvals_fdr = multipletests(df[col].values, method="fdr_bh")[1]
         df[f"{col}_FDR"] = pvals_fdr
     return df
 
