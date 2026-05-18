@@ -46,8 +46,7 @@ def read_thinned_file(thinned_file):
 
 
 # Reads the Z-transformed allele frequency file 
-def read_z_file(z_file, rsnps):
-    dznext = {}
+def read_z_file(z_file, rsnps):    
     dz_per_snp = {}
     snp_zbars = {}
     with open(z_file, "r") as f:
@@ -152,9 +151,9 @@ def analyze_and_save(dznext, dz_per_snp, years, prefix, snp_zbars, sync_scores, 
             writer.writerow([snp, round(gs, 6), round(zbar, 6), rank])
 
     # Correlation sync_score vs mean allele frequency
-    gs_vals = [gs for _, gs in sorted_snps]
-    zbar_vals = [snp_zbars[snp] for snp, _ in sorted_snps]
-    r, p = pearsonr(gs_vals, zbar_vals)
+    ### gs_vals = [gs for _, gs in sorted_snps]
+    ### zbar_vals = [snp_zbars[snp] for snp, _ in sorted_snps]
+    ### r, p = pearsonr(gs_vals, zbar_vals)
 
     # Save interval types to file
     interval_file = prefix + "_interval_types.tsv"
@@ -187,7 +186,6 @@ def main():
         os.makedirs(out_dir)
     for pre in prefixes:
         thinned_file = f"{thinned_snps_dir}/tests.{pre}.FDR.fluctuating.thinned.tsv"
-        print(thinned_file)
         output_prefix = f"{out_dir}/{pre}.fluctuating"
        ### output_prefix = f"{out_dir}/{pre}_fluctuating_nopolar"
         z_file = f"{work_dir}/z_year.{pre}.tsv"
