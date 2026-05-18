@@ -17,19 +17,27 @@
 import os
 import math
 import glob
+import sys
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import seaborn as sns
+sys.path.append("./utils")
+from plot_style import apply_style, C
 
 work_dir    = "../results/08_models"
 thinned_dir = "../results/08_models/s2_thinning"
 out_dir     = "../results/08_models/trajectories"
 
+apply_style()
 top_n_snps = 10
-category_colors = {"fluctuating": "#E07B39", "directional": "#3A7DBF",
-    "mixed": "#6A0DAD", "drift": "#4A4A4A",}
+category_colors = {
+    "fluctuating": C["rust"],
+    "directional": C["steel"],
+    "mixed":       C["plum"],
+    "drift":       C["grey_mid"],
+}
 
 categories = ["fluctuating", "directional", "mixed", "drift"]
 
@@ -142,7 +150,7 @@ def plot_one(prefix, snps_dict, trajectories_dict, years, all_years,
     plt.tight_layout()
     plt.subplots_adjust(left=0.08)
     out_path = os.path.join(out_dir, f"{prefix}_trajectories_{plot_type}.png")
-    plt.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.savefig(out_path, bbox_inches="tight")
     plt.close()
 
 
@@ -154,10 +162,10 @@ TABLE_HTML = """
         <tr><th>Category</th><th>LRT1</th><th>LRT2</th><th>Description</th></tr>
     </thead>
     <tbody>
-        <tr><td style="color:#7A7A7A;font-weight:600;">Drift</td><td>ns</td><td>ns</td><td>No departure from drift</td></tr>
-        <tr><td style="color:#3A7DBF;font-weight:600;">Directional</td><td>sig</td><td>ns</td><td>Linear trend, no oscillation</td></tr>
-        <tr><td style="color:#E07B39;font-weight:600;">Fluctuating</td><td>ns</td><td>sig</td><td>Oscillation, no net directional trend</td></tr>
-        <tr><td style="color:#6A0DAD;font-weight:600;">Mixed</td><td>sig</td><td>sig</td><td>Directional trend + oscillation</td></tr>
+        <tr><td style="color:#64748B;font-weight:600;">Drift</td><td>ns</td><td>ns</td><td>No departure from drift</td></tr>
+        <tr><td style="color:#2E5F8A;font-weight:600;">Directional</td><td>sig</td><td>ns</td><td>Linear trend, no oscillation</td></tr>
+        <tr><td style="color:#C1440E;font-weight:600;">Fluctuating</td><td>ns</td><td>sig</td><td>Oscillation, no net directional trend</td></tr>
+        <tr><td style="color:#6B4C8A;font-weight:600;">Mixed</td><td>sig</td><td>sig</td><td>Directional trend + oscillation</td></tr>
     </tbody>
 </table>
 <p class="description2">FDR p-value: 0.05 — LRT1: directional vs drift — LRT2: saturated vs drift</p>
@@ -306,8 +314,7 @@ def run_mode(mode, prefixes):
 
 
 def main():
-    os.makedirs(out_dir, exist_ok=True)
-    sns.set_style("whitegrid")
+    os.makedirs(out_dir, exist_ok=True)    
     prefixes = get_prefixes(thinned_dir)
     #Modes are AFs types: p or z
     modes = ["AF", "Z"]
