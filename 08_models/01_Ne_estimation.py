@@ -7,7 +7,7 @@
 # the Fisher-Ford arcsine square root transformation of allele frequencies (z)
 #
 # Inputs:
-#   - z_year.{prefix}.tsv - z values per year per population ()
+#   - z_year.{prefix}.tsv - z values per year per population
 # Output:
 #   - Ne_estimates.tsv - Ne estimates for each population
 #----------------------------------------------------------------------
@@ -26,7 +26,7 @@ work_dir = "../results/08_models"
 ne_out = f"{work_dir}/Ne_estimates.tsv" # Ne results file
 #dz_out = f"{work_dir}/dz_max.{prefix}.tsv" - dz between first and last year
 
-def get_samples_years(prefixes):    
+def get_samples_years(prefixes):
     prefixes_ne = {}
     for pre in prefixes:
         with open(f"{work_dir}/z_year.{pre}.tsv") as pre_fh:
