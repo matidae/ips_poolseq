@@ -19,6 +19,7 @@
 #----------------------------------------------------------------------
 
 import os
+import sys
 import glob
 import numpy as np
 import pandas as pd
@@ -26,16 +27,19 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import seaborn as sns
 from scipy.stats import pearsonr, linregress
+sys.path.append("./utils")
+from plot_style import apply_style, C, CMAP_DIV
 
 work_dir    = "../results/08_models/analysis"
 out_dir     = "../results/08_models/plots/deltaZ"
-DPI         = 150
 PVAL_THRESH = 0.05
-COLOR_G     = "#E07B39"
-COLOR_Y     = "#3A7DBF"
-UNIQUE_BBOX = dict(facecolor="#FFCC80", edgecolor="#E07B39", pad=3)
+UNIQUE_BBOX = dict(facecolor="#FFCC80", edgecolor=C["rust"], pad=3)
 TOP_N    = 10
 ALPHA_BG = 0.08
+apply_style()
+
+COLOR_G = C["rust"]    # up intervals
+COLOR_Y = C["steel"]   # down intervals
 
 # Get list of population prefixes
 def get_prefixes(work_dir):
@@ -87,7 +91,7 @@ def plot_mean_dz_per_interval(ttests, interval_types, prefix, out_dir, shared_in
     plt.tight_layout()
     highlight_unique_xticklabels(ax, shared_intervals)
     out_path = os.path.join(out_dir, f"{prefix}_01_mean_dz_per_interval.png")
-    plt.savefig(out_path, dpi=DPI, bbox_inches="tight")
+    plt.savefig(out_path, bbox_inches="tight")
     plt.close()
 
 # Heatmap of correlations between per-SNP dz values across intervals, and masking of adjacent intervals
@@ -133,8 +137,9 @@ def plot_correlation_heatmap(correlations, dz_per_snp, prefix, out_dir, shared_i
                 ns_cells.append((i, j))
 
     fig, ax = plt.subplots(figsize=(6, 4))
+    ax.set_facecolor("white")
     sns.heatmap(corr_trimmed, mask=mask_trimmed, annot=True, fmt=".2f", center=0,
-                cmap="RdBu_r", linewidths=0.5, linecolor="white",
+                cmap=CMAP_DIV, linewidths=0.5, linecolor="white",
                 vmin=-1, vmax=1, ax=ax, annot_kws={"size": 8}, 
                 cbar_kws={"label": "", "shrink": 0.9})
     ax.collections[0].colorbar.ax.tick_params(labelsize=7)
@@ -155,13 +160,13 @@ def plot_correlation_heatmap(correlations, dz_per_snp, prefix, out_dir, shared_i
     ax.set_xlabel("")
     ax.set_ylabel("")
     ax.tick_params(axis="both", labelsize=7)    
-    ax.xaxis.set_label_position("top")
-    ax.xaxis.tick_top()    
+    ax.xaxis.set_label_position("bottom")
+    ax.xaxis.tick_bottom()    
     plt.tight_layout()
     highlight_unique_xticklabels(ax, shared_intervals)
     highlight_unique_yticklabels(ax, shared_intervals)
     out_path = os.path.join(out_dir, f"{prefix}_02_correlation_heatmap.png")
-    plt.savefig(out_path, dpi=DPI, bbox_inches="tight")
+    plt.savefig(out_path, bbox_inches="tight")
     plt.close()
 
 # Violin plots of per-SNP dz distributions for each interval, colored by up/down type
@@ -181,7 +186,7 @@ def plot_dz_distribution(dz_per_snp, interval_types, prefix, out_dir, shared_int
     plt.tight_layout()
     highlight_unique_xticklabels(ax, shared_intervals)
     out_path = os.path.join(out_dir, f"{prefix}_03_dz_distribution_per_interval.png")
-    plt.savefig(out_path, dpi=DPI, bbox_inches="tight")
+    plt.savefig(out_path, bbox_inches="tight")
     plt.close()
 
 # Produces dz scatter plots between interval pairs with strongest pos. and neg. correlations (excluding adjacent ones)
@@ -238,7 +243,7 @@ def plot_dz_scatterplots(dz_per_snp, interval_types, prefix, out_dir, shared_int
         sns.despine(ax=ax)
     plt.tight_layout()
     out_path = os.path.join(out_dir, f"{prefix}_07_dz_scatterplots.png")
-    plt.savefig(out_path, dpi=DPI, bbox_inches="tight")
+    plt.savefig(out_path, bbox_inches="tight")
     plt.close()
 
 # Spaghetti plot of per-SNP dz trajectories across intervals, highlighting top and bottom SNPs by sync score
@@ -291,7 +296,7 @@ def plot_spaghetti(dz_per_snp, sync_scores, prefix, out_dir, shared_intervals):
     plt.tight_layout()
     highlight_unique_xticklabels(ax, shared_intervals)
     out_path = os.path.join(out_dir, f"{prefix}_08_spaghetti.png")
-    plt.savefig(out_path, dpi=DPI, bbox_inches="tight")
+    plt.savefig(out_path, bbox_inches="tight")
     plt.close()
 
 # -----------------------------------------------------------------------
@@ -425,8 +430,7 @@ def generate_html(prefixes, out_dir):
     if wfin:
         build_html("WFIN", wfin, out_dir)
 
-def main():
-    sns.set_style("whitegrid")
+def main():    
     os.makedirs(out_dir, exist_ok=True)
     prefixes = get_prefixes(work_dir)
 
