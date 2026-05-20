@@ -2,42 +2,44 @@
 
 #----------------------------------------------------------------------
 # Makes boxplots grouped by country, region and season.
-# Input: 
+# Input:
 #   - genic_processed_depths.tsv : table with depths (ref + alt) per SNP, per sample
-# Output: 
+# Output:
 #   - boxplots of genic SNPs per region_time, and for total SNPs
 #----------------------------------------------------------------------
 
 import os
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import numpy as np
+sys.path.append("./utils")
+from plot_style import apply_style, C, style_boxplot, add_year_bands, add_hlines
+
+apply_style(font_size=15)
 
 work_dir = "../results/05_SNPs_depths"
-
-#Input files
 genic_depths_in = f"{work_dir}/genic_processed_depths.tsv"
 
-face_color = "#00CFBA"
-median_color = "#B23F16"
-plt.style.use('ggplot')
 top_ylim = 400
+
 
 def plot_depth_boxplots(genic_depths_in, top_ylim):
     years = list(range(2015, 2025))
-    reps = ['a', 'b']
+    reps  = ["a", "b"]
 
     df = pd.read_csv(genic_depths_in, sep="\t")
     sample_cols = df.columns[4:]
 
     samples_info = []
     for s in sample_cols:
-        parts = s.split('_')
+        parts = s.split("_")
         if len(parts) == 3 and len(parts[1]) >= 2:
             region = parts[0]
             season = parts[1][0]
-            rep = parts[1][1]
-            year = int(parts[2])
+            rep    = parts[1][1]
+            year   = int(parts[2])
             samples_info.append((s, region, season, rep, year))
 
     groups = {}
@@ -50,81 +52,87 @@ def plot_depth_boxplots(genic_depths_in, top_ylim):
         plot_df = pd.DataFrame(index=df.index, columns=col_labels, dtype=float)
 
         for s, rep, year in samples:
-            col_name = f"{year}{rep}"
-            plot_df[col_name] = df[s]
+            plot_df[f"{year}{rep}"] = df[s]
 
-        plt.figure(figsize=(16, 6))
+        fig, ax = plt.subplots(figsize=(18, 6))
+
         boxplot_data = []
         for col in col_labels:
             data = plot_df[col].dropna()
             boxplot_data.append(data.values if len(data) > 0 else [np.nan])
 
         x_pos = np.arange(1, len(col_labels) + 1)
-        for y in [100, 200, 300]:
-            plt.axhline(y=y, color='gray', linestyle='--', linewidth=0.8)
 
-        box = plt.boxplot(
-            boxplot_data, positions=x_pos, patch_artist=True, widths=0.6,
-            medianprops=dict(color=median_color), showfliers=False
-        )        
-        # Add median
-        for i, median_line in enumerate(box["medians"]):            
-            y_data = median_line.get_ydata()
-            median_value = y_data[0]
-            if pd.notnull(median_value):
-            # x_pos[i] is the position of the box                
-                plt.text(x_pos[i] -0.17, median_value+5, f"{int(round(median_value))}",  
-                        va="center", ha="left", fontsize=10, color="black")
-                
-        # Apply colors
-        for patch in box['boxes']:
-            patch.set(facecolor=face_color)        
-        for median in box['medians']:
-            median.set(color=median_color)
-        
-        plt.ylim(-5, top_ylim)
-        plt.xticks(ticks=x_pos, labels=col_labels, rotation=45, fontsize=12)
-        plt.title(f"{group}")
-        plt.ylabel("Depth")
-        plt.tight_layout()
-        plt.savefig(f"{work_dir}/boxplots/{group}_depth_boxplots.png")
-        plt.close()
+        add_year_bands(ax, years)
+        add_hlines(ax, [100, 200, 300])
+
+        box = ax.boxplot(
+            boxplot_data, positions=x_pos, patch_artist=True,
+            widths=0.55, showfliers=False, zorder=3,
+        )
+        style_boxplot(box)
+
+        # Median annotations
+        for i, median_line in enumerate(box["medians"]):
+            med = median_line.get_ydata()[0]
+            if pd.notnull(med) and med > 0:
+                ax.text(
+                    x_pos[i], med + 7, str(int(round(med))),
+                    ha="center", va="bottom", fontsize=11,
+                    color=C["median"], fontweight="bold",
+                )
+
+        ax.set_xlim(0.2, len(col_labels) + 0.8)
+        ax.set_ylim(-5, top_ylim)
+        ax.set_xticks(x_pos)
+        ax.set_xticklabels(col_labels, rotation=45, ha="right")
+        ax.set_ylabel("Sequencing depth", labelpad=8)
+        ax.set_title(group.replace("_", " · "), pad=14)
+
+        legend_handles = [
+            mpatches.Patch(facecolor=C["teal_light"], edgecolor=C["teal_dark"], label="IQR"),
+            plt.Line2D([0], [0], color=C["median"], linewidth=2, label="Median"),
+        ]
+        ax.legend(handles=legend_handles, loc="upper left")
+
+        fig.tight_layout()
+        fig.savefig(f"{work_dir}/boxplots/{group}_depth_boxplots.png")
+        plt.close(fig)
+
 
 def plot_total_depths(genic_depths_in):
-    genic = pd.read_csv(genic_depths_in, sep="\t")    
-    data = [genic["TOTAL"]]
-    labels = ["Genic"]
-    plt.figure(figsize=(8, 6))
-    plt.style.use('ggplot')
+    genic = pd.read_csv(genic_depths_in, sep="\t")
+    data  = [genic["TOTAL"]]
 
-    bplot = plt.boxplot(
-        data, tick_labels=labels, patch_artist=True, widths=0.2, showfliers=False)
+    fig, ax = plt.subplots(figsize=(5, 6))
 
-    # Set colors for boxes
-    for patch in bplot['boxes']:
-        patch.set_facecolor(face_color)
-        
-    # Set colors for medians
-    for median_line in bplot['medians']:
-        median_line.set_color(median_color)
+    bplot = ax.boxplot(
+        data, tick_labels=["Genic SNPs"], patch_artist=True,
+        widths=0.25, showfliers=False, zorder=3,
+    )
+    style_boxplot(bplot)
 
-    # Add median value labels
-    for i, d in enumerate(data):
-        median_val = d.median()
-        if pd.notna(median_val):
-            median_val_int = int(round(median_val))
-            plt.text(i+1, median_val, f"{median_val_int}",ha='center', va='bottom', fontsize=10, color="black")
-    plt.ylabel("TOTAL depth per SNP")
-    plt.tight_layout()
-    plt.savefig(f"{work_dir}/boxplots/total_depth_boxplots.png")
-    plt.close()
+    med = data[0].median()
+    if pd.notna(med):
+        ax.text(
+            1, med + 5, str(int(round(med))),
+            ha="center", va="bottom", fontsize=11,
+            color=C["median"], fontweight="bold",
+        )
+
+    ax.set_ylabel("Total depth per SNP", labelpad=8)
+    ax.set_title("Total depth distribution", pad=12)
+
+    fig.tight_layout()
+    fig.savefig(f"{work_dir}/boxplots/total_depth_boxplots.png")
+    plt.close(fig)
+
 
 def main(genic_depths_in):
-    boxplot_dir = f"{work_dir}/boxplots"
-    if not os.path.exists(boxplot_dir):
-        os.makedirs(boxplot_dir)
+    os.makedirs(f"{work_dir}/boxplots", exist_ok=True)
     plot_depth_boxplots(genic_depths_in, top_ylim)
     plot_total_depths(genic_depths_in)
+
 
 if __name__ == "__main__":
     main(genic_depths_in)
