@@ -9,9 +9,9 @@
 #   - {work_dir}/z_year.{prefix}.tsv
 #
 # Output (AF and Z mode):
-#   - {prefix}_trajectories_Z.png
-#   - {prefix}_trajectories_delta_Z.png
-#   - SNPs_Z_trajectories.html
+#   - {work_dir}/trajectories/{prefix}_trajectories_Z.png
+#   - {work_dir}/trajectories/{prefix}_trajectories_delta_Z.png
+#   - {work_dir}/trajectories/SNPs_Z_trajectories.html
 #----------------------------------------------------------------------
 
 import os
@@ -26,9 +26,9 @@ import seaborn as sns
 sys.path.append("./utils")
 from plot_style import apply_style, C
 
-work_dir    = "../results/08_models"
-thinned_dir = "../results/08_models/s2_thinning"
-out_dir     = "../results/08_models/trajectories"
+work_dir    = "../results/09_models"
+thinned_dir = "../results/09_models/s2_thinning"
+out_dir     = "../results/09_models/trajectories"
 
 apply_style()
 top_n_snps = 10

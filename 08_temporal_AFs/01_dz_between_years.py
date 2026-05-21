@@ -18,7 +18,7 @@ from math import sqrt
 from utils import load_paired_samples, load_null_variance_recalc, \
     MIN_READ_DEPTH, Z_LOW, Z_HIGH
 
-work_dir = "../results/08_models"
+work_dir = "../results/08_temporal_AFs"
 input_dir = "../results/07_null_variance"
 
 # Input files

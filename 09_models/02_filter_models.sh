@@ -6,18 +6,18 @@
 # Thins the SNPs to one per gene to avoid linkage effects in downstream analyses.
 #
 # Input:
-#   - ../results/08_models/tests_{prefix}_FDR.tsv
+#   - ../results/09_models/tests_{prefix}_FDR.tsv
 #
 # Output:
-#   - ../results/08_models/s1_filter/tests.{prefix}.[drift|directional|fluctuating|mixed].tsv 
-#   - ../results/08_models/s1_filter/tests_summary.tsv: Summary table with counts and percentages
-#   - ../results/08_models/s2_thinning/tests.{prefix}.[drift|directional|fluctuating|mixed].thinned.tsv 
+#   - ../results/09_models/s1_filter/tests.{prefix}.[drift|directional|fluctuating|mixed].tsv 
+#   - ../results/09_models/s1_filter/tests_summary.tsv: Summary table with counts and percentages
+#   - ../results/09_models/s2_thinning/tests.{prefix}.[drift|directional|fluctuating|mixed].thinned.tsv 
 #----------------------------------------------------------------------
 set -euo pipefail
 
-work_dir="../results/08_models"
-out_dir_filter="../results/08_models/s1_filter"
-out_dir_gene="../results/08_models/s2_thinning"
+work_dir="../results/09_models"
+out_dir_filter="../results/09_models/s1_filter"
+out_dir_gene="../results/09_models/s2_thinning"
 
 bed_file="../data/reference/Ips_typographus_LG16corrected.liftoff.genes.LGs.noTEs.bed"
 summary_file="$out_dir_filter/tests_summary.tsv"

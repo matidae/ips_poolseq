@@ -13,18 +13,19 @@
 #----------------------------------------------------------------------  
 
 import sys
+import os
 sys.path.append("./utils")
 from pathlib import Path
 import numpy as np
 from scipy.stats import multivariate_normal, chi2
 from utils import load_paired_samples, Z_LOW, Z_HIGH 
 
-
-work_dir = "../results/08_models"
+input_dir = "../results/08_temporal_AFs"
+work_dir = "../results/09_models"
 
 # Input files
-#(not used) ne_in = f"{work_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
-#z_year_in = f"{work_dir}/z_year.{prefix}.tsv"   # z values per year
+#(not used) ne_in = f"{input_dir}/Ne_estimates.tsv" # Years of data and Ne estimates
+#z_year_in = f"{input_dir}/z_year.{prefix}.tsv"   # z values per year
 
 # Output files
 #tests_out = f"{work_dir}/tests.{prefix}.tsv" # Output file with mu, LRT, p-values for each SNP
@@ -154,12 +155,14 @@ def log_likelihood_selection(mu_params, z_array, cov_matrix, years):
     return prob_density
     
 def main():
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
     paired_samples = load_paired_samples()    
     prefixes = sorted(list({ "_".join(k.split("_")[:-1]) for k in paired_samples.keys()}))   
     # Process for each prefix
     for pre in prefixes:
         #ne = get_years_and_ne(pre, ne_in)
-        z_year_in = f"{work_dir}/z_year.{pre}.tsv"
+        z_year_in = f"{input_dir}/z_year.{pre}.tsv"
         tests_out = f"{work_dir}/tests.{pre}.tsv"
         ne = 10000  # Ne fixed from prior estimates with GONE
         if ne is not None:

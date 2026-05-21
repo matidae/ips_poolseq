@@ -15,7 +15,7 @@ import glob
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
 
-work_dir = "../results/08_models"
+work_dir = "../results/09_models"
 
 # Input files
 tests_in = sorted(

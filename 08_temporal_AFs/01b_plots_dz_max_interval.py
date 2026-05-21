@@ -14,7 +14,7 @@
 import os
 import matplotlib.pyplot as plt
 
-work_dir = "../results/08_models"
+work_dir = "../results/08_temporal_AFs"
 plot_dir = f"{work_dir}/plots"
 
 color= "#009688"
