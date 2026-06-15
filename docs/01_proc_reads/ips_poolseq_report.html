@@ -5,20 +5,24 @@
       <title>Fastp QC summary: before vs after filtering </title>
       <link rel="icon" type="image/png" href="../favicon_sbb.png">
       <style>
-          tr:nth-child(odd) { background-color: #ffffff; }
-          tr:nth-child(even) { background-color: #f2f2f2; }
-          table { border-collapse: collapse; width: 95%; }
-          th, td { border: 1px solid #ccc;  text-align: center; vertical-align: middle; padding: 0 8px; }
-          th { background-color: #ddd; padding: 6px; border-color:#bbb}
-          img { max-width: 200px; height: auto; }
-          body {font-family: sans-serif; font-size:12px}
-          .top_header { background-color: #d3d3d3; padding: 6px; border-color:#bbb}
-          .reads{font-family:mono; font-size:10px; text-align:left}
-          .legend-box { padding: 2px 8px; border: 1px solid #ccc; display: inline-block; }
-          img:hover { transform: scale(2);
-                    z-index: 10; 
-                    position: relative;}
-       </style>  
+          body {font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size:13px; color:#2b2b2b; margin:24px 32px}
+          h2 { font-weight:600; letter-spacing:0.2px; margin-bottom:4px }
+          table { border-collapse:separate; border-spacing:0; width:95%; border:1px solid #e3e3e3; border-radius:8px; overflow:hidden }
+          th, td { text-align:center; vertical-align:middle; padding:6px 10px; border-bottom:1px solid #ededed }
+          thead th { position:sticky; top:0; background-color:#f4f4f5; font-weight:600; border-bottom:1px solid #d8d8d8; z-index:2 }
+          .top_header { background-color:#ececee; font-weight:600; color:#555; letter-spacing:0.3px }
+          tbody tr:nth-child(odd) { background-color:#ffffff; }
+          tbody tr:nth-child(even) { background-color:#fafafa; }
+          tbody tr:hover { background-color:#f0f6fb; }
+          td:first-child { font-weight:600; text-align:left; padding-left:14px }
+          td:not(:first-child) { font-variant-numeric: tabular-nums }
+          img { max-width:200px; height:auto; border-radius:4px; transition:transform 0.15s ease }
+          img:hover { transform:scale(2); z-index:10; position:relative }
+          td:nth-last-child(-n+2) img:hover { transform-origin:right center }
+          th:nth-child(12), td:nth-child(12) { border-left:2px solid #c8c8c8 }
+          thead tr:first-child th:nth-child(3) { border-left:2px solid #c8c8c8 }
+          .legend-box { padding:2px 10px; border:1px solid #ddd; border-radius:3px; display:inline-block }
+       </style>
     <script>
     window.onload = function () {
         const table = document.getElementById('Tab');
@@ -38,9 +42,7 @@
                     cov_cell.style.backgroundColor = '#ffcc99';
                 } else if (cov_val < 300) {
                     cov_cell.style.backgroundColor = '#ffffcc';
-                } else {
-                    cov_cell.style.backgroundColor = '#99ff99';
-                }
+                } 
             }
             // Color by GC before
             const gcb_cell = row.cells[col_gc_before];
@@ -70,12 +72,11 @@
       <br>
       <div style="align-items:center; margin-bottom:10px;">
         <h2 style="margin:10;">Fastp QC summary: before vs after filtering</h2>
-        <div style="font-size:12px;">
+        <div style="font-size:12x;">
           <span style="font-weight:bold;">Depth:</span>&nbsp;&nbsp;
           <span class="legend-box" style="background:#ff9999;"></span>&nbsp;&lt;100&nbsp;&nbsp;
           <span class="legend-box" style="background:#ffcc99"></span>&nbsp;100-199&nbsp;&nbsp;
           <span class="legend-box" style="background:#ffffcc"></span>&nbsp;200-299&nbsp;&nbsp;
-          <span class="legend-box" style="background:#99ff99"></span>&nbsp;≥300&nbsp;&nbsp;
           <span style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;GC:</span>&nbsp;&nbsp;
           <span class="legend-box" style="background:#FFD9E6"></span>&nbsp;40-50%&nbsp;&nbsp;
           <span class="legend-box" style="background:#F4A6A6"></span>&nbsp;&gt;50%
@@ -153,6 +154,90 @@
                 </tr>
             
                 <tr>
+                  <td>LAAU_Ea_2024</td>
+                  <td>NA</td>
+                  <td>574.3</td>
+                  <td>8.7</td>
+                  <td>1.5</td>
+                  <td>3.1</td>
+                  <td>5.4</td>
+                  <td>35.6</td>
+                  <td>30.8</td>
+                  <td><img src="./before/LAAU_Ea_2024_EKDN260010660-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/LAAU_Ea_2024_EKDN260010660-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>565.6</td>
+                  <td>83.7</td>
+                  <td>372.0</td>
+                  <td>147</td>
+                  <td>35.4</td>
+                  <td><img src="./after/LAAU_Ea_2024_EKDN260010660-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/LAAU_Ea_2024_EKDN260010660-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>LAAU_Eb_2024</td>
+                  <td>NA</td>
+                  <td>590.6</td>
+                  <td>7.8</td>
+                  <td>1.3</td>
+                  <td>3.3</td>
+                  <td>4.3</td>
+                  <td>36.0</td>
+                  <td>9.4</td>
+                  <td><img src="./before/LAAU_Eb_2024_EKDN260010661-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/LAAU_Eb_2024_EKDN260010661-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>582.8</td>
+                  <td>86.5</td>
+                  <td>384.3</td>
+                  <td>148</td>
+                  <td>35.6</td>
+                  <td><img src="./after/LAAU_Eb_2024_EKDN260010661-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/LAAU_Eb_2024_EKDN260010661-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>LAAU_Ea_2025</td>
+                  <td>NA</td>
+                  <td>644.3</td>
+                  <td>12.0</td>
+                  <td>1.9</td>
+                  <td>4.1</td>
+                  <td>7.7</td>
+                  <td>36.0</td>
+                  <td>26.4</td>
+                  <td><img src="./before/LAAU_Ea_2025_EKDN260010662-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/LAAU_Ea_2025_EKDN260010662-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>632.3</td>
+                  <td>93.6</td>
+                  <td>416.1</td>
+                  <td>148</td>
+                  <td>35.6</td>
+                  <td><img src="./after/LAAU_Ea_2025_EKDN260010662-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/LAAU_Ea_2025_EKDN260010662-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>LAAU_Eb_2025</td>
+                  <td>NA</td>
+                  <td>652.3</td>
+                  <td>11.2</td>
+                  <td>1.7</td>
+                  <td>4.5</td>
+                  <td>6.6</td>
+                  <td>35.9</td>
+                  <td>27.9</td>
+                  <td><img src="./before/LAAU_Eb_2025_EKDN260010663-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/LAAU_Eb_2025_EKDN260010663-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>641.1</td>
+                  <td>94.9</td>
+                  <td>421.7</td>
+                  <td>147</td>
+                  <td>35.5</td>
+                  <td><img src="./after/LAAU_Eb_2025_EKDN260010663-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/LAAU_Eb_2025_EKDN260010663-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
                   <td>LAAU_La_2023</td>
                   <td>230</td>
                   <td>501.4</td>
@@ -192,6 +277,48 @@
                   <td>35.4</td>
                   <td><img src="./after/LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.qual.png" /></td>
                   <td><img src="./after/LAAU_Lb_2023_MKDN250005734-1A_22MVYCLT4_L1.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>LAAU_La_2025</td>
+                  <td>NA</td>
+                  <td>549.2</td>
+                  <td>8.0</td>
+                  <td>1.5</td>
+                  <td>3.3</td>
+                  <td>4.6</td>
+                  <td>36.2</td>
+                  <td>11.1</td>
+                  <td><img src="./before/LAAU_La_2025_EKDN260010664-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/LAAU_La_2025_EKDN260010664-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>541.2</td>
+                  <td>80.1</td>
+                  <td>356.0</td>
+                  <td>147</td>
+                  <td>35.9</td>
+                  <td><img src="./after/LAAU_La_2025_EKDN260010664-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/LAAU_La_2025_EKDN260010664-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>LAAU_Lb_2025</td>
+                  <td>NA</td>
+                  <td>630.0</td>
+                  <td>12.7</td>
+                  <td>2.0</td>
+                  <td>4.8</td>
+                  <td>7.7</td>
+                  <td>36.5</td>
+                  <td>27.0</td>
+                  <td><img src="./before/LAAU_Lb_2025_EKDN260010665-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/LAAU_Lb_2025_EKDN260010665-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>617.3</td>
+                  <td>91.3</td>
+                  <td>405.6</td>
+                  <td>147</td>
+                  <td>36.1</td>
+                  <td><img src="./after/LAAU_Lb_2025_EKDN260010665-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/LAAU_Lb_2025_EKDN260010665-1A_23H7VTLT4_L5.base.png" /></td>
                 </tr>
             
                 <tr>
@@ -741,6 +868,48 @@
                 </tr>
             
                 <tr>
+                  <td>SFIN_Ea_2025</td>
+                  <td>NA</td>
+                  <td>540.2</td>
+                  <td>8.7</td>
+                  <td>1.6</td>
+                  <td>3.0</td>
+                  <td>5.6</td>
+                  <td>36.0</td>
+                  <td>9.8</td>
+                  <td><img src="./before/SFIN_Ea_2025_EKDN260010671-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/SFIN_Ea_2025_EKDN260010671-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>531.5</td>
+                  <td>78.5</td>
+                  <td>349.1</td>
+                  <td>147</td>
+                  <td>35.4</td>
+                  <td><img src="./after/SFIN_Ea_2025_EKDN260010671-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/SFIN_Ea_2025_EKDN260010671-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>SFIN_Eb_2025</td>
+                  <td>NA</td>
+                  <td>1277.8</td>
+                  <td>27.9</td>
+                  <td>2.2</td>
+                  <td>11.0</td>
+                  <td>16.9</td>
+                  <td>36.2</td>
+                  <td>18.9</td>
+                  <td><img src="./before/SFIN_Eb_2025_EKDN260010675-1A_23N5GWLT4_L4.qual.png" /></td>
+                  <td><img src="./before/SFIN_Eb_2025_EKDN260010675-1A_23N5GWLT4_L4.base.png" /></td>
+                  <td>1249.9</td>
+                  <td>184.7</td>
+                  <td>821.0</td>
+                  <td>147</td>
+                  <td>35.5</td>
+                  <td><img src="./after/SFIN_Eb_2025_EKDN260010675-1A_23N5GWLT4_L4.qual.png" /></td>
+                  <td><img src="./after/SFIN_Eb_2025_EKDN260010675-1A_23N5GWLT4_L4.base.png" /></td>
+                </tr>
+            
+                <tr>
                   <td>SFIN_La_2015</td>
                   <td>246</td>
                   <td>547.1</td>
@@ -1116,6 +1285,48 @@
                   <td>35.3</td>
                   <td><img src="./after/SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.qual.png" /></td>
                   <td><img src="./after/SFIN_Lb_2024_MKDN250005742-1A_22MVYCLT4_L1.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>SFIN_La_2025</td>
+                  <td>NA</td>
+                  <td>504.3</td>
+                  <td>7.0</td>
+                  <td>1.4</td>
+                  <td>2.5</td>
+                  <td>4.4</td>
+                  <td>36.0</td>
+                  <td>26.7</td>
+                  <td><img src="./before/SFIN_La_2025_EKDN260010670-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/SFIN_La_2025_EKDN260010670-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>497.4</td>
+                  <td>73.5</td>
+                  <td>326.5</td>
+                  <td>147</td>
+                  <td>35.7</td>
+                  <td><img src="./after/SFIN_La_2025_EKDN260010670-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/SFIN_La_2025_EKDN260010670-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>SFIN_Lb_2025</td>
+                  <td>NA</td>
+                  <td>539.9</td>
+                  <td>12.7</td>
+                  <td>2.3</td>
+                  <td>4.5</td>
+                  <td>8.0</td>
+                  <td>36.6</td>
+                  <td>27.0</td>
+                  <td><img src="./before/SFIN_Lb_2025_EKDN260010674-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/SFIN_Lb_2025_EKDN260010674-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>527.3</td>
+                  <td>77.6</td>
+                  <td>345.1</td>
+                  <td>147</td>
+                  <td>35.8</td>
+                  <td><img src="./after/SFIN_Lb_2025_EKDN260010674-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/SFIN_Lb_2025_EKDN260010674-1A_23H7VTLT4_L5.base.png" /></td>
                 </tr>
             
                 <tr>
@@ -1497,6 +1708,48 @@
                 </tr>
             
                 <tr>
+                  <td>WFIN_Ea_2025</td>
+                  <td>NA</td>
+                  <td>557.1</td>
+                  <td>9.1</td>
+                  <td>1.6</td>
+                  <td>3.3</td>
+                  <td>5.6</td>
+                  <td>35.7</td>
+                  <td>26.9</td>
+                  <td><img src="./before/WFIN_Ea_2025_EKDN260010669-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/WFIN_Ea_2025_EKDN260010669-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>548.0</td>
+                  <td>81.2</td>
+                  <td>360.7</td>
+                  <td>148</td>
+                  <td>35.4</td>
+                  <td><img src="./after/WFIN_Ea_2025_EKDN260010669-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/WFIN_Ea_2025_EKDN260010669-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>WFIN_Eb_2025</td>
+                  <td>NA</td>
+                  <td>552.4</td>
+                  <td>9.3</td>
+                  <td>1.7</td>
+                  <td>3.1</td>
+                  <td>6.1</td>
+                  <td>36.0</td>
+                  <td>11.1</td>
+                  <td><img src="./before/WFIN_Eb_2025_EKDN260010673-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/WFIN_Eb_2025_EKDN260010673-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>543.1</td>
+                  <td>80.5</td>
+                  <td>358.0</td>
+                  <td>148</td>
+                  <td>35.5</td>
+                  <td><img src="./after/WFIN_Eb_2025_EKDN260010673-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/WFIN_Eb_2025_EKDN260010673-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
                   <td>WFIN_La_2015</td>
                   <td>328</td>
                   <td>586.1</td>
@@ -1875,6 +2128,48 @@
                 </tr>
             
                 <tr>
+                  <td>WFIN_La_2025</td>
+                  <td>NA</td>
+                  <td>549.1</td>
+                  <td>16.8</td>
+                  <td>3.1</td>
+                  <td>6.5</td>
+                  <td>10.2</td>
+                  <td>36.9</td>
+                  <td>12.0</td>
+                  <td><img src="./before/WFIN_La_2025_EKDN260010668-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/WFIN_La_2025_EKDN260010668-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>532.3</td>
+                  <td>78.5</td>
+                  <td>349.1</td>
+                  <td>147</td>
+                  <td>35.4</td>
+                  <td><img src="./after/WFIN_La_2025_EKDN260010668-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/WFIN_La_2025_EKDN260010668-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>WFIN_Lb_2025</td>
+                  <td>NA</td>
+                  <td>553.7</td>
+                  <td>10.5</td>
+                  <td>1.9</td>
+                  <td>4.6</td>
+                  <td>5.8</td>
+                  <td>36.0</td>
+                  <td>25.8</td>
+                  <td><img src="./before/WFIN_Lb_2025_EKDN260010672-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/WFIN_Lb_2025_EKDN260010672-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>543.2</td>
+                  <td>80.4</td>
+                  <td>357.4</td>
+                  <td>148</td>
+                  <td>35.5</td>
+                  <td><img src="./after/WFIN_Lb_2025_EKDN260010672-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/WFIN_Lb_2025_EKDN260010672-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
                   <td>WOAU_Ea_2023</td>
                   <td>229</td>
                   <td>533.3</td>
@@ -1914,6 +2209,90 @@
                   <td>35.7</td>
                   <td><img src="./after/WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.qual.png" /></td>
                   <td><img src="./after/WOAU_Eb_2023_MKDN250005730-1A_22TTY7LT4_L6.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>WOAU_Ea_2024</td>
+                  <td>NA</td>
+                  <td>532.8</td>
+                  <td>9.8</td>
+                  <td>1.8</td>
+                  <td>3.3</td>
+                  <td>6.4</td>
+                  <td>36.3</td>
+                  <td>11.2</td>
+                  <td><img src="./before/WOAU_Ea_2024_EKDN260010658-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/WOAU_Ea_2024_EKDN260010658-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>523.0</td>
+                  <td>77.4</td>
+                  <td>344.1</td>
+                  <td>148</td>
+                  <td>35.8</td>
+                  <td><img src="./after/WOAU_Ea_2024_EKDN260010658-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/WOAU_Ea_2024_EKDN260010658-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>WOAU_Eb_2024</td>
+                  <td>NA</td>
+                  <td>531.9</td>
+                  <td>7.9</td>
+                  <td>1.5</td>
+                  <td>3.0</td>
+                  <td>4.8</td>
+                  <td>36.0</td>
+                  <td>26.9</td>
+                  <td><img src="./before/WOAU_Eb_2024_EKDN260010659-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/WOAU_Eb_2024_EKDN260010659-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>524.0</td>
+                  <td>77.6</td>
+                  <td>344.9</td>
+                  <td>148</td>
+                  <td>35.7</td>
+                  <td><img src="./after/WOAU_Eb_2024_EKDN260010659-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/WOAU_Eb_2024_EKDN260010659-1A_23H7VTLT4_L5.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>WOAU_Ea_2025</td>
+                  <td>NA</td>
+                  <td>597.0</td>
+                  <td>15.0</td>
+                  <td>2.5</td>
+                  <td>6.1</td>
+                  <td>8.7</td>
+                  <td>37.5</td>
+                  <td>10.6</td>
+                  <td><img src="./before/WOAU_Ea_2025_EKDN260010666-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./before/WOAU_Ea_2025_EKDN260010666-1A_23N5GWLT4_L2.base.png" /></td>
+                  <td>581.9</td>
+                  <td>85.9</td>
+                  <td>382.0</td>
+                  <td>147</td>
+                  <td>36.6</td>
+                  <td><img src="./after/WOAU_Ea_2025_EKDN260010666-1A_23N5GWLT4_L2.qual.png" /></td>
+                  <td><img src="./after/WOAU_Ea_2025_EKDN260010666-1A_23N5GWLT4_L2.base.png" /></td>
+                </tr>
+            
+                <tr>
+                  <td>WOAU_Eb_2025</td>
+                  <td>NA</td>
+                  <td>503.7</td>
+                  <td>10.1</td>
+                  <td>2.0</td>
+                  <td>3.6</td>
+                  <td>6.4</td>
+                  <td>36.6</td>
+                  <td>26.6</td>
+                  <td><img src="./before/WOAU_Eb_2025_EKDN260010667-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./before/WOAU_Eb_2025_EKDN260010667-1A_23H7VTLT4_L5.base.png" /></td>
+                  <td>493.6</td>
+                  <td>73.0</td>
+                  <td>324.4</td>
+                  <td>147</td>
+                  <td>36.0</td>
+                  <td><img src="./after/WOAU_Eb_2025_EKDN260010667-1A_23H7VTLT4_L5.qual.png" /></td>
+                  <td><img src="./after/WOAU_Eb_2025_EKDN260010667-1A_23H7VTLT4_L5.base.png" /></td>
                 </tr>
             
                 <tr>
