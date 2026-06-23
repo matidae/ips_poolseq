@@ -29,6 +29,7 @@ from plot_style import apply_style, C
 work_dir    = "../results/09_models"
 thinned_dir = "../results/09_models/s2_thinning"
 out_dir     = "../results/09_models/trajectories"
+af_dir      = "../results/08_temporal_AFs"
 
 apply_style()
 top_n_snps = 10
@@ -278,7 +279,7 @@ def run_mode(mode, prefixes):
         plot_types = ("Z", "delta_Z")
 
     for prefix in prefixes:
-        z_file = f"{work_dir}/z_year.{prefix}.tsv"
+        z_file = f"{af_dir}/z_year.{prefix}.tsv"
         trajectories_all, years, all_years = read_z_trajectories(z_file, mode)
 
         snps_dict, snps_dict_bg = {}, {}

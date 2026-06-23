@@ -23,11 +23,9 @@ import glob
 from scipy.stats import pearsonr, ttest_1samp
 import csv, os
 
-#thinned_snps_dir = "../results/09_models/s2_thinning"
-#work_dir = "../results/10_fluct_SNPs"
-af_dir="../results/11_fluct_validation/temporal_AFs"
-thinned_snps_dir = "../results/11_fluct_validation/models/s2"
-work_dir = "../results/11_fluct_validation/fluct_SNPs"
+thinned_snps_dir = "../results/09_models/s2_thinning"
+work_dir = "../results/10_fluct_SNPs"
+af_dir="../results/08_temporal_AFs"
 
 # Input files
 thinned_snps_in = sorted(glob.glob(f"{thinned_snps_dir}/tests.*.fluctuating.thinned.tsv"))

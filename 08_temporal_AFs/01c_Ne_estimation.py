@@ -17,7 +17,7 @@ sys.path.append("./utils")
 from utils import load_paired_samples, tsv_to_html, Z_LOW, Z_HIGH
 import numpy as np
 
-work_dir = "../results/08_models"
+work_dir = "../results/08_temporal_AFs"
 
 # Input files
 # z_year.{prefix}.tsv - z values per year (loaded dynamically)

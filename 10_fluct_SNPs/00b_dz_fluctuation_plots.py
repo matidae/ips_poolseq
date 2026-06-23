@@ -30,12 +30,8 @@ from scipy.stats import pearsonr, linregress
 sys.path.append("./utils")
 from plot_style import apply_style, C, CMAP_DIV
 
-#work_dir    = "../results/10_fluct_SNPs"
-#out_dir     = "../results/10_fluct_SNPs/deltaZ"
-
-work_dir    = "../results/11_fluct_validation/fluct_SNPs"
-out_dir     = "../results/11_fluct_validation/fluct_SNPs/deltaZ"
-
+work_dir    = "../results/10_fluct_SNPs"
+out_dir     = "../results/10_fluct_SNPs/deltaZ"
 
 PVAL_THRESH = 0.05
 UNIQUE_BBOX = dict(facecolor="#FFCC80", edgecolor=C["rust"], pad=3)

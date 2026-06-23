@@ -21,6 +21,7 @@ out_dir = "../results/05_SNPs_depths"
 
 # Input files
 genic_counts_in = f"{work_dir}/genic_readcounts.tsv" 
+intergenic_counts_in = f"{work_dir}/intergenic_readcounts.tsv"
 
 # Output files
 genic_depth_stats_out = f"{out_dir}/genic_depth_stats.tsv"
