@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 sys.path.append("./utils")
 from utils import prefix_order
 
+plt.style.use("ggplot")
+
 in_dir = "../data/01_proc_reads"
 out_dir = "../results/01_proc_reads"
 
@@ -30,7 +32,7 @@ json_list = f"{in_dir}/*/*.json"
 
 # Output
 report_out = f"{out_dir}/all_poolseq_report.tsv"
-
+report_html = f"{out_dir}/ips_poolseq_report.html"
 
 def plot_quality(quality_curves, filename, filter):   
    pos=list(range(1,151))
@@ -40,8 +42,7 @@ def plot_quality(quality_curves, filename, filter):
    plt.ylabel("quality")
    plt.xlabel("position")   
    plt.title(filename)
-   plt.plot(pos, quality_curves, linestyle="-", color="darkblue", lw=1)
-   plt.style.use("ggplot")
+   plt.plot(pos, quality_curves, linestyle="-", color="darkblue", lw=1)   
    plt.tight_layout()
    plot_filename = f"{out_dir}/{filter}/" + filename.replace('.fq.gz','.qual.png')
    plt.savefig(plot_filename, dpi=300)
@@ -59,8 +60,7 @@ def plot_base_content(content_curves, filename, filter):
    plt.plot(pos, content_curves["T"], linestyle="-", color="darkred", lw=1)
    plt.plot(pos, content_curves["G"], linestyle="-", color="darkgreen", lw=1)
    plt.plot(pos, content_curves["C"], linestyle="-", color="orange", lw=1)
-   plt.legend(["A", "T", "G", "C"], loc="upper right")
-   plt.style.use("ggplot")   
+   plt.legend(["A", "T", "G", "C"], loc="upper right")   
    plt.tight_layout()
    plot_filename = f"{out_dir}/{filter}/" + filename.replace('.fq.gz','.base.png')
    plt.savefig(plot_filename, dpi=300)
@@ -96,16 +96,16 @@ def parse_json(json_files):
             quality_curves_after = fastp_out["read1_after_filtering"]["quality_curves"]["mean"]
             content_curves_after = fastp_out["read1_after_filtering"]["content_curves"]
             # Plots quality and base content per read after Fastp QC
-           # plot_quality(quality_curves_after, filename, "after")
-           # plot_base_content(content_curves_after, filename, "after")
+            #plot_quality(quality_curves_after, filename, "after")
+            #plot_base_content(content_curves_after, filename, "after")
 
             quality_curves_before = fastp_out["read1_before_filtering"]["quality_curves"]["mean"]
             content_curves_before = fastp_out["read1_before_filtering"]["content_curves"]
             # Plots quality and base content per read before Fastp QC
             #plot_quality(quality_curves_before, filename, "before")
             #plot_base_content(content_curves_before, filename, "before")
-
-            qubit = sample_qubit[prefix_short]
+            
+            qubit = sample_qubit.get(prefix_short, "NA")
             gc_content_before = fastp_out["summary"]["before_filtering"]["gc_content"]
             pct_reads_lost = round(100 - (reads_after/reads_before)*100, 1)
             
@@ -172,20 +172,24 @@ def write_html_report():
       <title>Fastp QC summary: before vs after filtering </title>
       <link rel="icon" type="image/png" href="../favicon_sbb.png">
       <style>
-          tr:nth-child(odd) { background-color: #ffffff; }
-          tr:nth-child(even) { background-color: #f2f2f2; }
-          table { border-collapse: collapse; width: 95%; }
-          th, td { border: 1px solid #ccc;  text-align: center; vertical-align: middle; padding: 0 8px; }
-          th { background-color: #ddd; padding: 6px; border-color:#bbb}
-          img { max-width: 200px; height: auto; }
-          body {font-family: sans-serif; font-size:12px}
-          .top_header { background-color: #d3d3d3; padding: 6px; border-color:#bbb}
-          .reads{font-family:mono; font-size:10px; text-align:left}
-          .legend-box { padding: 2px 8px; border: 1px solid #ccc; display: inline-block; }
-          img:hover { transform: scale(2);
-                    z-index: 10; 
-                    position: relative;}
-       </style>  
+          body {font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size:13px; color:#2b2b2b; margin:24px 32px}
+          h2 { font-weight:600; letter-spacing:0.2px; margin-bottom:4px }
+          table { border-collapse:separate; border-spacing:0; width:95%; border:1px solid #e3e3e3; border-radius:8px; overflow:hidden }
+          th, td { text-align:center; vertical-align:middle; padding:6px 10px; border-bottom:1px solid #ededed }
+          thead th { position:sticky; top:0; background-color:#f4f4f5; font-weight:600; border-bottom:1px solid #d8d8d8; z-index:2 }
+          .top_header { background-color:#ececee; font-weight:600; color:#555; letter-spacing:0.3px }
+          tbody tr:nth-child(odd) { background-color:#ffffff; }
+          tbody tr:nth-child(even) { background-color:#fafafa; }
+          tbody tr:hover { background-color:#f0f6fb; }
+          td:first-child { font-weight:600; text-align:left; padding-left:14px }
+          td:not(:first-child) { font-variant-numeric: tabular-nums }
+          img { max-width:200px; height:auto; border-radius:4px; transition:transform 0.15s ease }
+          img:hover { transform:scale(2); z-index:10; position:relative }
+          td:nth-last-child(-n+2) img:hover { transform-origin:right center }
+          th:nth-child(12), td:nth-child(12) { border-left:2px solid #c8c8c8 }
+          thead tr:first-child th:nth-child(3) { border-left:2px solid #c8c8c8 }
+          .legend-box { padding:2px 10px; border:1px solid #ddd; border-radius:3px; display:inline-block }
+       </style>
     <script>
     window.onload = function () {
         const table = document.getElementById('Tab');
@@ -205,9 +209,7 @@ def write_html_report():
                     cov_cell.style.backgroundColor = '#ffcc99';
                 } else if (cov_val < 300) {
                     cov_cell.style.backgroundColor = '#ffffcc';
-                } else {
-                    cov_cell.style.backgroundColor = '#99ff99';
-                }
+                } 
             }
             // Color by GC before
             const gcb_cell = row.cells[col_gc_before];
@@ -242,7 +244,6 @@ def write_html_report():
           <span class="legend-box" style="background:#ff9999;"></span>&nbsp;&lt;100&nbsp;&nbsp;
           <span class="legend-box" style="background:#ffcc99"></span>&nbsp;100-199&nbsp;&nbsp;
           <span class="legend-box" style="background:#ffffcc"></span>&nbsp;200-299&nbsp;&nbsp;
-          <span class="legend-box" style="background:#99ff99"></span>&nbsp;≥300&nbsp;&nbsp;
           <span style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;GC:</span>&nbsp;&nbsp;
           <span class="legend-box" style="background:#FFD9E6"></span>&nbsp;40-50%&nbsp;&nbsp;
           <span class="legend-box" style="background:#F4A6A6"></span>&nbsp;&gt;50%
@@ -277,7 +278,7 @@ def write_html_report():
           </tr> 
         </thead>
     <tbody>"""
-    with open(f"{out_dir}/all_poolseq_report.tsv", "r") as fh:
+    with open(report_out, "r") as fh:
         next(fh)
         for line in fh:        
             idn, after, gbp, cov, length, gc, dups, before, lost, \
@@ -313,7 +314,7 @@ def write_html_report():
     html += "</tbody> </table> </body> </html>"
 
     # Write to file
-    with open(f"{out_dir}/ips_poolseq_report.html", "w", encoding="utf-8") as f:
+    with open(report_html, "w", encoding="utf-8") as f:
         f.write(html)
     
 def main ():
@@ -323,7 +324,10 @@ def main ():
     os.makedirs(f"{out_dir}/before", exist_ok=True)
 
     #Parse Fastp JSON report
-    json_files = glob.glob(json_list)
+    prefixes = [l.strip() for l in open(f"{in_dir}/prefixes")]
+    json_files = []
+    for p in prefixes:
+        json_files += glob.glob(f"{in_dir}/{p}/*.json")
     data = parse_json(json_files)
     write_tsv_report(data)
     write_html_report()

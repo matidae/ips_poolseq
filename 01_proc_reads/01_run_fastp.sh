@@ -39,7 +39,7 @@ while read -r prefix; do
 
     for ((i=0; i<n; i+=2)); do
         # Store as triplet: prefix, R1, R2
-        pairs+=("$prefix|${files[i]}|${files[i+1]}")        
+        pairs+=("$prefix|${files[i]}|${files[i+1]}")
     done
 done < "$prefixes"
 

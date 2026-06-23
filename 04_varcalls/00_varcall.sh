@@ -24,6 +24,9 @@ genome="../data/reference/Ips_typographus_LG16corrected.final.LG.fasta"
 #List of samples to exclude from varcalling
 exclude_file="../data/reference/exclude_samples.txt"
 
+#Create work directory if needed
+mkdir -p "$work_dir"
+
 #Index the reference genome if not already indexed
 if [[ ! -f "$genome.fai" ]]; then
     samtools faidx "$genome"

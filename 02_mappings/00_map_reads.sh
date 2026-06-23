@@ -16,6 +16,9 @@ set -euo pipefail
 in_dir="../data/01_proc_reads"
 out_dir="../data/02_mappings"
 
+export TMPDIR="$out_dir/sort_tmp"
+mkdir -p "$TMPDIR"
+
 threads=20
 jobs=3
 
@@ -24,7 +27,7 @@ prefixes="$in_dir/prefixes"
 filelist="$in_dir/filelist"
 
 ref_index="$out_dir/index/Ips_typograpgus_LG16corrected.final.bwa_index"
-mkdir -p "$out_dir/index"
+#mkdir -p "$out_dir/index"
 
 map_reads() {
     prefix="$1"
