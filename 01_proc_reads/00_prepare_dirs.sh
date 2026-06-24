@@ -12,8 +12,10 @@
 #    - $out_dir/$prefix (directory created for each sample)
 #----------------------------------------------------------------------
 
-reads_path="../data/00_raw_reads"
-out_dir="../data/01_proc_reads"
+source ../utils/paths.sh
+
+reads_path="$RAW_DIR"
+out_dir="$PROC_DIR"
 
 # Input
 # List of files from: find "$reads_path/" -name "*.fq.gz"
@@ -24,16 +26,20 @@ out_readslist="$out_dir/filelist"
 
 # Create out directory if it doesn't exist
 mkdir -p "$out_dir"
+log "=== metadata generation start ==="
 
 # Create a file with a list of all the reads paths
 find "$reads_path/" -type f -name "*.fq.gz" | sort -V  > "$out_readslist"
+log "done: $out_readslist"
 
 prefixes_array=($(awk -F'/' '{print $(NF-1)}' "$out_readslist" | sort -u))
 
 # Create a file with the list of all the sample prefixes 
 printf "%s\n" "${prefixes_array[@]}" | sort -t_ -k1,1 -k2.1,2.1 -k3,3 -k2.2,2.2 > "$out_prefixes"
+log "done: $out_prefixes"
 
 # Create a directory to process the reads of each sample
 while read -r prefix; do 
    mkdir -p "$out_dir/$prefix"
 done < "$out_prefixes"
+log "=== metadata generation complete ==="

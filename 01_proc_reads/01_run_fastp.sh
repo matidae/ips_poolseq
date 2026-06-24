@@ -14,7 +14,10 @@
 #   - *.qc_report.html : fastp HTML report
 #------------------------------------------------------------------------------
 
-out_dir="../data/01_proc_reads"
+source ../utils/paths.sh
+
+out_dir="$PROC_DIR"
+
 
 threads=10 #Max fastp can use
 jobs=4
@@ -22,11 +25,11 @@ jobs=4
 export out_dir
 export threads
 export LC_ALL=C  # Fix locale warnings
+export -f log
 
 # Input
 prefixes="$out_dir/prefixes"
 filelist="$out_dir/filelist"
-# FASTQ files for processing : $prefix.fq.gz 
 
 # Output
 # fastp processed FASTQ files : $prefix.fq.qc.gz 
@@ -70,8 +73,11 @@ fastp_run(){
         --qualified_quality_phred 20 \
         -j "$out_dir/$prefix/$json" \
         -h "$out_dir/$prefix/$html"
+
+    log "done: $out_dir/$prefix/$json"
 }
 
 export -f fastp_run
-
+log "=== fastp QC start ==="
 parallel -j "$jobs" fastp_run ::: "${pairs[@]}"
+log "=== fastp QC complete ==="

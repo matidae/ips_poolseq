@@ -16,18 +16,20 @@ import glob
 import json
 import matplotlib.pyplot as plt
 sys.path.append("./utils")
-from utils import prefix_order
+from utils import prefix_order, load_config, log
 
 plt.style.use("ggplot")
 
-in_dir = "../data/01_proc_reads"
-out_dir = "../results/01_proc_reads"
+# Load paths from config file
+cfg=load_config()
+in_dir = cfg["PROC_DIR"]
+out_dir = cfg["PROC_RESULTS"]
 
 #Ips typographus genome size
-ips_genome_size = 224977219
+ips_genome_size = int(cfg["GENOME_SIZE"])
 
 # Input
-qubit_in = "../data/reference/sample_qubit"
+qubit_in = cfg["QUBIT_FILE"]
 json_list = f"{in_dir}/*/*.json"
 
 # Output
@@ -46,6 +48,7 @@ def plot_quality(quality_curves, filename, filter):
    plt.tight_layout()
    plot_filename = f"{out_dir}/{filter}/" + filename.replace('.fq.gz','.qual.png')
    plt.savefig(plot_filename, dpi=300)
+   log(f"done: {plot_filename}")
    plt.close()
 
 def plot_base_content(content_curves, filename, filter):   
@@ -64,6 +67,7 @@ def plot_base_content(content_curves, filename, filter):
    plt.tight_layout()
    plot_filename = f"{out_dir}/{filter}/" + filename.replace('.fq.gz','.base.png')
    plt.savefig(plot_filename, dpi=300)
+   log(f"done: {plot_filename}")
    plt.close()
 
 def parse_json(json_files):    
@@ -96,14 +100,14 @@ def parse_json(json_files):
             quality_curves_after = fastp_out["read1_after_filtering"]["quality_curves"]["mean"]
             content_curves_after = fastp_out["read1_after_filtering"]["content_curves"]
             # Plots quality and base content per read after Fastp QC
-            #plot_quality(quality_curves_after, filename, "after")
-            #plot_base_content(content_curves_after, filename, "after")
+            plot_quality(quality_curves_after, filename, "after")
+            plot_base_content(content_curves_after, filename, "after")
 
             quality_curves_before = fastp_out["read1_before_filtering"]["quality_curves"]["mean"]
             content_curves_before = fastp_out["read1_before_filtering"]["content_curves"]
             # Plots quality and base content per read before Fastp QC
-            #plot_quality(quality_curves_before, filename, "before")
-            #plot_base_content(content_curves_before, filename, "before")
+            plot_quality(quality_curves_before, filename, "before")
+            plot_base_content(content_curves_before, filename, "before")
             
             qubit = sample_qubit.get(prefix_short, "NA")
             gc_content_before = fastp_out["summary"]["before_filtering"]["gc_content"]
@@ -183,14 +187,16 @@ def write_html_report():
           tbody tr:hover { background-color:#f0f6fb; }
           td:first-child { font-weight:600; text-align:left; padding-left:14px }
           td:not(:first-child) { font-variant-numeric: tabular-nums }
-          img { max-width:200px; height:auto; border-radius:4px; transition:transform 0.15s ease }
-          img:hover { transform:scale(2); z-index:10; position:relative }
+          img { max-width:100px; height:auto; border-radius:0px; transition:transform 0.15s ease }
+          img:hover { transform:scale(5); z-index:10; position:relative }
           td:nth-last-child(-n+2) img:hover { transform-origin:right center }
           th:nth-child(12), td:nth-child(12) { border-left:2px solid #c8c8c8 }
           thead tr:first-child th:nth-child(3) { border-left:2px solid #c8c8c8 }
           .legend-box { padding:2px 10px; border:1px solid #ddd; border-radius:3px; display:inline-block }
+          thead th { cursor: pointer; }
+          thead th:hover { background-color: #e8e8ea; }
        </style>
-    <script>
+   <script>
     window.onload = function () {
         const table = document.getElementById('Tab');
         for (const row of table.tBodies[0].rows) {        
@@ -204,21 +210,21 @@ def write_html_report():
 
             if (!isNaN(cov_val)) {
                 if (cov_val < 100) {
-                    cov_cell.style.backgroundColor = '#ff9999';
+                    cov_cell.style.backgroundColor = '#f5c8c8';
                 } else if (cov_val < 200) {
-                    cov_cell.style.backgroundColor = '#ffcc99';
+                    cov_cell.style.backgroundColor = '#f5e0c8';
                 } else if (cov_val < 300) {
-                    cov_cell.style.backgroundColor = '#ffffcc';
-                } 
+                    cov_cell.style.backgroundColor = '#f5f5c8';
+                }
             }
             // Color by GC before
             const gcb_cell = row.cells[col_gc_before];
             const gcb_val = parseFloat(gcb_cell.textContent);
             if (!isNaN(gcb_val)) {
                 if (gcb_val > 50) {
-                    gcb_cell.style.backgroundColor = '#F4A6A6';
+                    gcb_cell.style.backgroundColor = '#f5c8c8';
                 } else if (gcb_val > 40) {
-                    gcb_cell.style.backgroundColor = '#FFD9E6';
+                    gcb_cell.style.backgroundColor = '#f5f5c8';
                 }
             }
             // Color by GC after
@@ -226,27 +232,47 @@ def write_html_report():
             const gca_val = parseFloat(gca_cell.textContent);
             if (!isNaN(gca_val)) {
                 if (gca_val > 50) {
-                    gca_cell.style.backgroundColor = '#F4A6A6';
+                    gca_cell.style.backgroundColor = '#f5c8c8';
                 } else if (gca_val > 40) {
-                    gca_cell.style.backgroundColor = '#FFD9E6';
-                }
+                    gca_cell.style.backgroundColor = '#f5f5c8';
+                } 
             }
         }
+
+        // Sortable columns
+        document.querySelectorAll('#Tab thead tr:last-child th').forEach(function(th) {
+            th.style.cursor = 'pointer';
+            th.addEventListener('click', function() {
+                const tbody = document.querySelector('#Tab tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const idx = Array.from(th.parentNode.children).indexOf(th);
+                const asc = th.dataset.sort !== 'asc';
+                document.querySelectorAll('#Tab thead tr:last-child th').forEach(h => h.dataset.sort = '');
+                th.dataset.sort = asc ? 'asc' : 'desc';
+                rows.sort(function(a, b) {
+                    const va = parseFloat(a.cells[idx].textContent);
+                    const vb = parseFloat(b.cells[idx].textContent);
+                    if (isNaN(va) || isNaN(vb)) return 0;
+                    return asc ? va - vb : vb - va;
+                });
+                rows.forEach(function(row) { tbody.appendChild(row); });
+            });
+        });
     };
     </script>
     </head>
     <body>    
       <br>
-      <div style="align-items:center; margin-bottom:10px;">
-        <h2 style="margin:10;">Fastp QC summary: before vs after filtering</h2>
-        <div style="font-size:12x;">
+      <div style="align-items:center; margin-bottom:10px;">        
+        <h2 style="margin:0 0 16px 0;">Fastp QC summary: before vs after filtering</h2>
+        <div style="font-size:12px;">
           <span style="font-weight:bold;">Depth:</span>&nbsp;&nbsp;
-          <span class="legend-box" style="background:#ff9999;"></span>&nbsp;&lt;100&nbsp;&nbsp;
-          <span class="legend-box" style="background:#ffcc99"></span>&nbsp;100-199&nbsp;&nbsp;
-          <span class="legend-box" style="background:#ffffcc"></span>&nbsp;200-299&nbsp;&nbsp;
-          <span style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;GC:</span>&nbsp;&nbsp;
-          <span class="legend-box" style="background:#FFD9E6"></span>&nbsp;40-50%&nbsp;&nbsp;
-          <span class="legend-box" style="background:#F4A6A6"></span>&nbsp;&gt;50%
+          <span class="legend-box" style="background:#f5c8c8;"></span>&nbsp;&lt;100&nbsp;&nbsp;
+          <span class="legend-box" style="background:#f5e0c8;"></span>&nbsp;100-200&nbsp;&nbsp;
+          <span class="legend-box" style="background:#f5f5c8;"></span>&nbsp;200-300
+          <br>
+          <span style="font-weight:bold;">GC:</span>&nbsp;&nbsp;
+          <span class="legend-box" style="background:#FFD9E6"></span>&nbsp;40-50          
         </div>
     </div>
     <table id="Tab">
@@ -280,7 +306,7 @@ def write_html_report():
     <tbody>"""
     with open(report_out, "r") as fh:
         next(fh)
-        for line in fh:        
+        for line in fh:
             idn, after, gbp, cov, length, gc, dups, before, lost, \
             lqual, short, qubit, pct_lost, gc_before, file = line.strip().split("\t")
         
@@ -317,21 +343,28 @@ def write_html_report():
     with open(report_html, "w", encoding="utf-8") as f:
         f.write(html)
     
-def main ():
-    #Create output directories if they doesn't exist
+def main():
+    log("=== Fastp QC report start ===")
+    # Create output directories if they don't exist
     os.makedirs(out_dir, exist_ok=True)
     os.makedirs(f"{out_dir}/after", exist_ok=True)
     os.makedirs(f"{out_dir}/before", exist_ok=True)
 
-    #Parse Fastp JSON report
     prefixes = [l.strip() for l in open(f"{in_dir}/prefixes")]
     json_files = []
     for p in prefixes:
         json_files += glob.glob(f"{in_dir}/{p}/*.json")
+    log(f"found {len(json_files)} JSON files for {len(prefixes)} samples")
+    
     data = parse_json(json_files)
+    
     write_tsv_report(data)
+    log(f"done: {report_out}")
+    
     write_html_report()
-
+    log(f"done: {report_html}")
+    
+    log("=== Fastp QC report complete ===")
 if __name__ == "__main__":
     main()
 
