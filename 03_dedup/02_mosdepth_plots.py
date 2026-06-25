@@ -1,18 +1,24 @@
+#!/usr/bin/env python3
+
 #----------------------------------------------------------------------
-# Make mosdepth plots per genomic window for the html map & dedup report.
-# Input: 
-#   - *.mosdepth.regions.bed.gz
-# Ouput:
-#   - depth average per bin plotsto be used downstram in the summary report
+# Make mosdepth plots per genomic window for the html map and dedup report.
+#
+# Input:
+#   - $DEDUP_RESULTS/depth_metrics/$prefix.regions.bed.gz
+# Output:
+#   - $DEDUP_RESULTS/depth_metrics/$prefix.depth.500K_bins.png
 #----------------------------------------------------------------------
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import glob
-import os
+import os, sys
+sys.path.append("./utils")
+from utils import load_config, log
 
-# Working directory 
-out_dir = "../results/03_dedup/"
+# Load paths from config file
+cfg = load_config()
+out_dir = cfg["DEDUP_RESULTS"]
+
 
 def plot(filepath, outplot):
     df = pd.read_csv(filepath, sep='\t', header=None,
@@ -85,11 +91,18 @@ def plot(filepath, outplot):
     plt.savefig(outplot, dpi=300)
 
 def main():
-    files = glob.glob(out_dir + "depth_metrics/*.mosdepth.regions.bed.gz")
-    for i in files:
-        outplot = i.replace("mosdepth.regions.bed.gz", "depth.500K_bins.png")
+    prefix_file = "../data/01_proc_reads/prefixes_new"
+    with open(prefix_file) as f:
+        prefixes = [line.strip() for line in f]
+    
+    log(f"=== Mosdepth plots for {len(prefixes)} samples ===")
+    for prefix in prefixes:
+        i = out_dir + f"/depth_metrics/{prefix}.regions.bed.gz"
+        outplot = i.replace("regions.bed.gz", "depth.500K_bins.png")
         plot(i, outplot)
-
+        log(f"done: {outplot}")    
+    log(f"=== Mosdepth plots complete ===")
+    
 if __name__ == "__main__":
     main()
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-"""
-Generate barplots comparing mapped vs deduplicated coverage depths.
-organized by region, country, and time period, with bars grouped by year and replicate.
-
-Input:
-    - ../results/03_dedup/summary_table.tsv
-
-Output:
-    - ../results/03_dedup/barplots/{Region}{Country}_depths.png
-"""
+#----------------------------------------------------------------------
+# Generate barplots comparing mapped vs deduplicated coverage depths.
+# organized by region, country, and time period, with bars grouped by year and replicate.
+#
+# Input:
+#    - ../results/03_dedup/summary_table.tsv
+#
+# Output:
+#    - ../results/03_dedup/barplots/barplot_{region}{country}_depths_100.png
+#----------------------------------------------------------------------
 
 import os
 import sys
@@ -18,20 +18,22 @@ import pandas as pd
 from matplotlib.patches import Patch
 sys.path.append("./utils")
 from plot_style import apply_style, C
+from utils import load_config, log
 
 apply_style()
 
-out_dir="../results/03_dedup"
+cfg = load_config()
+out_dir = cfg["DEDUP_RESULTS"]
 out_barplots = out_dir + "/barplots"
 
-ips_genome_size = 224977219
+ips_genome_size = int(cfg["GENOME_SIZE"])
 
 def load_data():
-    df = pd.read_csv(out_dir + "/summary_table.tsv", sep="\t")  
+    df = pd.read_csv(out_dir + "/summary_table_all.tsv", sep="\t")  
 
-    df["nodedup"] = df["Mean_depth_nodedup"]
-    df["dedup_all"] = df["Mean_depth_dedup"]
-    df["dedup_optical"] = df["Mean_depth_dedup_alt"]
+    df["nodedup"] = df["Depth_nodedup"]
+    df["dedup_all"] = df["Depth_dedup"]
+    df["dedup_optical"] = df["Depth_dedup_alt"]
     df["raw_reads"] = (df["Raw_reads"] * 1e6 * 150) / ips_genome_size
     df["qc_reads"] = (df["QC_reads"] * 1e6 * df["Length"]) / ips_genome_size
 
@@ -50,9 +52,6 @@ def load_data():
     return df
 
 def coverage_barplots(df):
-    import matplotlib.pyplot as plt
-    from matplotlib.patches import Patch
-
     # Melt coverage values for plotting
     df_melted = pd.melt(
         df,
@@ -127,7 +126,7 @@ def coverage_barplots(df):
             alpha = 0.8 if threshold % 100 == 0 else 0.6
             ax.axhline(threshold, color='grey', linestyle='--', linewidth=lw, alpha=alpha, zorder=0)
 
-        # Red line at 150
+        # Red line at 100
         ax.axhline(100, color=C["rust"], linestyle='--', linewidth=1, zorder=1)
 
         # Plot bars
@@ -181,10 +180,14 @@ def coverage_barplots(df):
 
 
 def main():
+    log("=== Barplots start ===")
     if not os.path.exists(out_barplots):
         os.makedirs(out_barplots)
     df = load_data()
+    log(f"loaded {len(df)} samples from summary table")
     coverage_barplots(df)
+    log(f"done: {out_barplots}")
+    log("=== Barplots complete ===")
 
 
 if __name__ == "__main__":

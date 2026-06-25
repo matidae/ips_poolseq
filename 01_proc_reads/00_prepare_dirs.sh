@@ -7,12 +7,13 @@
 # Input: 
 #   - reads in fq.gz format located in $reads_path
 # Output: 
-#    - prefixes: file with the prefixes of all samples 
-#    - filelist: list of all fastq files 
-#    - $out_dir/$prefix (directory created for each sample)
+#    - $PROC_DIR/prefixes: file with the prefixes of all samples 
+#    - $PROC_DIR/filelist: list of all fastq files 
+#    - $PROC_DIR/$prefix (directory created for each sample)
 #----------------------------------------------------------------------
 
 source ../utils/paths.sh
+set -euo pipefail
 
 reads_path="$RAW_DIR"
 out_dir="$PROC_DIR"
@@ -26,7 +27,7 @@ out_readslist="$out_dir/filelist"
 
 # Create out directory if it doesn't exist
 mkdir -p "$out_dir"
-log "=== metadata generation start ==="
+log "=== Metadata generation start ==="
 
 # Create a file with a list of all the reads paths
 find "$reads_path/" -type f -name "*.fq.gz" | sort -V  > "$out_readslist"
@@ -42,4 +43,4 @@ log "done: $out_prefixes"
 while read -r prefix; do 
    mkdir -p "$out_dir/$prefix"
 done < "$out_prefixes"
-log "=== metadata generation complete ==="
+log "=== Metadata generation complete ==="

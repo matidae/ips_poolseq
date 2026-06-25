@@ -4,17 +4,19 @@
 # Mapping reads with BWA, sorting, merging and indexing with sambamba
 #
 # Input: 
-#   - list of processed FASTQ files 
-#   - reference genome
+#   - $PROC_DIR/$prefix/*.qc.fq.gz : processed FASTQ files
+#   - $REF_INDEX                   : BWA reference genome index
 # Output: 
-#   - alignments as sorted and merged BAM file: $prefix.sort.bam
+#   - $MAPPINGS_DIR/$prefix.sort.bam : sorted and merged BAM file
 #------------------------------------------------------------------------------
 
+source ../utils/paths.sh
 set -euo pipefail
 
 #Working dir
-in_dir="../data/01_proc_reads"
-out_dir="../data/02_mappings"
+in_dir="$PROC_DIR"
+out_dir="$MAPPINGS_DIR"
+ref_index="$REF_INDEX"
 
 export TMPDIR="$out_dir/sort_tmp"
 mkdir -p "$TMPDIR"
@@ -26,8 +28,7 @@ jobs=3
 prefixes="$in_dir/prefixes"
 filelist="$in_dir/filelist"
 
-ref_index="$out_dir/index/Ips_typograpgus_LG16corrected.final.bwa_index"
-#mkdir -p "$out_dir/index"
+mkdir -p "$out_dir/index"
 
 map_reads() {
     prefix="$1"
@@ -60,12 +61,12 @@ map_reads() {
         2>> "$out_dir/$prefix.bwa.log"
         
         # Sam files to bam format
-        sambamba view -q -t "$threads" -S -f bam -o "$bam" "$sam"        
+        sambamba view -q -t "$threads" -S -f bam -o "$bam" "$sam"
         # Sort bam
         sambamba sort -q -t "$threads" -o "$sorted" "$bam"
         #Array of sorted bams
         sorted_bams+=("$sorted")
-                
+
         # Delete non sorted sam and bam files
         rm "$sam" "$bam"
     done
@@ -85,11 +86,15 @@ map_reads() {
     # Delete sam, bam, sort and index files after merging
     for s in "${sorted_bams[@]}"; do
         rm "$s" "$s.bai"
-    done      
+    done
+    log "done: $merged_bams"
 }
 
 export -f map_reads
+export -f log
 export in_dir out_dir threads filelist ref_index
-
+ 
 # Run mappings in parallel
+log "=== Mapping start ==="
 parallel -j "$jobs" map_reads :::: "$prefixes"
+log "=== Mapping complete ==="

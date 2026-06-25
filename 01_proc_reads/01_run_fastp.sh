@@ -5,26 +5,25 @@
 # removes polyG end.
 # 
 # Input:
-#   - filelist: list with FASTQ reads files for processing
-#   - prefixes: list of sample prefixes
-#   - FASTQ files for processing
+#   - $PROC_DIR/filelist : list with FASTQ reads files for processing
+#   - $PROC_DIR/prefixes : list of sample prefixes
+#   - $RAW_DIR/*.fq.gz   : FASTQ files for processing
 # Output:
-#   - *.qc.fq          : processed FASTQ files
-#   - *.qc_report.json : fastp JSON report
-#   - *.qc_report.html : fastp HTML report
+#   - $PROC_DIR/$prefix/*.qc.fq          : processed FASTQ files
+#   - $PROC_DIR/$prefix/*.qc_report.json : fastp JSON report
+#   - $PROC_DIR/$prefix/*.qc_report.html : fastp HTML report
 #------------------------------------------------------------------------------
 
 source ../utils/paths.sh
+set -euo pipefail
 
 out_dir="$PROC_DIR"
-
 
 threads=10 #Max fastp can use
 jobs=4
 
 export out_dir
 export threads
-export LC_ALL=C  # Fix locale warnings
 export -f log
 
 # Input
@@ -78,6 +77,6 @@ fastp_run(){
 }
 
 export -f fastp_run
-log "=== fastp QC start ==="
+log "=== Fastp QC start ==="
 parallel -j "$jobs" fastp_run ::: "${pairs[@]}"
-log "=== fastp QC complete ==="
+log "=== Fastp QC complete ==="

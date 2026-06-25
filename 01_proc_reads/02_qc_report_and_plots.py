@@ -1,15 +1,19 @@
-"""
-Reads fastp JSON output files and generate summary tables and plots.
+#!/usr/bin/env python3
 
-Input:
-    - fastp JSON report files (e.g., *.json)
-
-Output:
-    - all_poolseq_report.tsv : summary table with quality metrics for all samples
-    - $prefix_quality.png : quality score plot for each sample
-    - $prefix_base_content.png : Base composition plot for each sample
-    - ips_poolseq_report.html : html report with quality metrics for all samples
-"""
+#----------------------------------------------------------------------
+# Reads fastp JSON output files and generate summary tables and plots.
+#
+# Input:
+#    - $PROC_DIR/$prefix/*.qc_report.json : fastp JSON report files
+#
+# Output:
+#    - $PROC_RESULTS/all_poolseq_report.tsv   : summary table with quality metrics for all samples
+#    - $PROC_RESULTS/before/$prefix*.qual.png : quality score plot before QC for each sample
+#    - $PROC_RESULTS/before/$prefix*.base.png : base composition plot before QC for each sample
+#    - $PROC_RESULTS/after/$prefix*.qual.png  : quality score plot after QC for each sample
+#    - $PROC_RESULTS/after/$prefix*.base.png  : base composition plot after QC for each sample
+#    - $PROC_RESULTS/ips_poolseq_report.html  : html report with quality metrics for all samples
+#----------------------------------------------------------------------
 
 import os, sys
 import glob

@@ -5,16 +5,20 @@
 # using samtools (for Illumina NovaSeq X PE genomic reads)
 # 
 # Input: 
-#       - $prefix.sort.bam
+#   - $MAPPINGS_DIR/$prefix.sort.bam
 # Output: 
-#       - $out_dir/$prefix.dedup.sort.bam
-#       - $results_dir/metrics/$prefix.dup_metrics.txt
+#   - $DEDUP_DIR/$prefix.dedup.sort.bam
+#   - $DEDUP_RESULTS/metrics/$prefix.dup_metrics.txt
 #----------------------------------------------------------------------
+
+source ../utils/paths.sh
 set -euo pipefail
 
-in_dir="../data/02_mappings"
-out_dir="../data/03_dedup"
-results_dir="../results/03_dedup"   
+#Working dirs
+in_dir="$MAPPINGS_DIR"
+out_dir="$DEDUP_DIR"
+results_dir="$DEDUP_RESULTS"
+prefixes="$PREFIXES"
 
 threads=4
 jobs=10
@@ -39,10 +43,10 @@ dedup_optical() {
         VALIDATION_STRINGENCY=LENIENT \
         TAGGING_POLICY=All \
         TMP_DIR="$tmpdir" \
-        CREATE_INDEX=false ;
+        CREATE_INDEX=false
 
         # Remove optical duplicates (DT:Z:SQ)
-        samtools view -@ "$threads" -h "$out_dir/$prefix.markdup.bam" | grep -v "DT:Z:SQ" \
+        samtools view -@ "$threads" -h "$out_dir/$prefix.markdup.bam" | (grep -v "DT:Z:SQ" || true) \
         | samtools view -@ "$threads" -b -o "$out_dir/$prefix.dedup.sort.bam" -
 
         # Create bam index
@@ -51,9 +55,15 @@ dedup_optical() {
         # Remove tmp files
         rm "$out_dir/$prefix.markdup.bam"
         rm -r "$tmpdir"
+        log "done: $out_dir/$prefix.dedup.sort.bam"
 }
 
-export out_dir results_dir threads 
+export out_dir results_dir threads
 export -f dedup_optical
-
-parallel -j $jobs dedup_optical ::: "$in_dir"/*.sort.bam
+export -f log
+ 
+# Run deduplication in parallel
+log "=== Deduplication start ==="
+while read -r p; do echo "$in_dir/$p.sort.bam"; done < "$prefixes" \
+    | parallel -j "$jobs" dedup_optical
+log "=== Deduplication complete ==="
