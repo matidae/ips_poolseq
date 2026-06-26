@@ -16,14 +16,16 @@
           tbody tr:hover { background-color:#f0f6fb; }
           td:first-child { font-weight:600; text-align:left; padding-left:14px }
           td:not(:first-child) { font-variant-numeric: tabular-nums }
-          img { max-width:200px; height:auto; border-radius:4px; transition:transform 0.15s ease }
-          img:hover { transform:scale(2); z-index:10; position:relative }
+          img { max-width:100px; height:auto; border-radius:0px; transition:transform 0.15s ease }
+          img:hover { transform:scale(5); z-index:10; position:relative }
           td:nth-last-child(-n+2) img:hover { transform-origin:right center }
           th:nth-child(12), td:nth-child(12) { border-left:2px solid #c8c8c8 }
           thead tr:first-child th:nth-child(3) { border-left:2px solid #c8c8c8 }
           .legend-box { padding:2px 10px; border:1px solid #ddd; border-radius:3px; display:inline-block }
+          thead th { cursor: pointer; }
+          thead th:hover { background-color: #e8e8ea; }
        </style>
-    <script>
+   <script>
     window.onload = function () {
         const table = document.getElementById('Tab');
         for (const row of table.tBodies[0].rows) {        
@@ -37,21 +39,21 @@
 
             if (!isNaN(cov_val)) {
                 if (cov_val < 100) {
-                    cov_cell.style.backgroundColor = '#ff9999';
+                    cov_cell.style.backgroundColor = '#f5c8c8';
                 } else if (cov_val < 200) {
-                    cov_cell.style.backgroundColor = '#ffcc99';
+                    cov_cell.style.backgroundColor = '#f5e0c8';
                 } else if (cov_val < 300) {
-                    cov_cell.style.backgroundColor = '#ffffcc';
-                } 
+                    cov_cell.style.backgroundColor = '#f5f5c8';
+                }
             }
             // Color by GC before
             const gcb_cell = row.cells[col_gc_before];
             const gcb_val = parseFloat(gcb_cell.textContent);
             if (!isNaN(gcb_val)) {
                 if (gcb_val > 50) {
-                    gcb_cell.style.backgroundColor = '#F4A6A6';
+                    gcb_cell.style.backgroundColor = '#f5c8c8';
                 } else if (gcb_val > 40) {
-                    gcb_cell.style.backgroundColor = '#FFD9E6';
+                    gcb_cell.style.backgroundColor = '#f5f5c8';
                 }
             }
             // Color by GC after
@@ -59,27 +61,47 @@
             const gca_val = parseFloat(gca_cell.textContent);
             if (!isNaN(gca_val)) {
                 if (gca_val > 50) {
-                    gca_cell.style.backgroundColor = '#F4A6A6';
+                    gca_cell.style.backgroundColor = '#f5c8c8';
                 } else if (gca_val > 40) {
-                    gca_cell.style.backgroundColor = '#FFD9E6';
-                }
+                    gca_cell.style.backgroundColor = '#f5f5c8';
+                } 
             }
         }
+
+        // Sortable columns
+        document.querySelectorAll('#Tab thead tr:last-child th').forEach(function(th) {
+            th.style.cursor = 'pointer';
+            th.addEventListener('click', function() {
+                const tbody = document.querySelector('#Tab tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                const idx = Array.from(th.parentNode.children).indexOf(th);
+                const asc = th.dataset.sort !== 'asc';
+                document.querySelectorAll('#Tab thead tr:last-child th').forEach(h => h.dataset.sort = '');
+                th.dataset.sort = asc ? 'asc' : 'desc';
+                rows.sort(function(a, b) {
+                    const va = parseFloat(a.cells[idx].textContent);
+                    const vb = parseFloat(b.cells[idx].textContent);
+                    if (isNaN(va) || isNaN(vb)) return 0;
+                    return asc ? va - vb : vb - va;
+                });
+                rows.forEach(function(row) { tbody.appendChild(row); });
+            });
+        });
     };
     </script>
     </head>
     <body>    
       <br>
-      <div style="align-items:center; margin-bottom:10px;">
-        <h2 style="margin:10;">Fastp QC summary: before vs after filtering</h2>
-        <div style="font-size:12x;">
+      <div style="align-items:center; margin-bottom:10px;">        
+        <h2 style="margin:0 0 16px 0;">Fastp QC summary: before vs after filtering</h2>
+        <div style="font-size:12px;">
           <span style="font-weight:bold;">Depth:</span>&nbsp;&nbsp;
-          <span class="legend-box" style="background:#ff9999;"></span>&nbsp;&lt;100&nbsp;&nbsp;
-          <span class="legend-box" style="background:#ffcc99"></span>&nbsp;100-199&nbsp;&nbsp;
-          <span class="legend-box" style="background:#ffffcc"></span>&nbsp;200-299&nbsp;&nbsp;
-          <span style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;GC:</span>&nbsp;&nbsp;
-          <span class="legend-box" style="background:#FFD9E6"></span>&nbsp;40-50%&nbsp;&nbsp;
-          <span class="legend-box" style="background:#F4A6A6"></span>&nbsp;&gt;50%
+          <span class="legend-box" style="background:#f5c8c8;"></span>&nbsp;&lt;100&nbsp;&nbsp;
+          <span class="legend-box" style="background:#f5e0c8;"></span>&nbsp;100-200&nbsp;&nbsp;
+          <span class="legend-box" style="background:#f5f5c8;"></span>&nbsp;200-300
+          <br>
+          <span style="font-weight:bold;">GC:</span>&nbsp;&nbsp;
+          <span class="legend-box" style="background:#FFD9E6"></span>&nbsp;40-50          
         </div>
     </div>
     <table id="Tab">
@@ -155,7 +177,7 @@
             
                 <tr>
                   <td>LAAU_Ea_2024</td>
-                  <td>NA</td>
+                  <td>177</td>
                   <td>574.3</td>
                   <td>8.7</td>
                   <td>1.5</td>
@@ -176,7 +198,7 @@
             
                 <tr>
                   <td>LAAU_Eb_2024</td>
-                  <td>NA</td>
+                  <td>151</td>
                   <td>590.6</td>
                   <td>7.8</td>
                   <td>1.3</td>
@@ -197,7 +219,7 @@
             
                 <tr>
                   <td>LAAU_Ea_2025</td>
-                  <td>NA</td>
+                  <td>126</td>
                   <td>644.3</td>
                   <td>12.0</td>
                   <td>1.9</td>
@@ -218,7 +240,7 @@
             
                 <tr>
                   <td>LAAU_Eb_2025</td>
-                  <td>NA</td>
+                  <td>112</td>
                   <td>652.3</td>
                   <td>11.2</td>
                   <td>1.7</td>
@@ -281,7 +303,7 @@
             
                 <tr>
                   <td>LAAU_La_2025</td>
-                  <td>NA</td>
+                  <td>114</td>
                   <td>549.2</td>
                   <td>8.0</td>
                   <td>1.5</td>
@@ -302,7 +324,7 @@
             
                 <tr>
                   <td>LAAU_Lb_2025</td>
-                  <td>NA</td>
+                  <td>120</td>
                   <td>630.0</td>
                   <td>12.7</td>
                   <td>2.0</td>
@@ -869,7 +891,7 @@
             
                 <tr>
                   <td>SFIN_Ea_2025</td>
-                  <td>NA</td>
+                  <td>276</td>
                   <td>540.2</td>
                   <td>8.7</td>
                   <td>1.6</td>
@@ -890,7 +912,7 @@
             
                 <tr>
                   <td>SFIN_Eb_2025</td>
-                  <td>NA</td>
+                  <td>232</td>
                   <td>1277.8</td>
                   <td>27.9</td>
                   <td>2.2</td>
@@ -1289,7 +1311,7 @@
             
                 <tr>
                   <td>SFIN_La_2025</td>
-                  <td>NA</td>
+                  <td>230</td>
                   <td>504.3</td>
                   <td>7.0</td>
                   <td>1.4</td>
@@ -1310,7 +1332,7 @@
             
                 <tr>
                   <td>SFIN_Lb_2025</td>
-                  <td>NA</td>
+                  <td>215</td>
                   <td>539.9</td>
                   <td>12.7</td>
                   <td>2.3</td>
@@ -1709,7 +1731,7 @@
             
                 <tr>
                   <td>WFIN_Ea_2025</td>
-                  <td>NA</td>
+                  <td>290</td>
                   <td>557.1</td>
                   <td>9.1</td>
                   <td>1.6</td>
@@ -1730,7 +1752,7 @@
             
                 <tr>
                   <td>WFIN_Eb_2025</td>
-                  <td>NA</td>
+                  <td>290</td>
                   <td>552.4</td>
                   <td>9.3</td>
                   <td>1.7</td>
@@ -2129,7 +2151,7 @@
             
                 <tr>
                   <td>WFIN_La_2025</td>
-                  <td>NA</td>
+                  <td>251</td>
                   <td>549.1</td>
                   <td>16.8</td>
                   <td>3.1</td>
@@ -2150,7 +2172,7 @@
             
                 <tr>
                   <td>WFIN_Lb_2025</td>
-                  <td>NA</td>
+                  <td>284</td>
                   <td>553.7</td>
                   <td>10.5</td>
                   <td>1.9</td>
@@ -2213,7 +2235,7 @@
             
                 <tr>
                   <td>WOAU_Ea_2024</td>
-                  <td>NA</td>
+                  <td>98</td>
                   <td>532.8</td>
                   <td>9.8</td>
                   <td>1.8</td>
@@ -2234,7 +2256,7 @@
             
                 <tr>
                   <td>WOAU_Eb_2024</td>
-                  <td>NA</td>
+                  <td>115</td>
                   <td>531.9</td>
                   <td>7.9</td>
                   <td>1.5</td>
@@ -2255,7 +2277,7 @@
             
                 <tr>
                   <td>WOAU_Ea_2025</td>
-                  <td>NA</td>
+                  <td>156</td>
                   <td>597.0</td>
                   <td>15.0</td>
                   <td>2.5</td>
@@ -2276,7 +2298,7 @@
             
                 <tr>
                   <td>WOAU_Eb_2025</td>
-                  <td>NA</td>
+                  <td>95</td>
                   <td>503.7</td>
                   <td>10.1</td>
                   <td>2.0</td>
