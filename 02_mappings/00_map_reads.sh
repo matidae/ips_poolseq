@@ -10,7 +10,7 @@
 #   - $MAPPINGS_DIR/$prefix.sort.bam : sorted and merged BAM file
 #------------------------------------------------------------------------------
 
-source ../utils/paths.sh
+source ./utils/paths.sh
 set -euo pipefail
 
 #Working dir

@@ -11,7 +11,7 @@
 #   - $DEDUP_RESULTS/metrics/$prefix.dup_metrics.txt
 #----------------------------------------------------------------------
 
-source ../utils/paths.sh
+source ./utils/paths.sh
 set -euo pipefail
 
 #Working dirs

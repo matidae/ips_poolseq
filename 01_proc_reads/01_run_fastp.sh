@@ -14,7 +14,7 @@
 #   - $PROC_DIR/$prefix/*.qc_report.html : fastp HTML report
 #------------------------------------------------------------------------------
 
-source ../utils/paths.sh
+source ./utils/paths.sh
 set -euo pipefail
 
 out_dir="$PROC_DIR"

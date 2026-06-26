@@ -12,7 +12,7 @@
 #    - $PROC_DIR/$prefix (directory created for each sample)
 #----------------------------------------------------------------------
 
-source ../utils/paths.sh
+source ./utils/paths.sh
 set -euo pipefail
 
 reads_path="$RAW_DIR"
