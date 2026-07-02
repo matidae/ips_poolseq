@@ -5,116 +5,274 @@
   <title>Ips PoolSeq</title>
   <link rel="icon" type="image/png" href="favicon_sbb.png">
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 2em auto;
-      padding: 1em;
-      line-height: 1.6;
-      background: #f9f9f9;
-      color: #333;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 16px;
+      background: #f4f6f9;
+      color: #2b2b2b;
+      padding: 0;
     }
-    h1 {
-      border-bottom: 2px solid #ccc;
-      padding-bottom: 0.3em;
+
+    /* Main content */
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2em 1.5em 4em;
     }
-    ul {
-      list-style: disc;
-      margin-left: 2em;
+
+    /* Header */
+    .page-header {
+      margin-bottom: 2em;
+      padding: 1.5em 1.8em;
+      background: #eaedf2;
+      border-radius: 6px;
+      border: 1px solid #dde3ea;
+      border-left: 4px solid #2a5d84;
     }
-    li {
-      margin-bottom: 0.5em;
+    .page-header h1 {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: #1e3a52;
+      margin-bottom: 6px;
     }
-    a {
+    .page-header .subtitle {
+      font-size: 0.85em;
+      color: #5a7a96;
+      margin-top: 5px;
+    }
+
+    /* Section cards */
+    .section {
+      border-radius: 6px;
+      border: 1px solid #dde3ea;
+      margin-bottom: 1.2em;
+      overflow: hidden;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 18px;
+      background: #eaedf2;
+      border-bottom: 1px solid #dde3ea;
+    }
+    .section-accent {
+      width: 2px;
+      height: 16px;
+      border-radius: 1px;
+      background: #7a96ad;
+      flex-shrink: 0;
+    }
+    .section h3 {
+      font-size: 0.95em;
+      font-weight: 600;
+      color: #1e3a52;
+      letter-spacing: 0.2px;
+    }
+    .step-num {
+      font-size: 0.95em;
+      font-weight: 600;
+      color: #4a6a86;
+      margin-right: 2px;
+      letter-spacing: 0.5px;
+    }
+    .section ul {
+      list-style: none;
+      margin: 0;
+      padding: 6px 0;
+      background: #f9fafc;
+    }
+    .section li {
+      padding: 6px 18px 6px 42px;
+      border-bottom: 1px solid #edf0f4;
+      position: relative;
+    }
+    .section li:last-child {
+      border-bottom: none;
+    }
+    .section li::before {
+      content: '•';
+      position: absolute;
+      left: 26px;
+      color: #2a5d84;
+      font-size: 1em;
+      line-height: 1;
+    }
+    .section li a {
       text-decoration: none;
       color: #2a5d84;
+      font-size: 0.95em;
+      transition: color 0.15s;
     }
-    a:hover {
+    .section li a:hover {
+      color: #1e3a52;
       text-decoration: underline;
     }
-    .section {
-      margin-top: 2em;
+
+    /* Outdated sections - work in progress */
+    .outdated li a {
+      color: #aaa;
+      font-style: italic;
     }
-    img.thumb {
-      max-width: 100%;
-      height: auto;
-      margin-bottom: 1em;
-      border: 1px solid #ccc;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    .outdated li a:hover {
+      color: #888;
+    }
+    .outdated li::before {
+      color: #ccc;
     }
     .bkp {
-      list-style-type: none;
-      font-size: 12px;
-      margin-left: 0;
-      padding-left: 40px;
+      font-size: 0.8em;
+      color: #aaa;
+      padding: 3px 18px 3px 42px;
+      border-bottom: 1px solid #edf0f4;
+      position: relative;
+    }
+    .bkp::before {
+      content: '•';
+      position: absolute;
+      left: 26px;
+      color: #ccc;
+      font-size: 1em;
+      line-height: 1;
+    }
+    .bkp a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.8em;
+    }
+    .bkp a:hover {
+      color: #888;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
-  <h1><em>Ips typographus</em> - PoolSeq analysis results</h1>
+  <div class="container">
 
-  <div class="section">
-    <h3>Reads QC and mapping</h3>
-    <ul>
-      <li><a href="./01_proc_reads/ips_poolseq_report.html"> Initial report after QC (table)</a></li>
-      <!--li class="bkp"><a href="./01_proc_reads/bkp/ips_poolseq_report.html"> BKP: Initial report</a></li-->
-      <li><a href="./03_dedup/map_and_dedup.html"> Mapping and deduplication results (table)</a></li>
-      <!--li class="bkp"><a href="./03_dedup/bkp/map_and_dedup.html">  BKP: Mapping and deduplication results (table)</a></li-->
-      <li><a href="./03_dedup/barplots_map_and_dedup.html"> Mapping depth grouped by sample (plots)</a></li>
-      <!--li class="bkp"><a href="./03_dedup/bkp/barplots_map_and_dedup.html">  BKP: Mapping depth grouped by sample (plots)</a></li-->
-      <li><a href="./03_dedup/barplots_map_and_dedup_100.html"> Mapping depth 100x limit (plots)</a></li>
-      <li><a href="./03_dedup/barplots_map_and_dedup_150.html"> Mapping depth 150x limit (plots)</a></li>
-      
-    </ul>
-    <h3>Varcalling</h3>
-    <ul>
-      <li><a href="./05_SNPs_depths/depth_boxplots.html"> SNPs depth boxplots (plots)</a></li>
-      <!--li class="bkp"><a href="./05_SNPs_depths/bkp/depth_boxplots.html"> BKP: SNPs depth boxplots (plots)</a></li> 
-      <li class="bkp"><a href="./06_SNPs_stats/bkp/missing_gt.html"> BKP: Barplot of proportion of SNPs missing GT</a></li-->
-    </ul>
-    <h3>Null variance</h3>
-    <ul>
-      <li><a href="./07_null_variance/null_variance_summary_table.html"> Null variance summary (table and plots)</a></li>
-      <!--li class="bkp"><a href="./06_SNPs_stats/null_variance.html"> BKP: Null variance per sample and AF bin</a></li>
-      <li class="bkp"><a href="./06_SNPs_stats/null_variance_summary.html"> BKP: Null variance table data</a></li>
-      <li class="bkp"><a href="./06_SNPs_stats/null_variance_summary.WFIN_L.html"> BKP: Null variance table data (WFIN_L)</a></li>
-      <li class="bkp"><a href="./06_SNPs_stats/null_variance_stats.html"> BKP: Null variance per sample  with different filters</a></li-->      
-      <!--li class="bkp"><a href="./06_SNPs_stats/null_variance_depth_plots.html"> BKP: Null variance, depth, qubit plots</a></li>      
-      <li class="bkp"><a href="./06_SNPs_stats/null_variance_stats.html"> BKP: Null variance per sample  with different filters</a></li>      
-      <li class="bkp"><a href="./06_SNPs_stats/null_variance_depth_plots.html"> BKP: Null variance, depth, qubit plots</a></li-->      
-    </ul>
+    <div class="page-header">
+      <h1><em>Ips typographus</em> - Pool-seq data analysis</h1>
+      <div class="subtitle">Temporal dynamics of allele frequencies in multiple populations</div>
+    </div>
 
-    <h3 id="fluct">Fluctuating SNPs</h3>
-    <ul>
-      <li><a href="./08_models/SNPs_trajectories.html"> Comparison of SNPs temporal trajectories as p (plots)</a></li>
-      <li><a href="./08_models/SNPs_Z_trajectories.html"> Comparison of SNPs temporal trajectories as z (plots)</a></li>
-      <li><a href="./08_models/SFIN_fluctuating_SNPs.html"> SFIN fluctuating selection analysis (plots)</a></li>    
-      <li><a href="./08_models/WFIN_fluctuating_SNPs.html"> WFIN fluctuating selection analysis (plots)</a></li>    
-      <li><a href="./08_models/SNPs_inversion_enrichment.html"> Table of SNPs by category and genomic region (table)</a></li> 
-      <li><a href="./08_models/fluctuating_SNPs_overlap.html"> Overlap of fluctuating SNPs in different populations (table)</a></li> 
-      <li><a href="./08_models/PCA_dz_SNPs.html"> PCA of fluctuating SNPs based on dz (plot)</a></li> 
-      <li><a href="./08_models/interseasonal_fluctuations.html"> Interseasonal fluctuating SNPs (plot)</a></li> 
-    </ul>
-    
-    <!--h3>Chi square test p-values</h3>
-    <ul>
-      <li class="bkp"><a href="./06_SNPs_stats/chi_square.html"> BKP: Null variance per sample and AF bin</a></li>      
-    </ul>   
+    <div class="section" id="qc">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3><span class="step-num">01 -</span> Reads QC</h3>
+      </div>
+      <ul>
+        <li><a href="./01_proc_reads/ips_poolseq_report.html">Initial report after QC (table)</a></li>
+        <!--li class="bkp"><a href="./01_proc_reads/bkp/ips_poolseq_report.html">BKP: Initial report</a></li-->
+      </ul>
+    </div>
+
+    <div class="section" id="mapping">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3><span class="step-num">02 -</span> Mapping and deduplication</h3>
+      </div>
+      <ul>
+        <li><a href="./03_dedup/map_and_dedup.html">Mapping and deduplication results (table)</a></li>
+        <!--li class="bkp"><a href="./03_dedup/bkp/map_and_dedup.html">BKP: Mapping and deduplication results (table)</a></li-->        
+        <!--li class="bkp"><a href="./03_dedup/bkp/barplots_map_and_dedup.html">BKP: Mapping depth grouped by sample (plots)</a></li-->
+        <li><a href="./03_dedup/barplots_map_and_dedup.html">Mapping depth 100x limit (plots)</a></li>
+        <li><a href="./03_dedup/barplots_filetered_insert_size.html">Filtered insert size/read length (plots)</a></li>
+      </ul>
+    </div>
+
+    <div class="section outdated" id="varcall">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3><span class="step-num">03 -</span> Variant calling and SNP filtering</h3>
+      </div>
+      <ul>
+        <li><a href="./05_SNPs_depths/depth_boxplots.html">SNPs depth boxplots (plots)</a></li>
+        <!--li class="bkp"><a href="./05_SNPs_depths/bkp/depth_boxplots.html">BKP: SNPs depth boxplots (plots)</a></li>
+        <li class="bkp"><a href="./06_SNPs_stats/bkp/missing_gt.html">BKP: Barplot of proportion of SNPs missing GT</a></li-->
+      </ul>
+    </div>
+
+    <div class="section outdated" id="nullvar">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3><span class="step-num">04 -</span> Null variance</h3>
+      </div>
+      <ul>
+        <li><a href="./07_null_variance/null_variance_summary_table.html">Null variance summary (table and plots)</a></li>
+        <!--li class="bkp"><a href="./06_SNPs_stats/null_variance.html">BKP: Null variance per sample and AF bin</a></li>
+        <li class="bkp"><a href="./06_SNPs_stats/null_variance_summary.html">BKP: Null variance table data</a></li>
+        <li class="bkp"><a href="./06_SNPs_stats/null_variance_summary.WFIN_L.html">BKP: Null variance table data (WFIN_L)</a></li>
+        <li class="bkp"><a href="./06_SNPs_stats/null_variance_stats.html">BKP: Null variance per sample with different filters</a></li-->
+        <!--li class="bkp"><a href="./06_SNPs_stats/null_variance_depth_plots.html">BKP: Null variance, depth, qubit plots</a></li>
+        <li class="bkp"><a href="./06_SNPs_stats/null_variance_stats.html">BKP: Null variance per sample with different filters</a></li>
+        <li class="bkp"><a href="./06_SNPs_stats/null_variance_depth_plots.html">BKP: Null variance, depth, qubit plots</a></li-->
+      </ul>
+    </div>
+
+    <div class="section outdated" id="models">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3><span class="step-num">05 -</span> Selection models</h3>
+      </div>
+      <ul>
+        <li><a href="./08_models/SNPs_trajectories.html">Comparison of SNPs temporal trajectories as p (plots)</a></li>
+        <li><a href="./08_models/SNPs_Z_trajectories.html">Comparison of SNPs temporal trajectories as z (plots)</a></li>
+      </ul>
+    </div>
+
+    <div class="section outdated" id="fluct">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3><span class="step-num">06 -</span> Fluctuating SNPs</h3>
+      </div>
+      <ul>
+        <li><a href="./08_models/SFIN_fluctuating_SNPs.html">SFIN fluctuating selection analysis (plots)</a></li>
+        <li><a href="./08_models/WFIN_fluctuating_SNPs.html">WFIN fluctuating selection analysis (plots)</a></li>
+        <li><a href="./08_models/SNPs_inversion_enrichment.html">Table of SNPs by category and genomic region (table)</a></li>
+        <li><a href="./08_models/fluctuating_SNPs_overlap.html">Overlap of fluctuating SNPs in different populations (table)</a></li>
+        <li><a href="./08_models/PCA_dz_SNPs.html">PCA of fluctuating SNPs based on dz (plot)</a></li>
+        <li><a href="./08_models/interseasonal_fluctuations.html">Interseasonal fluctuating SNPs (plot)</a></li>
+      </ul>
+    </div>
+
+    <!--
+    <div class="section">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3>Chi square test p-values</h3>
+      </div>
+      <ul>
+        <li class="bkp"><a href="./06_SNPs_stats/chi_square.html">BKP: Null variance per sample and AF bin</a></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-accent"></div>
         <h3>Null variance</h3>
-    <ul>
-      <li class="bkp"><a href="./07_null_variance/null_variance_summary.html"> BKP: Null var summary </a></li>
-      <li class="bkp"><a href="./07_null_variance/null_var_merged.html"> BKP: Null var recalculated </a></li>
-    </ul>
+      </div>
+      <ul>
+        <li class="bkp"><a href="./07_null_variance/null_variance_summary.html">BKP: Null var summary</a></li>
+        <li class="bkp"><a href="./07_null_variance/null_var_merged.html">BKP: Null var recalculated</a></li>
+      </ul>
+    </div>
 
-    <h3>Evolutionary models</h3>
-    <ul>
-      <li><a href="./08_models/selection_models.html"> Selection models </a></li>
-      <li><a href="./08_models/Ne_estimates.html"> Ne estimates</a></li>    
-      <li><a href="./08_models/Fluctating_AF_plots.html"> Fluctuating AFs </a></li>    
-      <li><a href="./08_models/Manhattan_plots.html"> Manhattan plots </a></li>
-    </ul-->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-accent"></div>
+        <h3>Evolutionary models</h3>
+      </div>
+      <ul>
+        <li><a href="./08_models/selection_models.html">Selection models</a></li>
+        <li><a href="./08_models/Ne_estimates.html">Ne estimates</a></li>
+        <li><a href="./08_models/Fluctating_AF_plots.html">Fluctuating AFs</a></li>
+        <li><a href="./08_models/Manhattan_plots.html">Manhattan plots</a></li>
+      </ul>
+    </div>
+    -->
 
-  </div> 
+  </div>
 </body>
 </html>
