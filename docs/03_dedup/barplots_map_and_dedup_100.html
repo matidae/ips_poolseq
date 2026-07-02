@@ -13,13 +13,13 @@
     }
     .fig-row {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       gap: 10px;
       margin-top: 20px;
     }
     
   .fig-row img {
-    max-width: 600px;
+    max-width: 650px;
     height: auto;
     border: 1px solid #ddd;
   }
@@ -43,22 +43,37 @@
 </head>
 <body>
 
-<h2>Mapping depth before and after deduplication</h2>
+<h3>Mapping depth before and after deduplication</h3>
 
-<h3>FIN samples</h3>
+<h4>SFIN samples</h4>
 <div class="fig-row">
-  <img src="./barplots/barplot_NFIN_depths_100.png" class="zoomable zoom_left">
-  <img src="./barplots/barplot_WFIN_depths_100.png" class="zoomable zoom_left">
-  <img src="./barplots/barplot_SFIN_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_SFIN_E_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_SFIN_L_depths_100.png" class="zoomable zoom_left">
 </div>
 
-
-<h3>AU samples</h3>
+<h4>WFIN samples</h4>
 <div class="fig-row">
-  <img src="./barplots/barplot_LAAU_depths_100.png" class="zoomable zoom_left">
-  <img src="./barplots/barplot_WOAU_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WFIN_E_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WFIN_L_depths_100.png" class="zoomable zoom_left">
 </div>
 
+<h4>NFIN samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_NFIN_E_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_NFIN_L_depths_100.png" class="zoomable zoom_left">
+</div>
+
+<h4>LAAU samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_LAAU_E_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_LAAU_L_depths_100.png" class="zoomable zoom_left">
+</div>
+
+<h4>WOAU samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_WOAU_E_depths_100.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WOAU_L_depths_100.png" class="zoomable zoom_left">
+</div>
 
 </body>
 </html>

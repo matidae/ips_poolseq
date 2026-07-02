@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Expected depth after insert size filtering</title>
+  <link rel="icon" type="image/png" href="../favicon_sbb.png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      scroll-behavior: smooth;
+      padding-bottom: 80px;
+    }
+    .fig-row {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .fig-row img {
+      max-width: 650px;
+      height: auto;
+      border: 1px solid #ddd;
+    }
+    .zoomable:hover {
+      transform: scale(1.8);
+      transition: transform 0.3s ease;
+      z-index: 10;
+      position: relative;
+    }
+    .zoom_center:hover { transform-origin: center center; }
+    .zoom_right:hover  { transform-origin: center right; }
+    .zoom_left:hover   { transform-origin: center left; }
+  </style>
+</head>
+<body>
+
+<h3>Expected depth after insert size and read length filtering</h3>
+
+<h4>SFIN samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_SFIN_E_filtered_depth.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_SFIN_L_filtered_depth.png" class="zoomable zoom_left">
+</div>
+
+<h4>WFIN samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_WFIN_E_filtered_depth.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WFIN_L_filtered_depth.png" class="zoomable zoom_left">
+</div>
+
+<h4>NFIN samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_NFIN_E_filtered_depth.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_NFIN_L_filtered_depth.png" class="zoomable zoom_left">
+</div>
+
+<h4>LAAU samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_LAAU_E_filtered_depth.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_LAAU_L_filtered_depth.png" class="zoomable zoom_left">
+</div>
+
+<h4>WOAU samples</h4>
+<div class="fig-row">
+  <img src="./barplots/barplot_WOAU_E_filtered_depth.png" class="zoomable zoom_left">
+  <img src="./barplots/barplot_WOAU_L_filtered_depth.png" class="zoomable zoom_left">
+</div>
+
+</body>
+</html>
