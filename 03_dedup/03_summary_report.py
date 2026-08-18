@@ -190,7 +190,7 @@ def generate_html_report(table_path, output_path):
 
 def main():
     # Define paths
-    table_path = os.path.join(out_dir, "summary_table_all.tsv")
+    table_path = os.path.join(out_dir, "summary_table.tsv")
     output_path = os.path.join(out_dir, "map_and_dedup.html")
     log(f"=== Generating HTML report for mapping and deduplication metrics ===")
     # Generate report
