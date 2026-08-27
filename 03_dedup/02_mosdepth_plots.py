@@ -97,8 +97,8 @@ def main():
     
     log(f"=== Mosdepth plots for {len(prefixes)} samples ===")
     for prefix in prefixes:
-        i = out_dir + f"/depth_metrics/{prefix}.regions.bed.gz"
-        outplot = i.replace("regions.bed.gz", "depth.500K_bins.png")
+        i = out_dir + f"/depth_metrics/{prefix}.mosdepth.regions.bed.gz"
+        outplot = i.replace("mosdepth.regions.bed.gz", "depth.500K_bins.png")
         plot(i, outplot)
         log(f"done: {outplot}")    
     log(f"=== Mosdepth plots complete ===")
