@@ -14,10 +14,11 @@
 import os, sys
 import pandas as pd
 sys.path.append("./utils")
-from utils import parse_counts
+from utils import parse_counts, load_config, log
 
-work_dir = "../results/04_varcalls"
-out_dir = "../results/05_SNPs_depths"
+cfg = load_config()
+work_dir = cfg["VARCALL_RESULTS"]
+out_dir = cfg["VARCALL_RESULTS"]
 
 # Input files
 genic_counts_in = f"{work_dir}/genic_readcounts.tsv" 
