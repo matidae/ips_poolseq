@@ -4,20 +4,29 @@
 # Count number and proportion of SNPs with missing genotype per sample
 #
 # Input:
-#   - ips_merged.vcf: vcf file for all samples
+#   - $VARCALL_RESULTS/ips.biallelic_q40_m40.maf05.vcf.gz
 # Output: 
-#   - missing_GT_stats.tsv: file with number and proportion of SNPs per sample with missing genotype
+#   - $VARCALL_RESULTS/missing_GT_stats.tsv: number and proportion of SNPs per sample with missing genotype
 #-------------------------------------------------------------------------------
 
-work_dir="../results/04_varcalls"
+set -euo pipefail
+source ./utils/paths.sh
+
+work_dir="$VARCALL_RESULTS"
+
+log "=== Missing genotype stats start ==="
 
 total_snps=$(bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" | grep -v '^#' | wc -l)
+log "total SNPs: $total_snps"
 
-bcftools view "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" | bcftools query -f '[%SAMPLE\t%GT\n]' \
-| awk '$2 == "./."' | cut -f1 | sort | uniq -c | awk '{print $1"\t"$2}' | sort -k2 \
-> "$work_dir/missing_GT.tsv"
+bcftools query -f '[%SAMPLE\t%GT\n]' "$work_dir/ips.biallelic_q40_m40.maf05.vcf.gz" \
+    | awk '$2 == "./."' | cut -f1 | sort | uniq -c | awk '{print $1"\t"$2}' | sort -k2 \
+    > "$work_dir/missing_GT.tsv"
 
-awk -v total="$total_snps" '{printf "%s %s %.4f\n", $2, $1, $1/total}' "$work_dir/missing_GT.tsv" \
-> "$work_dir/missing_GT_stats.tsv"
+awk -v total="$total_snps" 'BEGIN{OFS="\t"} {printf "%s\t%s\t%.4f\n", $2, $1, $1/total}' "$work_dir/missing_GT.tsv" \
+    > "$work_dir/missing_GT_stats.tsv"
 
 rm "$work_dir/missing_GT.tsv"
+log "done: $work_dir/missing_GT_stats.tsv"
+
+log "=== Missing genotype stats complete ==="

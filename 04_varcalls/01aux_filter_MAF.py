@@ -4,22 +4,23 @@
 # Filter the VCF file by : min(p) <= (1 - min_MAF) and max(p) >= min_MAF
 #
 # Input:
-#   - ips_merged.vcf.gz: vcf file for all samples
+#   - $VARCALL_RESULTS/ips.biallelic_q30_m30.vcf.gz
 # Output:
-#   - ips_merged.m05.vcf.gz: vcf file filtered by min_MAF for all samples
+#   - $VARCALL_RESULTS/ips.biallelic_q30_m30.maf05.vcf.gz
 #-------------------------------------------------------------------------------
 
 import gzip
 import sys
 sys.path.append("./utils")
-from utils import  MIN_MAF
+from utils import MIN_MAF, load_config, log
 
-work_dir = "../results/04_varcalls"
+cfg = load_config()
+work_dir = cfg["VARCALL_RESULTS"]
 
 # Input file
-vcf_filter_in = f"{work_dir}/ips.biallelic_q40_m40.vcf.gz"
+vcf_filter_in = f"{work_dir}/ips.biallelic_q30_m30.vcf.gz"
 # Output file
-vcf_m05_out = f"{work_dir}/ips.biallelic_q40_m40.maf05.vcf.gz"
+vcf_m05_out = f"{work_dir}/ips.biallelic_q30_m30.maf05.vcf.gz"
 
 def calc_ref_freq(ad_field):
     ref, alt = map(int, ad_field.split(','))
@@ -29,11 +30,13 @@ def calc_ref_freq(ad_field):
     return ref / total
 
 def process_vcf(vcf_filter_in, vcf_m05_out, MIN_MAF):
+    kept = 0
+    total = 0
     with gzip.open(vcf_filter_in, 'rt') as vcf_filter_fh, gzip.open(vcf_m05_out, "wt") as vcf_m05_fh:
         for line in vcf_filter_fh:
             if line.startswith("#"):
-                    vcf_m05_fh.write(line)
-                    continue 
+                vcf_m05_fh.write(line)
+                continue
             fields = line.strip().split('\t')
             samples = fields[9:]
             p = []
@@ -44,12 +47,18 @@ def process_vcf(vcf_filter_in, vcf_m05_out, MIN_MAF):
                     p.append(freq)
             if not p:
                 continue
-
+            total += 1
             if min(p) <= (1 - MIN_MAF) and max(p) >= MIN_MAF:
                 vcf_m05_fh.write(line)
+                kept += 1
+    log(f"SNPs passing MAF filter: {kept}/{total} ({100*kept/total:.1f}%)")
 
 def main():
+    log(f"=== MAF filtering start (MIN_MAF={MIN_MAF}) ===")
+    log(f"input:  {vcf_filter_in}")
+    log(f"output: {vcf_m05_out}")
     process_vcf(vcf_filter_in, vcf_m05_out, MIN_MAF)
+    log("=== MAF filtering complete ===")
 
 if __name__ == "__main__":
     main()
