@@ -16,7 +16,8 @@ set -euo pipefail
 #Working dir
 in_dir="$PROC_DIR"
 out_dir="$MAPPINGS_DIR"
-ref_index="$REF_INDEX"
+
+genome=$GENOME
 
 export TMPDIR="$out_dir/sort_tmp"
 mkdir -p "$TMPDIR"
@@ -28,19 +29,22 @@ jobs=3
 prefixes="$in_dir/prefixes"
 filelist="$in_dir/filelist"
 
-mkdir -p "$out_dir/index"
+if [[ ! -f "$genome.bwt.2bit.64" ]]; then
+    log "indexing $genome"
+    bwa-mem2 index "$genome"
+fi
 
 map_reads() {
+    set -euo pipefail
+
     prefix="$1"
     sorted_bams=()
     files=($(grep "/$prefix/" "$filelist"))
     numfiles=${#files[@]}
 
-
     for ((i=0; i<numfiles; i+=2)); do    
         r1_base=$(basename "${files[$i]}" | sed 's/.fq/.qc.fq/')
         r2_base=$(basename "${files[$i+1]}" | sed 's/.fq/.qc.fq/')
-
 
         r1="$in_dir/$prefix/$r1_base"
         r2="$in_dir/$prefix/$r2_base"
@@ -54,9 +58,9 @@ map_reads() {
         #Run bwa for the first set of PE reads
         bwa-mem2 mem \
         -t "$threads" \
-        -R "@RG\tID:${prefix}\tSM:${prefix}" \
+        -R "@RG\tID:${prefix}_L${pair_id}\tSM:${prefix}\tLB:${prefix}" \
         -o "$sam" \
-        "$ref_index" \
+        "$genome" \
         "$r1" "$r2" \
         2>> "$out_dir/$prefix.bwa.log"
         
@@ -76,23 +80,23 @@ map_reads() {
     # Merge if more than one sorted BAM
     if (( ${#sorted_bams[@]} > 1 )); then
         sambamba merge -q -t "$threads" "$merged_bams" "${sorted_bams[@]}"
+        for s in "${sorted_bams[@]}"; do
+            rm "$s" "$s.bai"
+        done
     else
         mv "${sorted_bams[0]}" "$merged_bams"
+        rm "${sorted_bams[0]}.bai"
     fi
 
     # Index bam file
     sambamba index -q -t "$threads" "$merged_bams"
 
-    # Delete sam, bam, sort and index files after merging
-    for s in "${sorted_bams[@]}"; do
-        rm "$s" "$s.bai"
-    done
     log "done: $merged_bams"
 }
 
 export -f map_reads
 export -f log
-export in_dir out_dir threads filelist ref_index
+export in_dir out_dir threads filelist genome
  
 # Run mappings in parallel
 log "=== Mapping start ==="
