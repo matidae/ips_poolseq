@@ -48,9 +48,10 @@ log "=== Mapping and deduplication metrics start ==="
 
 # Run samtools alignment metrics
 for prefix in $samples; do
-    i="$dedup_dir/$prefix.dedup.sort.bam"
-    samtools flagstat "$i" > "$out_samtools/$prefix.samtools.flagstat"
-    samtools view -c -F 4 "$mappings_dir/$prefix.sort.bam" > "$out_samtools/$prefix.samtools.before_dedup"
+    [ -s "$out_samtools/$prefix.samtools.flagstat" ] || \
+        samtools flagstat "$dedup_dir/$prefix.dedup.sort.bam" > "$out_samtools/$prefix.samtools.flagstat"
+    [ -s "$out_samtools/$prefix.samtools.before_dedup" ] || \
+        samtools view -c -F 4 "$mappings_dir/$prefix.sort.bam" > "$out_samtools/$prefix.samtools.before_dedup"
 done
 log "done: samtools flagstat and read counts"
 
@@ -92,8 +93,7 @@ for prefix in $samples; do echo "$prefix"; done | \
 log "done: picard insert size metrics"
 
 for i in "$out_insert_size"/*.pdf; do
-    [ -e "$i" ] || continue
-    magick -density 300 "$i" -quality 100 "${i%.pdf}.png"
+    [ -s "${i%.pdf}.png" ] || magick -density 300 "$i" -quality 100 "${i%.pdf}.png"
 done
 log "done: insert size histogram plots"
 
@@ -113,12 +113,12 @@ done > "$out_temp/exact_mean_coverage_dedup")
     tail -n1 "$f" | cut -f4
 done > "$out_temp/exact_mean_coverage_dedup_alt")
 
-# Extract mean insert size from picard - find handles both naming conventions
-# MEAN_INSERT_SIZE is field 6 in picard InsertSizeMetrics output
+# Extract median insert size from picard - find handles both naming conventions
+# MEDIAN_INSERT_SIZE is field 1 in picard InsertSizeMetrics output
 (for i in $samples; do
     f=$(find "$out_insert_size" -maxdepth 1 -name "$i*.insertion_metrics.txt" | head -1)
-    grep -A1 "^MEDIAN_INSERT" "$f" | tail -1 | cut -f6 | awk '{printf "%.0f\n", $1}'
-done > "$out_temp/mean_insert_size")
+    grep -A1 "^MEDIAN_INSERT" "$f" | tail -1 | cut -f1 | awk '{printf "%.0f\n", $1}'
+done > "$out_temp/median_insert_size")
 
 # Get a list of how many reads are mapping
 (for i in $samples; do
@@ -142,7 +142,7 @@ awk 'OFS="\t" {print $1, $8, $2, $6, $5}' "$proc_dir/all_poolseq_report.tsv" | \
 out_table="$out_dir/summary_table.tsv"
 [ -f "$out_table" ] && out_table="$out_dir/summary_table.tsv"
 
-echo -e "Idn\tRaw_reads\tQC_reads\tGC\tLength\tMapped_reads\tPct_mapped\tDedup_optical\tDedup_all\tDepth_dedup\tDepth_dedup_alt\tDepth_nodedup\tMean_insert_size" > "$out_table"
+echo -e "Idn\tRaw_reads\tQC_reads\tGC\tLength\tMapped_reads\tPct_mapped\tDedup_optical\tDedup_all\tDepth_dedup\tDepth_dedup_alt\tDepth_nodedup\tMedian_insert_size" > "$out_table"
 
 # Output a summary table with all the data needed for the html report
 paste "$out_temp/half_previous_table" \
@@ -152,7 +152,7 @@ paste "$out_temp/half_previous_table" \
     "$out_temp/exact_mean_coverage_dedup" \
     "$out_temp/exact_mean_coverage_dedup_alt" \
     "$out_temp/exact_mean_coverage_nodedup" \
-    "$out_temp/mean_insert_size" \
+    "$out_temp/median_insert_size" \
     >> "$out_table"
 log "done: $out_table"
 

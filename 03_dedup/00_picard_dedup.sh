@@ -27,6 +27,7 @@ mkdir -p "$out_dir"
 mkdir -p "$results_dir/metrics"
 
 dedup_optical() {
+    set -euo pipefail 
     bam="$1"
     prefix=$(basename "$bam" .sort.bam )
     tmpdir="$out_dir/tmp_$prefix"
